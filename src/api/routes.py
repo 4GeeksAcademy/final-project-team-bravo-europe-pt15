@@ -1,12 +1,16 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+import os
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
-from api.utils import generate_sitemap, APIException
+from api.utils import generate_sitemap, APIException, send_password_reset_email
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
+
+# Generate a token for password reset (using itsdangerous)
+from itsdangerous import URLSafeTimedSerializer
 
 api = Blueprint('api', __name__)
 
@@ -97,6 +101,43 @@ def validate():
     return jsonify({"id": user.id, "email": user.email }), 200
 
 
+#Endpoints for forgot and reset password
+
+# Secret key for token generation (make sure to keep it secure)
+SECRET_KEY = os.getenv("my_key")
+serializer = URLSafeTimedSerializer(SECRET_KEY)
+
+@api.route("/forgot-password", methods=['POST'])
+def forgot_password():
+    email = request.json.get("email", None)
+
+    # Query the user by email
+    user = User.query.filter_by(email=email).first()
+    if user:
+        try:
+            # Generate a token for password reset (token expires after 15 minutes)
+            token = serializer.dumps(user.id, salt='password-reset')
+            
+            # Send password reset email
+            if send_password_reset_email(user.email, token):
+                return jsonify({"msg": "If an account with this email exists, a password reset email has been sent"}), 200
+            else:
+                # Failed to send email
+                error_message = "Failed to send password reset email. Please try again later."
+                return jsonify({"msg": error_message}), 500
+        except Exception as e:
+            # Log the error
+            print(f"Error sending password reset email: {e}")
+            
+            # Return detailed error message with specific error details
+            error_message = "An error occurred while sending the password reset email. Please try again later."
+            return jsonify({
+                "msg": error_message,
+                "error": str(e)  # Include the specific error message in the response
+            }), 500
+    else:
+        # No user found with the provided email
+        return jsonify({"msg": "No user found with this email. Please check your email address and try again."}), 404
 
 # Test endpoint
 @api.route('/hello', methods=['POST', 'GET'])
