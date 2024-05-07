@@ -115,11 +115,14 @@ def forgot_password():
     user = User.query.filter_by(email=email).first()
     if user:
         try:
-            # Generate a token for password reset (token expires after 15 minutes)
+            # Generate a token for password reset
             token = serializer.dumps(user.id, salt='password-reset')
             
+            # Construct password reset URL with token
+            reset_url = url_for('api.reset_password', token=token, _external=True)
+            
             # Send password reset email
-            if send_password_reset_email(user.email, token):
+            if send_password_reset_email(user.email, reset_url):
                 return jsonify({"msg": "If an account with this email exists, a password reset email has been sent"}), 200
             else:
                 # Failed to send email
@@ -138,6 +141,32 @@ def forgot_password():
     else:
         # No user found with the provided email
         return jsonify({"msg": "No user found with this email. Please check your email address and try again."}), 404
+
+
+
+@api.route("/reset-password/<token>", methods=['POST'])
+def reset_password(token):
+    try:
+        # Decrypt the token to get the user ID
+        user_id = serializer.loads(token, salt='password-reset', max_age=600)  # max_age in seconds (15 minutes)
+
+        # Get the new password from the request data
+        new_password = request.json.get("new_password")
+
+        # Query the user by ID
+        user = User.query.get(user_id)
+        if user:
+            # Update user's password
+            user.password = new_password
+            db.session.commit()
+            return jsonify({"msg": "Password reset successfully"}), 200
+        else:
+            return jsonify({"msg": "Invalid token"}), 400
+    except Exception as e:
+        print(f"Error resetting password: {e}")
+        return jsonify({"msg": "Invalid or expired token"}), 400
+
+
 
 # Test endpoint
 @api.route('/hello', methods=['POST', 'GET'])
