@@ -48,12 +48,16 @@ def generate_sitemap(app):
 
 def send_password_reset_email(email, token):
     try:
+        # Construct the password reset URL with the frontend URL and token
+        frontend_url = "https://glowing-space-meme-rw9rx57pjrh5q6j-3000.app.github.dev"
+        reset_url = f"{frontend_url}/reset-password/{token}"
+        
         msg = Message(
             subject='Password Reset Request', 
-            sender= os.getenv("my_email"),
+            sender=os.getenv("my_email"),
             recipients=[email]
         )
-        msg.body = f"You got this email because someone requested password reset for {email}, please use this token: {token} in order to reset your password"
+        msg.body = f"You got this email because someone requested a password reset for {email}. Please use the following link to reset your password: {reset_url}"
         mail.send(msg)
         return "Message sent!"
     except Exception as e:

@@ -8,7 +8,6 @@ from api.utils import generate_sitemap, APIException, send_password_reset_email
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
-
 # Generate a token for password reset (using itsdangerous)
 from itsdangerous import URLSafeTimedSerializer
 
@@ -87,9 +86,6 @@ def delete_user(user_id):
     return jsonify({"msg": "User deleted successfully"}), 200
 
 
-
-
-
 # Protect a route with jwt_required, which will kick out requests without a valid JWT
 @api.route("/validate", methods=["GET"])
 @jwt_required()
@@ -117,13 +113,10 @@ def forgot_password():
         try:
             # Generate a token for password reset
             token = serializer.dumps(user.id, salt='password-reset')
-            
-            # Construct password reset URL with token
-            reset_url = url_for('api.reset_password', token=token, _external=True)
-            
+                        
             # Send password reset email
-            if send_password_reset_email(user.email, reset_url):
-                return jsonify({"msg": "If an account with this email exists, a password reset email has been sent"}), 200
+            if send_password_reset_email(user.email, token):
+                return jsonify({"msg": "Link for reseting the password is sent to email: " + user.email}), 200
             else:
                 # Failed to send email
                 error_message = "Failed to send password reset email. Please try again later."
@@ -147,7 +140,7 @@ def forgot_password():
 @api.route("/reset-password/<token>", methods=['POST'])
 def reset_password(token):
     try:
-        # Decrypt the token to get the user ID
+        # Decrypt the token to get the user ID and set timout for token
         user_id = serializer.loads(token, salt='password-reset', max_age=600)  # max_age in seconds (15 minutes)
 
         # Get the new password from the request data
