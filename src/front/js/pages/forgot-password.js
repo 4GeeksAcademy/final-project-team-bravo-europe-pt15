@@ -41,7 +41,7 @@ export const ForgotPassword = () => {
                 </label>
                 <input type="submit" value="Submit" />
             </form>
-            <Link to="/login">Back to login page</Link> {/* Add link to login page */}   
+            <Link to="/login">Back to login page</Link> {/* Add real link to login page */}   
         </div>
     );
 };

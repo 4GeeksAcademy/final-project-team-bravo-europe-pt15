@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../../styles/reset-password.css';
 
 export const ResetPassword = () => {
     const [password, setPassword] = useState('');
@@ -36,8 +37,8 @@ export const ResetPassword = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
+        <div className="reset-password-container">
+            <form onSubmit={handleSubmit} className="reset-password-form">
                 <label>
                     New Password:
                     <input type="password" value={password} onChange={e => setPassword(e.target.value)} />

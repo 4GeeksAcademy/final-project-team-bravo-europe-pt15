@@ -6,8 +6,8 @@ import { BackendURL } from "./component/backendURL";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
-import { ForgotPassword } from "./pages/forgot-password"; // import the ForgotPassword component
-import { ResetPassword } from "./pages/reset-password"; // import the ResetPassword component
+import { ForgotPassword } from "./pages/forgot-password"; 
+import { ResetPassword } from "./pages/reset-password"; 
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
