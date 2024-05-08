@@ -6,7 +6,7 @@ export const Signup = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validation logic
@@ -27,7 +27,27 @@ export const Signup = () => {
 
         if (Object.keys(errors).length === 0) {
             // Form is valid, proceed with submission
+            try {
+                const response = await fetch("/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.msg);
+                }
+
+                // Handle successful signup
+                console.log("User signed up successfully!");
+            } catch (error) {
+                console.error("Error signing up:", error.message);
+            }
         } else {
+            // Update errors state to display validation errors
             setErrors(errors);
         }
     };
@@ -51,7 +71,7 @@ export const Signup = () => {
                     <input type="password" id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                     {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
                 </div>
-                <button type="submit" disabled={Object.keys(errors).length > 0}>Signup</button>
+                <button type="submit">Signup</button>
             </form>
         </div>
     );
