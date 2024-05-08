@@ -141,7 +141,7 @@ def forgot_password():
 def reset_password(token):
     try:
         # Decrypt the token to get the user ID and set timout for token
-        user_id = serializer.loads(token, salt='password-reset', max_age=600)  # max_age in seconds (15 minutes)
+        user_id = serializer.loads(token, salt='password-reset', max_age=600)  # max_age in seconds (600 = 10 minutes)
 
         # Get the new password from the request data
         new_password = request.json.get("new_password")
