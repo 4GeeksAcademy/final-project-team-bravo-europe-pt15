@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Signup = () => {
+    const navigate = useNavigate(); // Hook for navigation
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,7 +30,7 @@ export const Signup = () => {
         if (Object.keys(errors).length === 0) {
             // Form is valid, proceed with submission
             try {
-                const response = await fetch("/signup", {
+                const response = await fetch(`${process.env.BACKEND_URL}/api/signup`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -43,6 +45,7 @@ export const Signup = () => {
 
                 // Handle successful signup
                 console.log("User signed up successfully!");
+                navigate('/login'); // Navigate to login page
             } catch (error) {
                 console.error("Error signing up:", error.message);
             }
@@ -73,6 +76,7 @@ export const Signup = () => {
                 </div>
                 <button type="submit">Signup</button>
             </form>
+            <p>Already have an account? <Link to="/login">Login</Link></p>
         </div>
     );
 };

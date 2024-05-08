@@ -6,7 +6,7 @@ export const Login = () => {
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validation logic
@@ -22,7 +22,27 @@ export const Login = () => {
 
         if (Object.keys(errors).length === 0) {
             // Form is valid, proceed with submission
+            try {
+                const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.msg);
+                }
+
+                // Handle successful login
+                console.log("User logged in successfully!");
+            } catch (error) {
+                console.error("Error logging in:", error.message);
+            }
         } else {
+            // Update errors state to display validation errors
             setErrors(errors);
         }
     };
@@ -45,6 +65,9 @@ export const Login = () => {
             </form>
             <div>
                 <Link to="/forgot-password">Forgot your password?</Link>
+            </div>
+            <div>
+                <p>Not yet a user? <Link to="/signup">Sign up here</Link></p>
             </div>
         </div>
     );
