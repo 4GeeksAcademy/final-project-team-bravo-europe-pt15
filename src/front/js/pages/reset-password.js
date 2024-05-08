@@ -1,9 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../styles/reset-password.css';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export const ResetPassword = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const navigate = useNavigate()
+
+    useEffect(async () => {
+        const token = searchParams.get("token")
+
+        if(token) {
+            fetch(`${process.env.BACKEND_URL}/api/check-token/${token}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if (!data.success) navigate('/forgot-password');
+            })
+            .catch((error) => {
+                navigate('/forgot-password');
+            });
+        } else {
+            navigate('/forgot-password');
+        }
+    },[])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -16,20 +44,17 @@ export const ResetPassword = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
 
-        fetch(`/reset-password/${token}`, {
+        fetch(`${process.env.BACKEND_URL}/api/reset-password/${token}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ password }),
+            body: JSON.stringify({ new_password: password }),
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                alert('Password has been reset');
-            } else {
-                alert('Error resetting password');
-            }
+            alert(data.msg)
+            navigate('/login')
         })
         .catch((error) => {
             console.error('Error:', error);

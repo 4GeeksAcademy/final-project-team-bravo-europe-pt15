@@ -10,7 +10,7 @@ export const ForgotPassword = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        await fetch(`https://opulent-space-giggle-6qgw6w9g7qpfxx64-3001.app.github.dev/api/forgot-password`, {
+        await fetch(`${process.env.BACKEND_URL}/api/forgot-password`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -20,11 +20,7 @@ export const ForgotPassword = () => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            if (data.success) {
-                alert('A reset link will be sent to your email address if it exists in our system');
-            } else {
-                alert('Error sending reset email');
-            }
+            alert(data.msg);
         })
         .catch((error) => {
             console.error('Error:', error);

@@ -136,6 +136,23 @@ def forgot_password():
         return jsonify({"msg": "No user found with this email. Please check your email address and try again."}), 404
 
 
+@api.route("/check-token/<token>", methods=['GET'])
+def validate_token(token):
+    try:
+        # Decrypt the token to get the user ID and set timout for token
+        user_id = serializer.loads(token, salt='password-reset', max_age=600)  # max_age in seconds (15 minutes)
+
+        # Query the user by ID
+        user = User.query.get(user_id)
+        if user:
+            return jsonify({ "success": True }), 200
+        else:
+            return jsonify({"success": False}), 400
+    except Exception as e:
+        print(f"Error resetting password: {e}")
+        return jsonify({"success": False}), 400
+
+
 
 @api.route("/reset-password/<token>", methods=['POST'])
 def reset_password(token):
@@ -152,6 +169,9 @@ def reset_password(token):
             # Update user's password
             user.password = new_password
             db.session.commit()
+
+            # Send Email to User saying Password Resetted Successfully
+            
             return jsonify({"msg": "Password reset successfully"}), 200
         else:
             return jsonify({"msg": "Invalid token"}), 400
