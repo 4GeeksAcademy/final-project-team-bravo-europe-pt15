@@ -1,16 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom'; 
 import '../../styles/forgot-password.css';
-import { Context } from '../store/appContext';
 
 export const ForgotPassword = () => {
     const [email, setEmail] = useState('');
-    const {store, actions} = useContext(Context);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        await fetch(`${process.env.BACKEND_URL}/api/forgot-password`, {
+        await fetch(`${process.env.BACKEND_URL}api/forgot-password`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +38,7 @@ export const ForgotPassword = () => {
                 </label>
                 <input type="submit" value="Submit" />
             </form>
-            <Link to="/login">Back to login page</Link> {/* Add real link to login page */}   
+            {/* <Link to="/login">Back to login page</Link> Add real link to login page    */}
         </div>
     );
 };
