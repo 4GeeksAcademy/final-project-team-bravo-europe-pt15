@@ -10,7 +10,13 @@ export const Dashboard = () => {
   const [transformedImage, setTransformedImage] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
   const [showUploadButton, setShowUploadButton] = useState(true); // State variable to control visibility of UploadWidget
+  const [textToReplace, setTextToReplace] = useState(""); // State variable to hold the text to replace "prompt_text"
   const cloudName = "dcoocmssy";
+  const backgroundRemoval = "/e_background_removal:fineedges_y/";
+  const generativeRemove = "/e_gen_remove:";
+  const generativeRestore = "/e_gen_restore,e_enhance/";
+  // https://res.cloudinary.com/demo/image/upload/ar_1.0,c_fill,g_north_east,w_250/docs/camera.jpg
+  // https://res.cloudinary.com/prod/image/upload/e_gen_remove:prompt_text/me/rm-signs-1.jpg
 
   // Function to handle image upload
   const handleImageUpload = async (url) => {
@@ -23,7 +29,7 @@ export const Dashboard = () => {
   const getTransformedImageUrl = (originalUrl) => {
     return originalUrl.replace(
       /\/v\d+\//,
-      "/e_background_removal:fineedges_y/"
+      `${generativeRemove}${textToReplace}/`
     );
   };
 
@@ -36,7 +42,7 @@ export const Dashboard = () => {
           setTransformedImage(getTransformedImageUrl(uploadedImage));
         } else if (response.status === 423) {
           // Transformed image is not yet available, retry after a delay
-          setTimeout(checkTransformedImageAvailability, 5000); // Retry after 3 seconds
+          setTimeout(checkTransformedImageAvailability, 3000); // Retry after 3 seconds
         } else {
           // Handle other errors
           console.error("Error:", response.status);
@@ -54,12 +60,14 @@ export const Dashboard = () => {
     }
   }, [uploadedImage, retryCount]); // Re-run effect when uploadedImage or retryCount changes
 
+  // Function to handle text input change
+  const handleTextChange = (event) => {
+    setTextToReplace(event.target.value);
+  };
+
   return (
     <div className="dashboard-container">
-      <div className="image-container center-content">
-        {" "}
-        {/* Apply center-content class here */}
-        {showUploadButton && <UploadWidget onImageUpload={handleImageUpload} />}
+      <div className="image-container">
         {uploadedImage && (
           <>
             <h2>Original Image</h2>
@@ -72,11 +80,23 @@ export const Dashboard = () => {
             </div>
           </>
         )}
+        <div className="center-content">
+          {showUploadButton && (
+            <UploadWidget onImageUpload={handleImageUpload} />
+          )}
+          {/* Input field for user to enter text */}
+          <input
+            type="text"
+            value={textToReplace}
+            onChange={handleTextChange}
+            placeholder="Enter text to replace 'prompt_text'"
+          />
+        </div>
       </div>
       <div className="image-container">
         {transformedImage && (
           <>
-            <h2>Transformed Image (Background Removed)</h2>
+            <h2>Transformed Image</h2>
             <div className="image-wrapper">
               <Image
                 cloudName={cloudName}

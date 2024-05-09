@@ -9,21 +9,24 @@
   margin: 10px;
   padding: 10px;
   border: 1px solid #ccc;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .image-wrapper {
-  width: 100%;
+  width: auto;
   height: auto;
+  max-width: 100%; /* Ensure the image does not exceed its container width */
+  max-height: 100%; /* Ensure the image does not exceed its container height */
+  overflow: hidden; /* Hide any overflow */
+  margin-top: 10px; /* Add margin to separate the image from the title */
 }
 
 .loading-message {
   font-style: italic;
+  text-align: center;
 }
 
-/* dashboard.css */
 
-.center-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
