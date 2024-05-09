@@ -1,0 +1,29 @@
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+}
+
+.image-container {
+  width: 520px;
+  height: 520px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.image-wrapper {
+  width: 100%;
+  height: auto;
+}
+
+.loading-message {
+  font-style: italic;
+}
+
+/* dashboard.css */
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
