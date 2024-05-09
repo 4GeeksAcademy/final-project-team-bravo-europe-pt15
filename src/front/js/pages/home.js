@@ -8,7 +8,6 @@ export const Home = () => {
     <div className="text-center mt-5">
       <h1>Image Upload</h1>
       <UploadWidget />
-      <Login />
     </div>
   );
 };
