@@ -37,7 +37,18 @@ export const Login = () => {
                 }
 
                 // Handle successful login
-                console.log("User logged in successfully!");
+                const data = await response.json();
+                const token = data.token;
+
+                // Log token to console
+                console.log("Token:", token);
+
+
+                // Store token in local storage
+                localStorage.setItem("token", token);
+
+                // Redirect to dashboard
+                // window.location.href = "/dashboard";
             } catch (error) {
                 console.error("Error logging in:", error.message);
             }
