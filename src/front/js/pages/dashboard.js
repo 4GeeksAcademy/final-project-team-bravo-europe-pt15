@@ -11,12 +11,15 @@ export const Dashboard = () => {
   const [retryCount, setRetryCount] = useState(0);
   const [showUploadButton, setShowUploadButton] = useState(true); // State variable to control visibility of UploadWidget
   const [textToReplace, setTextToReplace] = useState(""); // State variable to hold the text to replace "prompt_text"
-  const cloudName = "dcoocmssy";
+  const cloudName = "dfxwm93pu";
   const backgroundRemoval = "/e_background_removal:fineedges_y/";
   const generativeRemove = "/e_gen_remove:";
   const generativeRestore = "/e_gen_restore,e_enhance/";
+  const upscale = "/e_upscale";
   // https://res.cloudinary.com/demo/image/upload/ar_1.0,c_fill,g_north_east,w_250/docs/camera.jpg
   // https://res.cloudinary.com/prod/image/upload/e_gen_remove:prompt_text/me/rm-signs-1.jpg
+  // https://res.cloudinary.com/prod/image/upload/e_gen_replace:from_sweater;to_leather%20jacket%20with%20pockets/me/replace-apparel-4
+  // https://res.cloudinary.com/prod/image/upload/e_upscale/me/upscale-sign-1
 
   // Function to handle image upload
   const handleImageUpload = async (url) => {
@@ -27,10 +30,7 @@ export const Dashboard = () => {
 
   // Function to construct the transformed image URL with background removal
   const getTransformedImageUrl = (originalUrl) => {
-    return originalUrl.replace(
-      /\/v\d+\//,
-      `${generativeRemove}${textToReplace}/`
-    );
+    return originalUrl.replace(/\/v\d+\//, `${upscale}${textToReplace}/`);
   };
 
   // Function to check if the transformed image is available
