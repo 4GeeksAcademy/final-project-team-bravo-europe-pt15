@@ -26,19 +26,21 @@ export const ForgotPassword = () => {
     };
 
     return (
-        <div className="forgot-password-container">
-            <div>
-                <h1 className="forgot-password-heading">Forgot your password?</h1>
-                <p className="forgot-password-text">Enter your email address and we'll send you the link to reset password.</p>
+        <div className="container mt-5 d-flex justify-content-center">
+            <div className="card w-50">
+                <div className="card-body">
+                    <h1 className="card-title">Forgot your password?</h1>
+                    <p className="card-text">Enter your email address and we'll send you the link to reset password.</p>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">Email:</label>
+                            <input type="email" id="email" className="form-control" value={email} onChange={e => setEmail(e.target.value)} required />
+                        </div>
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                    </form>
+                    {/* <Link to="/login" className="btn btn-link">Back to login page</Link> Add real link to login page */}
+                </div>
             </div>
-            <form className="forgot-password-form" onSubmit={handleSubmit}>
-                <label>
-                    Email:
-                    <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-                </label>
-                <input type="submit" value="Submit" />
-            </form>
-            {/* <Link to="/login">Back to login page</Link> Add real link to login page    */}
         </div>
     );
 };

@@ -62,18 +62,22 @@ export const ResetPassword = () => {
     };
 
     return (
-        <div className="reset-password-container">
-            <form onSubmit={handleSubmit} className="reset-password-form">
-                <label>
-                    New Password:
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-                </label>
-                <label>
-                    Confirm New Password:
-                    <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-                </label>
-                <input type="submit" value="Submit" />
-            </form>
+        <div className="container mt-5 d-flex justify-content-center">
+            <div className="card w-50">
+                <div className="card-body">
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="newPassword" className="form-label">New Password:</label>
+                            <input type="password" id="newPassword" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="confirmPassword" className="form-label">Confirm New Password:</label>
+                            <input type="password" id="confirmPassword" className="form-control" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+                        </div>
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 };
