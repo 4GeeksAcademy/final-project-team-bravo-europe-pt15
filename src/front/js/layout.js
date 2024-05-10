@@ -6,13 +6,10 @@ import { BackendURL } from "./component/backendURL";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
-<<<<<<< HEAD
 import { ForgotPassword } from "./pages/forgot-password"; 
 import { ResetPassword } from "./pages/reset-password"; 
-=======
 import { Signup } from "./pages/signup";
 import { Login } from "./pages/login"; 
->>>>>>> 9351b65e104d921c57cc7ef4eb5651228080d86f
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
