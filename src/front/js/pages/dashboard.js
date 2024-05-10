@@ -11,11 +11,11 @@ export const Dashboard = () => {
   const [retryCount, setRetryCount] = useState(0);
   const [showUploadButton, setShowUploadButton] = useState(true); // State variable to control visibility of UploadWidget
   const [textToReplace, setTextToReplace] = useState(""); // State variable to hold the text to replace "prompt_text"
-  const cloudName = "dfxwm93pu";
+  const cloudName = "dcoocmssy";
   const backgroundRemoval = "/e_background_removal:fineedges_y/";
   const generativeRemove = "/e_gen_remove:";
   const generativeRestore = "/e_gen_restore,e_enhance/";
-  const upscale = "/e_upscale";
+  const upscale = "/e_upscale"; //To use the upscale effect, the input image must be smaller than 0.25 megapixels (the equivalent of 625 x 400 pixels).
   // https://res.cloudinary.com/demo/image/upload/ar_1.0,c_fill,g_north_east,w_250/docs/camera.jpg
   // https://res.cloudinary.com/prod/image/upload/e_gen_remove:prompt_text/me/rm-signs-1.jpg
   // https://res.cloudinary.com/prod/image/upload/e_gen_replace:from_sweater;to_leather%20jacket%20with%20pockets/me/replace-apparel-4
