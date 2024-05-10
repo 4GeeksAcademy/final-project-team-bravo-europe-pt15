@@ -13,6 +13,7 @@ from api.commands import setup_commands
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_mail import Mail, Message
 
+from flask_cors import CORS
 
 # from models import Person
 
@@ -25,6 +26,8 @@ app.url_map.strict_slashes = False
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = os.getenv("my_key")   # This should be unique
 jwt = JWTManager(app)
+
+CORS(app, support_credentials=True)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
