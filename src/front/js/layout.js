@@ -8,7 +8,7 @@ import { ForgotPassword } from "./pages/forgot-password";
 import { ResetPassword } from "./pages/reset-password";
 import { Signup } from "./pages/signup";
 import { Login } from "./pages/login";
-import { Dashboard } from "./component/dashboard";
+import { Dashboard } from "./pages/dashboard";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";

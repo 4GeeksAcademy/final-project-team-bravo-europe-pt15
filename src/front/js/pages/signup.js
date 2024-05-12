@@ -48,6 +48,7 @@ export const Signup = () => {
         console.log("User signed up successfully!");
         navigate("/login"); // Navigate to login page
       } catch (error) {
+        alert("User with this email already exists");
         console.error("Error signing up:", error.message);
       }
     } else {
