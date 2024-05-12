@@ -4,12 +4,11 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
-import { ForgotPassword } from "./pages/forgot-password"; 
-import { ResetPassword } from "./pages/reset-password"; 
+import { ForgotPassword } from "./pages/forgot-password";
+import { ResetPassword } from "./pages/reset-password";
 import { Signup } from "./pages/signup";
-import { Login } from "./pages/login"; 
+import { Login } from "./pages/login";
+import { Dashboard } from "./component/dashboard";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
@@ -24,26 +23,25 @@ const Layout = () => {
   if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
     return <BackendURL />;
 
-    return (
-        <div>
-            <BrowserRouter basename={basename}>
-                <ScrollToTop>
-                    <Navbar />
-                    <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
-                        <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<ForgotPassword />} path="/forgot-password" /> {/* Add a route for the ForgotPassword component */}
-                        <Route element={<ResetPassword />} path="/reset-password"/> {/* Add a route for the ResetPassword component */}
-                        <Route element={<Signup />} path="/signup" />
-                        <Route element={<Login />} path="/login" />
-                        <Route element={<h1>Not found!</h1>} />
-                    </Routes>
-                    <Footer />
-                </ScrollToTop>
-            </BrowserRouter>
-        </div>
-    );
+  return (
+    <div>
+      <BrowserRouter basename={basename}>
+        {/* <ScrollToTop> */}
+        <Navbar />
+        <Routes>
+          <Route element={<Home />} path="/" />
+          <Route element={<ForgotPassword />} path="/forgot-password" />
+          <Route element={<ResetPassword />} path="/reset-password" />
+          <Route element={<Signup />} path="/signup" />
+          <Route element={<Login />} path="/login" />
+          <Route element={<Dashboard />} path="/dashboard" />
+          <Route element={<h1>Not found!</h1>} />
+        </Routes>
+        {/* <Footer />
+        </ScrollToTop> */}
+      </BrowserRouter>
+    </div>
+  );
 };
 
 export default injectContext(Layout);
