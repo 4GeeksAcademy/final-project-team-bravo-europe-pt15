@@ -27,19 +27,17 @@ const Layout = () => {
     <div>
       <BrowserRouter basename={basename}>
         {/* <ScrollToTop> */}
-          <Navbar />
-          <Routes>
-            <Route element={<Home />} path="/" />
-            <Route element={<ForgotPassword />} path="/forgot-password" />{" "}
-            {/* Add a route for the ForgotPassword component */}
-            <Route element={<ResetPassword />} path="/reset-password" />{" "}
-            {/* Add a route for the ResetPassword component */}
-            <Route element={<Signup />} path="/signup" />
-            <Route element={<Login />} path="/login" />
-            <Route element={<Dashboard />} path="/dashboard" />
-            <Route element={<h1>Not found!</h1>} />
-          </Routes>
-          {/* <Footer />
+        <Navbar />
+        <Routes>
+          <Route element={<Home />} path="/" />
+          <Route element={<ForgotPassword />} path="/forgot-password" />
+          <Route element={<ResetPassword />} path="/reset-password" />
+          <Route element={<Signup />} path="/signup" />
+          <Route element={<Login />} path="/login" />
+          <Route element={<Dashboard />} path="/dashboard" />
+          <Route element={<h1>Not found!</h1>} />
+        </Routes>
+        {/* <Footer />
         </ScrollToTop> */}
       </BrowserRouter>
     </div>
