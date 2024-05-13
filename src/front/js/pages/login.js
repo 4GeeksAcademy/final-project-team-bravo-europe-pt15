@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,15 +42,13 @@ export const Login = () => {
         const data = await response.json();
         const token = data.token;
 
-        // Log token to console
-        console.log("Token:", token);
-
         // Store token in local storage
         localStorage.setItem("token", token);
 
         // Redirect to dashboard
-        // window.location.href = "/dashboard";
+        navigate("/dashboard");
       } catch (error) {
+        alert(" Wrong password or email");
         console.error("Error logging in:", error.message);
       }
     } else {
