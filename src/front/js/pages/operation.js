@@ -10,7 +10,6 @@ import { upscale } from "@cloudinary/url-gen/actions/effect";
 import ImageSlider from "react-image-comparison-slider";
 import "../../styles/operations.css";
 
-// Create a Cloudinary instance and set your cloud name.
 const cld = new Cloudinary({
   cloud: {
     cloudName: "dcoocmssy",
@@ -24,26 +23,68 @@ const Operations = () => {
   const [prompt2, setPrompt2] = useState("");
   const [showPrompt, setShowPrompt] = useState(false);
   const [showPrompts, setShowPrompts] = useState(false);
-  const publicID = "mafl/yetlwb6tdjb830pp276g";
+  const [publicID, setPublicID] = useState(""); // State to store the public ID
+  const [appliedEffect, setAppliedEffect] = useState(null); // State to track applied effect
 
   const originalImageURL = cld.image(publicID).toURL();
-  const transformedImageURL = cld.image(publicID).effect(effect).toURL();
+  const transformedImageURL = appliedEffect
+    ? cld.image(publicID).effect(appliedEffect).toURL()
+    : originalImageURL;
 
-  const handleClick = (button) => {
+  const handleImageUpload = (imageUrl) => {
+    console.log(imageUrl);
+    // Extracting public ID from the uploaded image URL
+    const regex = /\/v\d+\/(.+?)\.[^.]+$/;
+    const match = imageUrl.match(regex);
+    if (match && match.length > 1) {
+      setPublicID(match[1]);
+      setAppliedEffect(null); // Reset applied effect when a new image is uploaded
+    }
+  };
+
+  const handleClick = async (button) => {
     switch (button) {
       case "removeBackground":
         setEffect(backgroundRemoval());
+        setShowPrompt(false);
+        setShowPrompts(false);
         break;
       case "removeObject":
         setEffect(generativeRemove().prompt("text"));
         setShowPrompt(true);
+        setShowPrompts(false);
         break;
       case "replaceObject":
         setEffect(generativeReplace().from("prompt1").to("prompt2"));
+        setShowPrompt(false);
         setShowPrompts(true);
         break;
       case "upscaleImage":
-        setEffect(upscale());
+        if (originalImageURL) {
+          const img = new Image();
+          img.src = originalImageURL;
+          img.onload = function () {
+            const width = this.width;
+            const height = this.height;
+            if (width > 625 || height > 400) {
+              alert(
+                "The uploaded image is too small for upscaling. Minimum dimensions required: 625x400 pixels."
+              );
+            } else {
+              setEffect(upscale());
+              setShowPrompt(false);
+              setShowPrompts(false);
+            }
+          };
+          img.onerror = function () {
+            console.error("Error loading image for upscaling.");
+          };
+        }
+        break;
+      case "applyChanges":
+        setAppliedEffect(effect);
+        setShowPrompt(false);
+        setShowPrompts(false);
         break;
       case "credits":
         // Logic for handling "Available Credits" button click
@@ -67,7 +108,7 @@ const Operations = () => {
     <div className="center">
       <div className="operations-container">
         <div className="command-container">
-          <UploadWidget />
+          <UploadWidget onImageUpload={handleImageUpload} />
           <button onClick={() => handleClick("removeBackground")}>
             Remove Background
           </button>
@@ -79,6 +120,9 @@ const Operations = () => {
           </button>
           <button onClick={() => handleClick("upscaleImage")}>
             Upscale image
+          </button>
+          <button onClick={() => handleClick("applyChanges")}>
+            Apply Changes
           </button>
           <button onClick={() => handleClick("credits")}>
             Available Credits
