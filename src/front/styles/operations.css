@@ -1,0 +1,17 @@
+.operations-container {
+  display: flex;
+  align-items: center;
+}
+
+.command-container {
+  width: 30vw;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column; /* Arrange items in one column */
+}
+
+.image-slider-container {
+  width: 70vw;
+  height: 40vw;
+  margin: auto;
+}
