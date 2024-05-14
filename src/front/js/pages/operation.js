@@ -27,6 +27,7 @@ const Operations = () => {
   const [appliedEffect, setAppliedEffect] = useState(null); // State to track applied effect
 
   const originalImageURL = cld.image(publicID).toURL();
+
   const transformedImageURL = appliedEffect
     ? cld.image(publicID).effect(appliedEffect).toURL()
     : originalImageURL;
