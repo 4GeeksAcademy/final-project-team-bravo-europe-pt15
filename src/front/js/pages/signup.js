@@ -4,6 +4,7 @@ import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
 
 export const Signup = () => {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -12,31 +13,61 @@ export const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation logic
+    // Clear previous errors
     const errors = {};
+    
+    // Email validation
     if (!email.trim()) {
       errors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       errors.email = "Email is invalid";
     }
+
+    // Username validation
+    if (!username.trim()) {
+      errors.username = "Username is required";
+    } else if (username.length < 4) {
+      errors.username = "Username must be at least 4 characters long";
+    }
+
+    // Define specific regular expressions for each requirement
+    const capitalLetterRequirement = /[A-Z]/;
+    const digitRequirement = /\d/;
+    const symbolRequirement = /[@$!%*?&.]/; // Updated to include "."
+    const lengthRequirement = /.{8,}/;
+
+    // Password validation
     if (!password.trim()) {
       errors.password = "Password is required";
-    } else if (password.length < 6) {
-      errors.password = "Password must be at least 6 characters long";
+    } else {
+      if (!capitalLetterRequirement.test(password)) {
+        errors.password = "Password must include at least one capital letter";
+      }
+      if (!digitRequirement.test(password)) {
+        errors.password = "Password must include at least one digit";
+      }
+      if (!symbolRequirement.test(password)) {
+        errors.password = "Password must include at least one special character (@, $, !, %, *, ?, &, .)";
+      }
+      if (!lengthRequirement.test(password)) {
+        errors.password = "Password must be at least 8 characters long";
+      }
     }
+
+    // Confirm password validation
     if (password !== confirmPassword) {
       errors.confirmPassword = "Passwords do not match";
     }
 
+    // If no errors, proceed with form submission
     if (Object.keys(errors).length === 0) {
-      // Form is valid, proceed with submission
       try {
         const response = await fetch(`${process.env.BACKEND_URL}/api/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, username, password }),
         });
 
         if (!response.ok) {
@@ -64,6 +95,23 @@ export const Signup = () => {
           <div className="signup-form">
             <h2>Signup</h2>
             <Form onSubmit={handleSubmit}>
+              <FloatingLabel
+                controlId="username"
+                label="Username"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  isInvalid={!!errors.username}
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.username}
+                </Form.Control.Feedback>
+              </FloatingLabel>
               <FloatingLabel
                 controlId="email"
                 label="Email address"
