@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 // Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
   cloud: {
-    cloudName: "dfxwm93pu",
+    cloudName: "dcoocmssy",
   },
 });
 
