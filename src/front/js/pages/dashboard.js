@@ -19,34 +19,28 @@ const cld = new Cloudinary({
 });
 
 const Dashboard = () => {
-  // State hooks for various application states
-  const [effect, setEffect] = useState(upscale());
-  const [promptText, setPromptText] = useState("");
-  const [prompt1, setPrompt1] = useState("");
-  const [prompt2, setPrompt2] = useState("");
-  const [showPrompt, setShowPrompt] = useState(false);
-  const [showPrompts, setShowPrompts] = useState(false);
-  const [publicID, setPublicID] = useState(""); // Store the public ID of the uploaded image
-  const [appliedEffect, setAppliedEffect] = useState(null); // Track applied effect
-  const navigate = useNavigate();
+  const [effect, setEffect] = useState(null);
+  const [promptText, setPromptText] = useState(""); // Text for single prompt input
+  const [prompt1, setPrompt1] = useState(""); // Text for first prompt input
+  const [prompt2, setPrompt2] = useState(""); // Text for second prompt input
+  const [showPrompt, setShowPrompt] = useState(false); // Flag to show single prompt input
+  const [showPrompts, setShowPrompts] = useState(false); // Flag to show dual prompts input
+  const [publicID, setPublicID] = useState(""); // Cloudinary public ID of the uploaded image
+  const [appliedEffect, setAppliedEffect] = useState(null); // Effect that has been applied
+  const navigate = useNavigate(); // Hook for navigation
 
-  // Check authentication status when the component mounts
+  // Check if user is authenticated when the component mounts
   useEffect(() => {
-    // Check if the user is authenticated
     const isAuthenticated = localStorage.getItem("token") !== null;
-
-    // If the user is not authenticated, redirect to the login page
     if (!isAuthenticated) {
       navigate("/login");
-      alert("You have to be loged in to access this page. Click OK to login");
+      alert("You have to be logged in to access this page. Click OK to login");
     }
   }, [navigate]);
 
-  // Function to handle logout
+  // Handle user logout
   const handleLogout = () => {
-    // Clear the token from localStorage
     localStorage.removeItem("token");
-    // Navigate to the login page
     navigate("/");
   };
 
@@ -56,37 +50,62 @@ const Dashboard = () => {
     ? cld.image(publicID).effect(appliedEffect).toURL()
     : originalImageURL;
 
-  // Handle image upload and extract public ID
+  // Extract public ID from uploaded image URL
   const handleImageUpload = (imageUrl) => {
-    console.log(imageUrl);
     const regex = /\/v\d+\/(.+?)\.[^.]+$/;
     const match = imageUrl.match(regex);
     if (match && match.length > 1) {
       setPublicID(match[1]);
-      setAppliedEffect(null); // Reset applied effect when a new image is uploaded
+      setAppliedEffect(null);
     }
   };
 
+  // Helper function for delay
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  // Retry logic for background removal request
+  const retryRequest = async (url, retries = 5, delayTime = 3000) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const response = await fetch(url);
+        if (response.status !== 423) {
+          return response;
+        }
+        await delay(delayTime);
+      } catch (error) {
+        console.error("Error fetching the URL:", error);
+      }
+    }
+    return null;
+  };
+
   // Handle button clicks for various transformations
-  const handleClick = (button) => {
+  const handleClick = async (button) => {
     switch (button) {
       case "removeBackground":
-        setEffect(backgroundRemoval());
-        setShowPrompt(false);
-        setShowPrompts(false);
+        const url = cld.image(publicID).effect(backgroundRemoval()).toURL();
+        const response = await retryRequest(url);
+        if (response && response.ok) {
+          setEffect(backgroundRemoval());
+          setShowPrompt(false);
+          setShowPrompts(false);
+        } else {
+          alert(
+            "Background removal is still in progress. Please try again later."
+          );
+        }
         break;
       case "removeObject":
-        setEffect(generativeRemove().prompt("text"));
+        setEffect(generativeRemove());
         setShowPrompt(true);
         setShowPrompts(false);
         break;
       case "replaceObject":
-        setEffect(generativeReplace().from("prompt1").to("prompt2"));
+        setEffect(generativeReplace());
         setShowPrompt(false);
         setShowPrompts(true);
         break;
       case "upscaleImage":
-        // Check if the image dimensions are suitable for upscaling
         if (originalImageURL) {
           const img = new Image();
           img.src = originalImageURL;
@@ -109,14 +128,18 @@ const Dashboard = () => {
         }
         break;
       case "applyChanges":
-        if (showPrompt) {
-          setEffect(effect.prompt(promptText));
-        } else if (showPrompts) {
-          setEffect(effect.from(prompt1).to(prompt2));
+        if (effect) {
+          if (showPrompt) {
+            setEffect(effect.prompt(promptText));
+          } else if (showPrompts) {
+            setEffect(effect.from(prompt1).to(prompt2));
+          }
+          setAppliedEffect(effect);
+          setShowPrompt(false);
+          setShowPrompts(false);
+        } else {
+          alert("Please select an effect to apply.");
         }
-        setAppliedEffect(effect);
-        setShowPrompt(false);
-        setShowPrompts(false);
         break;
       case "credits":
         // Logic for handling "Available Credits" button click
@@ -139,7 +162,7 @@ const Dashboard = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "transformed-image.png"; // Set the desired file name
+      link.download = "transformed-image.png";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
