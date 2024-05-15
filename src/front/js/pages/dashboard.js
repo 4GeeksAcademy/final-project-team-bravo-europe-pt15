@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import {
   backgroundRemoval,
@@ -9,6 +9,7 @@ import {
 import UploadWidget from "../component/UploadWidget";
 import ImageSlider from "react-image-comparison-slider";
 import "../../styles/dashboard.css";
+import { useNavigate } from "react-router-dom";
 
 // Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
@@ -27,6 +28,27 @@ const Dashboard = () => {
   const [showPrompts, setShowPrompts] = useState(false);
   const [publicID, setPublicID] = useState(""); // Store the public ID of the uploaded image
   const [appliedEffect, setAppliedEffect] = useState(null); // Track applied effect
+  const navigate = useNavigate();
+
+  // Check authentication status when the component mounts
+  useEffect(() => {
+    // Check if the user is authenticated
+    const isAuthenticated = localStorage.getItem("token") !== null;
+
+    // If the user is not authenticated, redirect to the login page
+    if (!isAuthenticated) {
+      navigate("/login");
+      alert("You have to be loged in to access this page. Click OK to login");
+    }
+  }, [navigate]);
+
+  // Function to handle logout
+  const handleLogout = () => {
+    // Clear the token from localStorage
+    localStorage.removeItem("token");
+    // Navigate to the login page
+    navigate("/");
+  };
 
   // URLs for original and transformed images
   const originalImageURL = cld.image(publicID).toURL();
@@ -192,6 +214,7 @@ const Dashboard = () => {
                 Download Transformed Image
               </button>
             )}
+            <button onClick={handleLogout}>Logout</button>
           </div>
         </div>
         <div className="image-slider-container">
