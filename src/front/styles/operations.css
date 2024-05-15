@@ -1,14 +1,15 @@
 .operations-container {
   display: flex;
   align-items: flex-start;
-  gap: 20px; /* Add some space between command-container and image-slider-container */
+  gap: 20px;
 }
 
 .command-container {
   width: 30vw;
   display: flex;
-  flex-direction: column; /* Arrange items in one column */
-  gap: 20px; /* Add some space between different sections */
+  flex-direction: column;
+  gap: 20px;
+  margin-left: 20px;
 }
 
 .upload-widget {
@@ -19,15 +20,16 @@
   background-color: #fff;
   border-radius: 8px;
 }
+
 .upload-widget p {
   margin-top: 20px;
 }
 
 .operations-buttons {
   display: flex;
-  flex-direction: column; /* Arrange buttons in a column */
-  align-items: center; /* Center-align the buttons */
-  gap: 10px; /* Add space between buttons */
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   border: 1px solid #ccc;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
   padding: 20px;
@@ -36,7 +38,20 @@
 }
 
 .operations-buttons button {
-  width: 70%; /* Set button width to 70% of the available space */
+  width: 70%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.operations-buttons button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .additional-options,
@@ -47,6 +62,25 @@
   background-color: #fff;
   border-radius: 8px;
   text-align: center;
+}
+
+.additional-options button,
+.user-options button {
+  width: 70%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.additional-options button:hover,
+.user-options button:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image-slider-container {
@@ -64,4 +98,33 @@
 .prompt,
 .prompts {
   margin-top: 20px;
+}
+
+.prompt input,
+.prompts input {
+  display: block;
+  width: 80%;
+  margin: 10px auto;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.user-options button {
+  width: 70%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  margin-bottom: 10px; /* Add margin to create space between buttons */
+}
+
+.user-options button:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

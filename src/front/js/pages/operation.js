@@ -83,6 +83,11 @@ const Operations = () => {
         }
         break;
       case "applyChanges":
+        if (showPrompt) {
+          setEffect(effect.prompt(promptText));
+        } else if (showPrompts) {
+          setEffect(effect.from(prompt1).to(prompt2));
+        }
         setAppliedEffect(effect);
         setShowPrompt(false);
         setShowPrompts(false);
@@ -95,14 +100,27 @@ const Operations = () => {
     }
   };
 
-  const handlePromptSubmit = () => {
-    setEffect(effect.prompt(promptText));
-    setShowPrompt(false);
-  };
+  const handleDownloadImage = async () => {
+    if (!transformedImageURL) {
+      alert("No transformed image available for download.");
+      return;
+    }
 
-  const handlePromptsSubmit = () => {
-    setEffect(effect.from(prompt1).to(prompt2));
-    setShowPrompts(false);
+    try {
+      const response = await fetch(transformedImageURL);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "transformed-image.png"; // Set the desired file name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+      alert("Failed to download the image. Please try again.");
+    }
   };
 
   return (
@@ -128,6 +146,32 @@ const Operations = () => {
             </button>
           </div>
           <div className="additional-options">
+            {showPrompt && (
+              <div className="prompt">
+                <input
+                  type="text"
+                  value={promptText}
+                  onChange={(e) => setPromptText(e.target.value)}
+                  placeholder="Object to remove from image"
+                />
+              </div>
+            )}
+            {showPrompts && (
+              <div className="prompts">
+                <input
+                  type="text"
+                  value={prompt1}
+                  onChange={(e) => setPrompt1(e.target.value)}
+                  placeholder="Object to remove"
+                />
+                <input
+                  type="text"
+                  value={prompt2}
+                  onChange={(e) => setPrompt2(e.target.value)}
+                  placeholder="Object to replace removed object"
+                />
+              </div>
+            )}
             <button onClick={() => handleClick("applyChanges")}>
               Apply Changes
             </button>
@@ -136,6 +180,11 @@ const Operations = () => {
             <button onClick={() => handleClick("credits")}>
               Available Credits
             </button>
+            {appliedEffect && (
+              <button onClick={handleDownloadImage}>
+                Download Transformed Image
+              </button>
+            )}
           </div>
         </div>
         <div className="image-slider-container">
@@ -147,31 +196,6 @@ const Operations = () => {
           />
         </div>
       </div>
-      {showPrompt && (
-        <div className="prompt">
-          <input
-            type="text"
-            value={promptText}
-            onChange={(e) => setPromptText(e.target.value)}
-          />
-          <button onClick={handlePromptSubmit}>Submit</button>
-        </div>
-      )}
-      {showPrompts && (
-        <div className="prompts">
-          <input
-            type="text"
-            value={prompt1}
-            onChange={(e) => setPrompt1(e.target.value)}
-          />
-          <input
-            type="text"
-            value={prompt2}
-            onChange={(e) => setPrompt2(e.target.value)}
-          />
-          <button onClick={handlePromptsSubmit}>Submit</button>
-        </div>
-      )}
     </div>
   );
 };
