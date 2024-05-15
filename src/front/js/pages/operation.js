@@ -189,10 +189,30 @@ const Operations = () => {
         </div>
         <div className="image-slider-container">
           <ImageSlider
-            image1={transformedImageURL}
-            image2={originalImageURL}
-            leftLabelText="Original image"
-            rightLabelText="Transformed image"
+            image1={originalImageURL}
+            image2={transformedImageURL}
+            leftLabelText="Transformed image"
+            rightLabelText="Original image"
+            showPlaceholder={true}
+            customPlaceholder={
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "top",
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "#f0f0f0",
+                  border: "2px dashed #ccc",
+                  color: "#333",
+                  fontSize: "1.2em",
+                  textAlign: "center",
+                  padding: "20px",
+                }}
+              >
+                Please upload your image to see possible transformations
+              </div>
+            }
           />
         </div>
       </div>
