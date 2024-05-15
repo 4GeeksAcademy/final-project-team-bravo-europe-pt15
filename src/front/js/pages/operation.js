@@ -151,6 +151,7 @@ const Operations = () => {
             </button>
           </div>
           <div className="additional-options">
+            <h4>Additional options</h4>
             {showPrompt && (
               <div className="prompt">
                 <input
@@ -182,6 +183,7 @@ const Operations = () => {
             </button>
           </div>
           <div className="user-options">
+          <h4>User options</h4>
             <button onClick={() => handleClick("credits")}>
               Available Credits
             </button>
