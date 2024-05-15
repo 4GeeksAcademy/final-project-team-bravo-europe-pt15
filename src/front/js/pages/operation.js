@@ -4,12 +4,13 @@ import {
   backgroundRemoval,
   generativeRemove,
   generativeReplace,
+  upscale,
 } from "@cloudinary/url-gen/actions/effect";
 import UploadWidget from "../component/UploadWidget";
-import { upscale } from "@cloudinary/url-gen/actions/effect";
 import ImageSlider from "react-image-comparison-slider";
 import "../../styles/operations.css";
 
+// Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
   cloud: {
     cloudName: "dcoocmssy",
@@ -17,24 +18,25 @@ const cld = new Cloudinary({
 });
 
 const Operations = () => {
+  // State hooks for various application states
   const [effect, setEffect] = useState(upscale());
   const [promptText, setPromptText] = useState("");
   const [prompt1, setPrompt1] = useState("");
   const [prompt2, setPrompt2] = useState("");
   const [showPrompt, setShowPrompt] = useState(false);
   const [showPrompts, setShowPrompts] = useState(false);
-  const [publicID, setPublicID] = useState(""); // State to store the public ID
-  const [appliedEffect, setAppliedEffect] = useState(null); // State to track applied effect
+  const [publicID, setPublicID] = useState(""); // Store the public ID of the uploaded image
+  const [appliedEffect, setAppliedEffect] = useState(null); // Track applied effect
 
+  // URLs for original and transformed images
   const originalImageURL = cld.image(publicID).toURL();
-
   const transformedImageURL = appliedEffect
     ? cld.image(publicID).effect(appliedEffect).toURL()
     : originalImageURL;
 
+  // Handle image upload and extract public ID
   const handleImageUpload = (imageUrl) => {
     console.log(imageUrl);
-    // Extracting public ID from the uploaded image URL
     const regex = /\/v\d+\/(.+?)\.[^.]+$/;
     const match = imageUrl.match(regex);
     if (match && match.length > 1) {
@@ -43,7 +45,8 @@ const Operations = () => {
     }
   };
 
-  const handleClick = async (button) => {
+  // Handle button clicks for various transformations
+  const handleClick = (button) => {
     switch (button) {
       case "removeBackground":
         setEffect(backgroundRemoval());
@@ -61,6 +64,7 @@ const Operations = () => {
         setShowPrompts(true);
         break;
       case "upscaleImage":
+        // Check if the image dimensions are suitable for upscaling
         if (originalImageURL) {
           const img = new Image();
           img.src = originalImageURL;
@@ -69,7 +73,7 @@ const Operations = () => {
             const height = this.height;
             if (width > 625 || height > 400) {
               alert(
-                "The uploaded image is too small for upscaling. Minimum dimensions required: 625x400 pixels."
+                "The uploaded image is too big for upscaling. Maximum dimensions required: 625x400 pixels."
               );
             } else {
               setEffect(upscale());
@@ -100,6 +104,7 @@ const Operations = () => {
     }
   };
 
+  // Handle image download
   const handleDownloadImage = async () => {
     if (!transformedImageURL) {
       alert("No transformed image available for download.");
