@@ -1,17 +1,67 @@
 .operations-container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  gap: 20px; /* Add some space between command-container and image-slider-container */
 }
 
 .command-container {
   width: 30vw;
-  margin-right: 20px;
   display: flex;
   flex-direction: column; /* Arrange items in one column */
+  gap: 20px; /* Add some space between different sections */
+}
+
+.upload-widget {
+  text-align: center;
+  border: 1px solid #ccc;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+.upload-widget p {
+  margin-top: 20px;
+}
+
+.operations-buttons {
+  display: flex;
+  flex-direction: column; /* Arrange buttons in a column */
+  align-items: center; /* Center-align the buttons */
+  gap: 10px; /* Add space between buttons */
+  border: 1px solid #ccc;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.operations-buttons button {
+  width: 70%; /* Set button width to 70% of the available space */
+}
+
+.additional-options,
+.user-options {
+  border: 1px solid #ccc;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
 }
 
 .image-slider-container {
   width: 70vw;
   height: 40vw;
   margin: auto;
+  margin-right: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.prompt,
+.prompts {
+  margin-top: 20px;
 }

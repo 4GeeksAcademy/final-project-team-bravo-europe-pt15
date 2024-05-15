@@ -109,25 +109,34 @@ const Operations = () => {
     <div className="center">
       <div className="operations-container">
         <div className="command-container">
-          <UploadWidget onImageUpload={handleImageUpload} />
-          <button onClick={() => handleClick("removeBackground")}>
-            Remove Background
-          </button>
-          <button onClick={() => handleClick("removeObject")}>
-            Remove object from image
-          </button>
-          <button onClick={() => handleClick("replaceObject")}>
-            Replace object in image
-          </button>
-          <button onClick={() => handleClick("upscaleImage")}>
-            Upscale image
-          </button>
-          <button onClick={() => handleClick("applyChanges")}>
-            Apply Changes
-          </button>
-          <button onClick={() => handleClick("credits")}>
-            Available Credits
-          </button>
+          <div className="upload-widget">
+            <UploadWidget onImageUpload={handleImageUpload} />
+            <p>Click here to upload image for transformation</p>
+          </div>
+          <div className="operations-buttons">
+            <button onClick={() => handleClick("removeBackground")}>
+              Remove Background
+            </button>
+            <button onClick={() => handleClick("removeObject")}>
+              Remove object from image
+            </button>
+            <button onClick={() => handleClick("replaceObject")}>
+              Replace object in image
+            </button>
+            <button onClick={() => handleClick("upscaleImage")}>
+              Upscale image
+            </button>
+          </div>
+          <div className="additional-options">
+            <button onClick={() => handleClick("applyChanges")}>
+              Apply Changes
+            </button>
+          </div>
+          <div className="user-options">
+            <button onClick={() => handleClick("credits")}>
+              Available Credits
+            </button>
+          </div>
         </div>
         <div className="image-slider-container">
           <ImageSlider
