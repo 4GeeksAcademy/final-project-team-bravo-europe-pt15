@@ -15,7 +15,7 @@ export const Signup = () => {
 
     // Clear previous errors
     const errors = {};
-    
+
     // Email validation
     if (!email.trim()) {
       errors.email = "Email is required";
@@ -47,7 +47,8 @@ export const Signup = () => {
         errors.password = "Password must include at least one digit";
       }
       if (!symbolRequirement.test(password)) {
-        errors.password = "Password must include at least one special character (@, $, !, %, *, ?, &, .)";
+        errors.password =
+          "Password must include at least one special character (@, $, !, %, *, ?, &, .)";
       }
       if (!lengthRequirement.test(password)) {
         errors.password = "Password must be at least 8 characters long";
@@ -158,6 +159,10 @@ export const Signup = () => {
                   {errors.confirmPassword}
                 </Form.Control.Feedback>
               </FloatingLabel>
+              <p>
+                Password must be at least 8 characters long, include one capital
+                letter, one digit, and one special character
+              </p>
               <Button variant="primary" type="submit" className="mt-3">
                 Signup
               </Button>

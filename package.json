@@ -73,13 +73,9 @@
 		]
 	},
 	"dependencies": {
-<<<<<<< HEAD
-		"bootstrap": "^5.3.3",
-=======
 		"@cloudinary/react": "^1.13.0",
 		"@cloudinary/url-gen": "^1.19.0",
-		"cloudinary-react": "^1.8.1",
->>>>>>> 54bc5e3131c45742aa1b2b16d33f3d1c9d2dbde7
+		"bootstrap": "^5.3.3",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
 		"react-bootstrap": "^2.10.2",
