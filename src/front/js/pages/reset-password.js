@@ -5,8 +5,20 @@ import "../../styles/reset-password.css";
 export const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); 
+  const [successMessage, setSuccessMessage] = useState("");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const validatePassword = (password) => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password); 
+    const hasNumbers = /[0-9]/.test(password);
+    const hasSymbol = /\W/.test(password);
+    const hasEightCharacters = password.length >= 8;
+
+    return hasUpperCase && hasLowerCase && hasNumbers && hasSymbol && hasEightCharacters;
+  };
 
   useEffect(() => {
     const checkTokenValidity = async () => {
@@ -47,7 +59,12 @@ export const ResetPassword = () => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setErrorMessage("Password must be at least 8 characters long, include one capital letter, one digit, and one special character");
       return;
     }
 
@@ -69,10 +86,11 @@ export const ResetPassword = () => {
       }
 
       const data = await response.json();
-      alert(data.msg);
+      setSuccessMessage(data.msg);
       navigate("/login");
     } catch (error) {
       console.error("Error resetting password:", error);
+      setErrorMessage("Error resetting password");
     }
   };
 
@@ -81,6 +99,8 @@ export const ResetPassword = () => {
       <div className="card w-50">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            {successMessage && <p className="success-message">{successMessage}</p>}
             <div className="mb-3">
               <label htmlFor="newPassword" className="form-label">
                 New Password:
