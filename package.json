@@ -73,11 +73,22 @@
 		]
 	},
 	"dependencies": {
+<<<<<<< HEAD
+		"bootstrap": "^5.3.3",
+=======
+		"@cloudinary/react": "^1.13.0",
+		"@cloudinary/url-gen": "^1.19.0",
+		"cloudinary-react": "^1.8.1",
+>>>>>>> 54bc5e3131c45742aa1b2b16d33f3d1c9d2dbde7
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
 		"react-bootstrap": "^2.10.2",
+		"react-compare-slider": "^3.1.0",
 		"react-dom": "^16.8.4",
+		"react-image-comparison-slider": "^1.8.4",
 		"react-polyfills": "0.0.1",
-		"react-router-dom": "^6.3.0"
+		"react-router-dom": "^6.3.0",
+		"react-slick": "^0.30.2",
+		"slick-carousel": "^1.8.1"
 	}
 }
