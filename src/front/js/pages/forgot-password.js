@@ -9,7 +9,7 @@ export const ForgotPassword = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await fetch(`${process.env.BACKEND_URL}api/forgot-password`, {
+    await fetch(`${process.env.BACKEND_URL}/api/forgot-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

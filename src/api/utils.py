@@ -49,7 +49,7 @@ def generate_sitemap(app):
 def send_password_reset_email(email, token):
     try:
         # Construct the password reset URL with the frontend URL and token
-        frontend_url = "https://glowing-space-meme-rw9rx57pjrh5q6j-3000.app.github.dev"
+        frontend_url = "https://opulent-space-giggle-6qgw6w9g7qpfxx64-3000.app.github.dev"
         reset_url = f"{frontend_url}/reset-password?token={token}"
         
         msg = Message(
