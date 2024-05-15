@@ -37,6 +37,7 @@ def create_login_token():
 def register_user():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+    username = request.json.get("username", None)  # Get the username from the request
 
     if email is None:
         return jsonify({"msg": "Email can't be empty"}), 400
@@ -53,14 +54,14 @@ def register_user():
     user = User(
         email=email,
         password=password,
-        is_active=True
+        is_active=True,
+        username=username  # Set the username field
     )
 
     db.session.add(user)
     db.session.commit()
 
     return jsonify({"msg": "New User created"}), 201
-
 
 @api.route('/user/<int:user_id>', methods=['DELETE'])
 @jwt_required()  # Ensure that only authenticated users can delete a user
