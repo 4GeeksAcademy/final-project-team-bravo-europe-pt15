@@ -97,6 +97,14 @@ def validate():
     
     return jsonify({"id": user.id, "email": user.email }), 200
 
+#Fetch username from database User
+@api.route('/user', methods=['GET'])
+@jwt_required()
+def get_user():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    return jsonify(user.serialize()), 200
+
 
 #Endpoints for forgot and reset password
 

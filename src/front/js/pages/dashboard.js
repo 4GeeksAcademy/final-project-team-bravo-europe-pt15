@@ -27,6 +27,7 @@ const Dashboard = () => {
   const [showPrompts, setShowPrompts] = useState(false); // Flag to show dual prompts input
   const [publicID, setPublicID] = useState(""); // Cloudinary public ID of the uploaded image
   const [appliedEffect, setAppliedEffect] = useState(null); // Effect that has been applied
+  const [username, setUsername] = useState(""); // State to hold the username
   const navigate = useNavigate(); // Hook for navigation
 
   // Check if user is authenticated when the component mounts
@@ -35,6 +36,20 @@ const Dashboard = () => {
     if (!isAuthenticated) {
       navigate("/login");
       alert("You have to be logged in to access this page. Click OK to login");
+    } else {
+      // Fetch user details
+      fetch(`${process.env.BACKEND_URL}/api/user`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setUsername(data.username); // Update username state
+        })
+        .catch((error) => {
+          console.error("Error fetching user details:", error);
+        });
     }
   }, [navigate]);
 
@@ -228,7 +243,8 @@ const Dashboard = () => {
             </button>
           </div>
           <div className="user-options">
-            <h4>User options</h4>
+            <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
+
             <button onClick={() => handleClick("credits")}>
               Available Credits
             </button>
