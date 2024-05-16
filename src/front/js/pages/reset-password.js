@@ -10,14 +10,23 @@ export const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const validatePassword = (password) => {
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password); 
-    const hasNumbers = /[0-9]/.test(password);
-    const hasSymbol = /\W/.test(password);
-    const hasEightCharacters = password.length >= 8;
+  // Add states for each condition
+  const [hasUpperCase, setHasUpperCase] = useState(false);
+  const [hasLowerCase, setHasLowerCase] = useState(false);
+  const [hasNumbers, setHasNumbers] = useState(false);
+  const [hasSymbol, setHasSymbol] = useState(false);
+  const [hasEightCharacters, setHasEightCharacters] = useState(false);
 
-    return hasUpperCase && hasLowerCase && hasNumbers && hasSymbol && hasEightCharacters;
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    setPassword(password);
+
+    // Check each condition and update the state
+    setHasUpperCase(/[A-Z]/.test(password));
+    setHasLowerCase(/[a-z]/.test(password));
+    setHasNumbers(/[0-9]/.test(password));
+    setHasSymbol(/\W/.test(password));
+    setHasEightCharacters(password.length >= 8);
   };
 
   useEffect(() => {
@@ -59,12 +68,12 @@ export const ResetPassword = () => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match");
+      setErrorMessage(<p className="error-message">Passwords do not match</p>);
       return;
     }
 
-    if (!validatePassword(password)) {
-      setErrorMessage("Password must be at least 8 characters long, include one capital letter, one digit, and one special character");
+    if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSymbol || !hasEightCharacters) {
+      setErrorMessage(<p className="error-message">Password must be at least 8 characters long, include one capital letter, one digit, and one special character</p>);
       return;
     }
 
@@ -110,9 +119,18 @@ export const ResetPassword = () => {
                 id="newPassword"
                 className="form-control"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange} // Use the new handler
                 required
               />
+              {/* Display the status of each condition */}
+              <div className="password-conditions">
+
+                <p className={hasUpperCase ? "condition-met" : "condition-unmet"}>Has uppercase</p>
+                <p className={hasLowerCase ? "condition-met" : "condition-unmet"}>Has lowercase</p>
+                <p className={hasNumbers ? "condition-met" : "condition-unmet"}>Has number</p>
+                <p className={hasSymbol ? "condition-met" : "condition-unmet"}>Has symbol</p>
+                <p className={hasEightCharacters ? "condition-met" : "condition-unmet"}>Has at least 8 characters</p>
+              </div>
             </div>
             <div className="mb-3">
               <label htmlFor="confirmPassword" className="form-label">
@@ -135,4 +153,4 @@ export const ResetPassword = () => {
       </div>
     </div>
   );
-};
+}
