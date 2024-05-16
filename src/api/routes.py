@@ -190,6 +190,26 @@ def reset_password(token):
 
 
 
+# Endpoints for credits
+
+@api.route('/user/credits', methods=['GET'])
+@jwt_required()
+def get_user_credits():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    return jsonify({"credits": user.credits}), 200
+
+@api.route('/user/credits', methods=['PUT'])
+@jwt_required()
+def update_user_credits():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    data = request.get_json()
+    user.credits = data.get('credits', user.credits)
+    db.session.commit()
+    return jsonify({"credits": user.credits}), 200
+
+
 # Test endpoint
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():

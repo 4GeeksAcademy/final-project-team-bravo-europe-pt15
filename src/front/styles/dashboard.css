@@ -128,3 +128,12 @@
   background-color: #218838;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.badge {
+  background-color: #f0ad4e;
+  border-radius: 50%;
+  padding: 5px 10px;
+  color: black;
+  margin-left: 5px;
+  font-weight: bold;
+}

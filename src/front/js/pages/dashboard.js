@@ -28,6 +28,7 @@ const Dashboard = () => {
   const [publicID, setPublicID] = useState(""); // Cloudinary public ID of the uploaded image
   const [appliedEffect, setAppliedEffect] = useState(null); // Effect that has been applied
   const [username, setUsername] = useState(""); // State to hold the username
+  const [credits, setCredits] = useState(0); // State to hold user credits
   const navigate = useNavigate(); // Hook for navigation
 
   // Check if user is authenticated when the component mounts
@@ -46,6 +47,7 @@ const Dashboard = () => {
         .then((response) => response.json())
         .then((data) => {
           setUsername(data.username); // Update username state
+          setCredits(data.credits); // Update credits state
         })
         .catch((error) => {
           console.error("Error fetching user details:", error);
@@ -142,25 +144,46 @@ const Dashboard = () => {
           };
         }
         break;
-      case "applyChanges":
-        if (effect) {
-          if (showPrompt) {
-            setEffect(effect.prompt(promptText));
-          } else if (showPrompts) {
-            setEffect(effect.from(prompt1).to(prompt2));
+        case "applyChanges":
+          if (effect) {
+            if (credits > 0) {
+              if (showPrompt) {
+                setEffect(effect.prompt(promptText));
+              } else if (showPrompts) {
+                setEffect(effect.from(prompt1).to(prompt2));
+              }
+              setAppliedEffect(effect);
+              setShowPrompt(false);
+              setShowPrompts(false);
+    
+              // Deduct one credit
+              const newCredits = credits - 1;
+              setCredits(newCredits);
+    
+              // Update credits in the backend
+              fetch(`${process.env.BACKEND_URL}/api/user/credits`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${localStorage.getItem("token")}`
+                },
+                body: JSON.stringify({ credits: newCredits })
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  setCredits(data.credits); // Update credits state
+                })
+                .catch((error) => {
+                  console.error("Error updating user credits:", error);
+                });
+            } else {
+              alert("You have no credits left. Please fill up your credits.");
+            }
+          } else {
+            alert("Please select an effect to apply.");
           }
-          setAppliedEffect(effect);
-          setShowPrompt(false);
-          setShowPrompts(false);
-        } else {
-          alert("Please select an effect to apply.");
-        }
-        break;
-      case "credits":
-        // Logic for handling "Available Credits" button click
-        break;
-      default:
-        break;
+          break;
+    
     }
   };
 
@@ -246,7 +269,7 @@ const Dashboard = () => {
             <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
 
             <button onClick={() => handleClick("credits")}>
-              Available Credits
+              Available Credits <span className="badge">{credits}</span>
             </button>
             {appliedEffect && (
               <button onClick={handleDownloadImage}>
