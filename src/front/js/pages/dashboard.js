@@ -108,7 +108,7 @@ const Dashboard = () => {
           setShowPrompts(false);
         } else {
           alert(
-            "Background removal is still in progress. Please try again later."
+            "Background removal is experiencing issues. Please try again later."
           );
         }
         break;
