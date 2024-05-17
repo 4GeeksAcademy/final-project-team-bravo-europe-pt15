@@ -1,4 +1,9 @@
+import os
 from flask import jsonify, url_for
+from flask_mail import Message, Mail
+from flask import url_for
+
+mail = Mail()
 
 class APIException(Exception):
     status_code = 400
@@ -39,3 +44,23 @@ def generate_sitemap(app):
         <p>Start working on your project by following the <a href="https://start.4geeksacademy.com/starters/full-stack" target="_blank">Quick Start</a></p>
         <p>Remember to specify a real endpoint path like: </p>
         <ul style="text-align: left;">"""+links_html+"</ul></div>"
+
+
+def send_password_reset_email(email, token):
+    try:
+        # Construct the password reset URL with the frontend URL and token
+        frontend_url = os.getenv("FRONTEND_URL")
+        reset_url = f"{frontend_url}/reset-password?token={token}"
+        
+        msg = Message(
+            subject='Password Reset Request', 
+            sender=os.getenv("my_email"),
+            recipients=[email]
+        )
+        msg.body = f"You got this email because someone requested a password reset for {email}. Please use the following link to reset your password: {reset_url}"
+        mail.send(msg)
+        return "Message sent!"
+    except Exception as e:
+        error_message = f"Failed to send password reset email: {str(e)}"
+        print(error_message)  # Log the error for debugging
+        return False, error_message  # Email sending failed, return error message
