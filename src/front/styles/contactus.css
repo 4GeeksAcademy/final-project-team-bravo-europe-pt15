@@ -1,0 +1,121 @@
+.contact-container {
+  margin-top: 100px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.box2 {
+  min-height: 516px;
+  width: 503px;
+  background-color: rgba(24, 24, 28, 0.85);
+  padding: 20px; /* Add padding for internal spacing */
+  border-radius: 10px; /* Optional: Add border-radius for rounded corners */
+}
+
+.box2 .get-in-touch {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Add gap between elements */
+}
+
+.box2 .frame,
+.box2 .div-wrapper,
+.box2 .div {
+  align-items: flex-start;
+  background-color: #18181c;
+  border-radius: 5px;
+  display: flex;
+  gap: 10px;
+  padding: 12px 28px;
+  width: 100%; /* Make width 100% */
+  box-sizing: border-box; /* Ensure padding doesn't overflow the container */
+}
+
+.box2 .frame {
+  margin-top: 20px; /* Add margin-top for spacing */
+}
+
+.box2 .div-wrapper {
+  margin-top: 10px; /* Add margin-top for spacing */
+}
+
+.box2 .div {
+  margin-top: 10px; /* Add margin-top for spacing */
+  height: auto; /* Remove fixed height */
+}
+
+.box2 .text-wrapper-2 {
+  color: #ffffff;
+  font-family: "Poppins-SemiBold", Helvetica;
+  font-size: 48px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px; /* Add margin-bottom for spacing */
+}
+
+.box2 .p {
+  color: #9e9e9e;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center; /* Center align text */
+  margin: 20px 0; /* Add margin for spacing */
+}
+
+.box2 .submit-btn {
+  align-self: flex-end; /* Align the button to the right */
+  background: linear-gradient(
+    180deg,
+    rgb(148.2, 179.82, 248.04) 2%,
+    rgb(144.46, 154.12, 241.08) 14.5%,
+    rgb(143.53, 131.56, 217.07) 30.5%,
+    rgb(64.64, 0, 248.63) 87%
+  );
+  border-radius: 5px;
+  padding: 12px 28px;
+  border: none;
+  margin-top: 20px; /* Add margin-top for spacing */
+}
+
+.input-field {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 20px;
+  padding: 10px; /* Adjust padding as needed */
+  width: 100%; /* Make the input field width 100% */
+  outline: none; /* Remove outline on focus */
+}
+
+.submit-btn {
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 20px;
+  padding: 10px 20px; /* Adjust padding as needed */
+  transition: background-color 0.3s ease; /* Add transition effect */
+}
+
+.submit-btn:hover {
+  background-color: #ffffff; /* Change background color on hover */
+  color: #18181c; /* Change text color on hover */
+}
+
+.p {
+  text-align: left;
+  padding-left: 25px;
+}
