@@ -1,0 +1,561 @@
+@import url('https://fonts.googleapis.com/css2?family=Poller+One&display=swap');
+
+.pricing {
+    margin-top: 150px;
+    margin-bottom: 150px;
+  background-color: #000000;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.pricing .div {
+  background-color: #9E9E9E;
+  border-radius: 20px;
+  height: 798px;
+  position: relative;
+  width: 1440px;
+}
+
+.pricing .text-wrapper {
+  color: #ffffff;
+  font-family: "Poppins-SemiBold", Helvetica;
+  font-size: 48px;
+  font-weight: 600;
+  left: 165px;
+  letter-spacing: 0;
+  line-height: 80px;
+  position: absolute;
+  text-align: center;
+  top: 54px;
+  white-space: nowrap;
+}
+
+.pricing .overlap {
+  height: 556px;
+  left: 165px;
+  position: absolute;
+  top: 138px;
+  width: 356px;
+}
+
+.pricing .group {
+  height: 533px;
+  left: 0;
+  position: absolute;
+  top: 23px;
+  width: 356px;
+}
+
+.pricing .overlap-group {
+  height: 533px;
+  position: relative;
+  width: 350px;
+}
+
+.pricing .rectangle {
+  background-color: #18181c;
+  border-radius: 20px;
+  height: 495px;
+  left: 0;
+  position: absolute;
+  top: 38px;
+  width: 350px;
+}
+
+.pricing .text-wrapper-2 {
+  color: #ffffff;
+  font-family: "Poppins-SemiBold", Helvetica;
+  font-size: 40px;
+  font-weight: 600;
+  left: 32px;
+  letter-spacing: 0;
+  line-height: 64px;
+  position: absolute;
+  top: 453px;
+  white-space: nowrap;
+}
+
+.pricing .text-wrapper-3 {
+  color: #ffffff;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 18px;
+  font-weight: 400;
+  left: 110px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 82px;
+  white-space: nowrap;
+}
+
+.pricing .text-wrapper-4 {
+  color: #9e9e9e;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  left: 117px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 478px;
+  white-space: nowrap;
+}
+
+.pricing .group-2 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 166px;
+  width: 149px;
+}
+
+.pricing .text-wrapper-5 {
+  color: #ffffff;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  left: 45px;
+  letter-spacing: 0;
+  line-height: 20px;
+  position: absolute;
+  top: 4px;
+  white-space: nowrap;
+}
+
+.pricing .div-2 {
+  background-color: #222228;
+  border-radius: 10px;
+  height: 29px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 29px;
+}
+
+.pricing .overlap-group-wrapper {
+  height: 7px;
+  left: 13px;
+  position: relative;
+  top: 11px;
+  transform: rotate(45deg);
+  width: 5px;
+}
+
+.pricing .overlap-group-2 {
+  height: 7px;
+  position: relative;
+}
+
+.pricing .rectangle-2 {
+  background-color: #ffffff;
+  border-radius: 4px;
+  height: 7px;
+  left: 3px;
+  position: absolute;
+  top: 0;
+  width: 2px;
+}
+
+.pricing .rectangle-3 {
+  background-color: #ffffff;
+  border-radius: 4px;
+  height: 5px;
+  left: 1px;
+  position: absolute;
+  top: 4px;
+  transform: rotate(90deg);
+  width: 2px;
+}
+
+.pricing .group-3 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 266px;
+  width: 136px;
+}
+
+.pricing .group-4 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 216px;
+  width: 126px;
+}
+
+.pricing .overlap-wrapper {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 316px;
+  width: 167px;
+}
+
+.pricing .overlap-2 {
+  height: 29px;
+  position: relative;
+  width: 169px;
+}
+
+.pricing .group-5 {
+  height: 29px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 169px;
+}
+
+.pricing .text-wrapper-6 {
+  color: #9e9e9e;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  left: 45px;
+  letter-spacing: 0;
+  line-height: 20px;
+  position: absolute;
+  top: 4px;
+  white-space: nowrap;
+}
+
+.pricing .div-wrapper {
+  height: 7px;
+  left: 13px;
+  position: absolute;
+  top: 11px;
+  transform: rotate(45deg);
+  width: 5px;
+}
+
+.pricing .rectangle-4 {
+  background-color: #9e9e9e;
+  border-radius: 4px;
+  height: 7px;
+  left: 3px;
+  position: absolute;
+  top: 0;
+  width: 2px;
+}
+
+.pricing .rectangle-5 {
+  background-color: #9e9e9e;
+  border-radius: 4px;
+  height: 5px;
+  left: 1px;
+  position: absolute;
+  top: 4px;
+  transform: rotate(90deg);
+  width: 2px;
+}
+
+.pricing .group-6 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 366px;
+  width: 143px;
+}
+
+.pricing .frame {
+  align-items: flex-start;
+  background: linear-gradient(
+    180deg,
+    rgb(148.2, 179.82, 248.04) 2%,
+    rgb(144.46, 154.12, 241.08) 14.5%,
+    rgb(143.53, 131.56, 217.07) 30.5%,
+    rgb(64.64, 0, 248.63) 87%
+  );
+  border-radius: 5px;
+  display: inline-flex;
+  gap: 10px;
+  left: 180px;
+  padding: 12px 28px;
+  position: absolute;
+  top: 463px;
+}
+
+.pricing .text-wrapper-7 {
+  color: #ffffff;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pricing .line {
+  height: 1px;
+  left: 32px;
+  object-fit: cover;
+  position: absolute;
+  top: 133px;
+  width: 287px;
+}
+
+.pricing .img {
+  height: 1px;
+  left: 32px;
+  object-fit: cover;
+  position: absolute;
+  top: 442px;
+  width: 287px;
+}
+
+.pricing .ellipse {
+  background-color: #222228;
+  border-radius: 38px;
+  height: 76px;
+  left: 137px;
+  position: absolute;
+  top: 0;
+  width: 76px;
+}
+
+.pricing .group-7 {
+  height: 137px;
+  left: 121px;
+  position: absolute;
+  top: 0;
+  width: 121px;
+}
+
+.pricing .overlap-3 {
+  height: 557px;
+  left: 545px;
+  position: absolute;
+  top: 137px;
+  width: 356px;
+}
+
+.pricing .group-8 {
+  height: 533px;
+  left: 0;
+  position: absolute;
+  top: 24px;
+  width: 356px;
+}
+
+.pricing .text-wrapper-8 {
+  color: #ffffff;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 18px;
+  font-weight: 400;
+  left: 101px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 82px;
+  white-space: nowrap;
+}
+
+.pricing .text-wrapper-9 {
+  color: #9e9e9e;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  left: 110px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 478px;
+  white-space: nowrap;
+}
+
+.pricing .group-9 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 166px;
+  width: 152px;
+}
+
+.pricing .group-10 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 266px;
+  width: 162px;
+}
+
+.pricing .group-11 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 216px;
+  width: 162px;
+}
+
+.pricing .group-12 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 316px;
+  width: 171px;
+}
+
+.pricing .overlap-4 {
+  height: 29px;
+  position: relative;
+  width: 173px;
+}
+
+.pricing .group-13 {
+  height: 29px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 173px;
+}
+
+.pricing .group-14 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 366px;
+  width: 152px;
+}
+
+.pricing .group-15 {
+  height: 138px;
+  left: 114px;
+  position: absolute;
+  top: 0;
+  width: 137px;
+}
+
+.pricing .overlap-5 {
+  height: 555px;
+  left: 925px;
+  position: absolute;
+  top: 139px;
+  width: 356px;
+}
+
+.pricing .group-16 {
+  height: 533px;
+  left: 0;
+  position: absolute;
+  top: 22px;
+  width: 356px;
+}
+
+.pricing .text-wrapper-10 {
+  color: #ffffff;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 18px;
+  font-weight: 400;
+  left: 93px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 82px;
+  white-space: nowrap;
+}
+
+.pricing .text-wrapper-11 {
+  color: #9e9e9e;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  left: 125px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 478px;
+  white-space: nowrap;
+}
+
+.pricing .group-17 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 166px;
+  width: 169px;
+}
+
+.pricing .group-18 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 266px;
+  width: 179px;
+}
+
+.pricing .group-19 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 216px;
+  width: 145px;
+}
+
+.pricing .group-20 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 316px;
+  width: 150px;
+}
+
+.pricing .overlap-6 {
+  height: 29px;
+  position: relative;
+  width: 152px;
+}
+
+.pricing .group-21 {
+  height: 29px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 152px;
+}
+
+.pricing .group-22 {
+  height: 29px;
+  left: 32px;
+  position: absolute;
+  top: 366px;
+  width: 195px;
+}
+
+.pricing .group-23 {
+  height: 135px;
+  left: 117px;
+  position: absolute;
+  top: 0;
+  width: 130px;
+}
+
+.pricing .text-wrapper-12 {
+  color: #ffffff;
+  font-family: 'Poller One', sans-serif; 
+    font-size: 40px;
+  font-weight: 400;
+  left: 1139px;
+  letter-spacing: 0;
+  line-height: 20px;
+  position: absolute;
+  top: 84px;
+  white-space: nowrap;
+}
+
+
+
+
+
+
+
