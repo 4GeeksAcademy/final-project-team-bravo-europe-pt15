@@ -1,0 +1,34 @@
+.left-navbar {
+    background-color: #333; /* Navbar background color */
+    height: 100vh; /* Full height of the viewport */
+    width: 200px; /* Width of the left navbar */
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .nav-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav-item {
+    margin-bottom: 10px; /* Adjust spacing between buttons */
+  }
+  
+  .nav-btn {
+    background-color: #555; /* Button background color */
+    color: white; /* Button text color */
+    border: none;
+    border-radius: 20px; /* Button border radius */
+    padding: 10px 20px; /* Button padding */
+    width: 100%; /* Make buttons full width */
+    text-align: left; /* Align button text to the left */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition */
+  }
+  
+  .nav-btn:hover {
+    background-color: #777; /* Change background color on hover */
+  }
+  
