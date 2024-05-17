@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Poller+One&display=swap");
+
+.footer {
+  background-color: #17171b;
+  width: 100%;
+  display: block;
+  position: relative;
+  bottom: 0%;
+  margin-top: 100px;
+}
+
+.footer .overlap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.footer .mafl {
+  font-family: "Poller One", sans-serif;
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 400;
+  padding-right: 15%;
+  padding-left: 15%;
+}
+
+.footer .text-wrapper {
+  color: #ffffff;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 28px;
+  width: 50%;
+}
+
+.footer .menu {
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 38px;
+  padding-right: 15%;
+}

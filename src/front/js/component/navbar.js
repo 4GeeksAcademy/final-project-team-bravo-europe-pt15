@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "../../styles/navbar.css";
 
 export const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 0;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <nav className="navbar navbar-light bg-light">
-      <div className="container">
-        <Link to="/">
-          <span className="navbar-brand mb-0 h1">Home</span>
+    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      <Link to="/" className="navbar-brand">
+        MAFL
+      </Link>
+      <div className="contbut">
+        <Link to="/" className="nav-link">
+          Home
         </Link>
-        <div className="ml-auto">
-          <Link to="/login">
-            <button className="btn btn-primary">Login</button>
-          </Link>
-        </div>
+        <Link to="/signup" className="btn Signin">
+          Signup
+        </Link>
+        <Link to="/login" className="btn Login">
+          Login
+        </Link>
       </div>
     </nav>
   );

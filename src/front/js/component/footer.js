@@ -1,10 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+import "../../styles/footer.css";
 
-export const Footer = () => (
-	<footer className="footer mt-auto py-3 text-center">
-		<p>
-			Made with <i className="fa fa-heart text-danger" /> by{" "}
-			<a href="http://www.4geeksacademy.com">4Geeks Academy</a>
-		</p>
-	</footer>
-);
+export const Footer = () => {
+    return (
+        <div className="footer">
+            <div className="overlap">
+                <div className="mafl">MAFL</div>
+                <div className="text-wrapper">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                </div>
+                <div className="menu">
+                    <div>Home</div>
+                    <div>Section One</div>
+                    <div>Section Two</div>
+                    <div>Section Three</div>
+                </div>
+            </div>
+        </div>
+    );
+};
