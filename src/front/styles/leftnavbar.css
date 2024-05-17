@@ -1,0 +1,96 @@
+.left-navbar {
+  background-color: #7b3333; /* Navbar background color */
+  height: calc(100vh - 82px); /* Full height of the viewport minus height of the main navbar */
+  width: 200px; /* Width of the left navbar */
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Space between items */
+  margin-top: 82px; /* Margin from the top, 82 pixels below the main navbar */
+}
+
+.sticky-top {
+  top: 103px;
+}
+
+.fixed-bottom {
+  position: absolute;
+  bottom: 70px; /* Adjust this value based on your footer height */
+}
+
+.nav-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-menu2 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 9%;
+}
+
+.nav-item {
+  margin-bottom: 10px; /* Adjust spacing between buttons */
+}
+
+.nav-btn {
+  background-color: #ffffff; /* Button background color */
+  color: white; /* Button text color */
+  border: none;
+  border-radius: 20px; /* Button border radius */
+  padding: 10px 20px; /* Button padding */
+  width: 100%; /* Make buttons full width */
+  text-align: left; /* Align button text to the left */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.nav-btn:hover {
+  background-color: #ac4747; /* Change background color on hover */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poller+One&display=swap');
+
+.footer {
+  background-color: #17171b;
+  width: 100%;
+}
+
+.footer .overlap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.footer .mafl {
+  font-family: 'Poller One', sans-serif; 
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 400;
+  padding-right: 15%;
+  padding-left: 15%;
+}
+
+.footer .text-wrapper {
+  color: #ffffff;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 28px;
+  width: 50%;
+}
+
+.footer .menu {
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 38px;
+  padding-right: 15%;
+}
