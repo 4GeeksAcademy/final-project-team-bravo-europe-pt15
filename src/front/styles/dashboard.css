@@ -1,3 +1,7 @@
+.center {
+  margin-top: 8vw;
+}
+
 .operations-container {
   display: flex;
   align-items: flex-start;
