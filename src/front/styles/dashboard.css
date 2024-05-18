@@ -159,10 +159,13 @@
 
 .paypal-checkout-modal {
   background: white;
-  padding: 20px;
+  padding: 40px; /* Increase padding for better spacing */
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
+  width: 80%; /* Increase width */
+  max-width: 400px; /* Set a max-width for responsiveness */
+  height: auto; /* Adjust height to fit content */
 }
 
 .paypal-checkout-content {
