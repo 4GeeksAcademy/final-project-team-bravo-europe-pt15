@@ -34,6 +34,7 @@ const Dashboard = () => {
   const [credits, setCredits] = useState(0); // State to hold user credits
   const [showPayPal, setShowPayPal] = useState(false); // Flag to show PayPal modal
   const navigate = useNavigate(); // Hook for navigation
+  const [isLoading, setIsLoading] = useState(false); // State to manage loading status
 
   // Check if user is authenticated when the component mounts
   useEffect(() => {
@@ -104,8 +105,11 @@ const Dashboard = () => {
   const handleClick = async (button) => {
     switch (button) {
       case "removeBackground":
+        setIsLoading(true); // Set loading state to true
         const url = cld.image(publicID).effect(backgroundRemoval()).toURL();
         const response = await retryRequest(url);
+        setIsLoading(false); // Set loading state to false after response
+
         if (response && response.ok) {
           setEffect(backgroundRemoval());
           setShowPrompt(false);
@@ -116,16 +120,19 @@ const Dashboard = () => {
           );
         }
         break;
+
       case "removeObject":
         setEffect(generativeRemove());
         setShowPrompt(true);
         setShowPrompts(false);
         break;
+
       case "replaceObject":
         setEffect(generativeReplace());
         setShowPrompt(false);
         setShowPrompts(true);
         break;
+
       case "upscaleImage":
         if (originalImageURL) {
           const img = new Image();
@@ -148,38 +155,49 @@ const Dashboard = () => {
           };
         }
         break;
+
       case "applyChanges":
         if (effect) {
           if (credits > 0) {
+            setIsLoading(true); // Set loading state to true
             if (showPrompt) {
               setEffect(effect.prompt(promptText));
             } else if (showPrompts) {
               setEffect(effect.from(prompt1).to(prompt2));
             }
             setAppliedEffect(effect);
-            setShowPrompt(false);
-            setShowPrompts(false);
 
-            // Deduct one credit
-            const newCredits = credits - 1;
-            setCredits(newCredits);
+            // Simulate API call to Cloudinary for effect application
+            setTimeout(async () => {
+              setShowPrompt(false);
+              setShowPrompts(false);
 
-            // Update credits in the backend
-            fetch(`${process.env.BACKEND_URL}/api/user/credits`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-              body: JSON.stringify({ credits: newCredits }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
+              // Deduct one credit after transformation is complete
+              const newCredits = credits - 1;
+              setCredits(newCredits);
+
+              // Update credits in the backend
+              try {
+                const response = await fetch(
+                  `${process.env.BACKEND_URL}/api/user/credits`,
+                  {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                    body: JSON.stringify({ credits: newCredits }),
+                  }
+                );
+                const data = await response.json();
                 setCredits(data.credits); // Update credits state
-              })
-              .catch((error) => {
+                alert("Image processing complete. Credits have been deducted.");
+              } catch (error) {
                 console.error("Error updating user credits:", error);
-              });
+              } finally {
+                setIsLoading(false); // Set loading state to false after processing is done
+              }
+            }, 3000); // Simulate delay for processing
           } else {
             alert("You have no credits left. Please fill up your credits.");
           }
@@ -187,8 +205,12 @@ const Dashboard = () => {
           alert("Please select an effect to apply.");
         }
         break;
+
       case "credits":
         setShowPayPal(true);
+        break;
+
+      default:
         break;
     }
   };
@@ -243,7 +265,13 @@ const Dashboard = () => {
 
   return (
     <div className="center">
-      <div className="operations-container">
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+          <p>Processing image, please wait...</p>
+        </div>
+      )}
+      <div className={`operations-container ${isLoading ? "blurred" : ""}`}>
         <div className="command-container">
           <div className="upload-widget">
             <UploadWidget onImageUpload={handleImageUpload} />
@@ -297,7 +325,6 @@ const Dashboard = () => {
           </div>
           <div className="user-options">
             <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
-
             <button onClick={() => handleClick("credits")}>
               Available Credits <span className="badge">{credits}</span>
             </button>
