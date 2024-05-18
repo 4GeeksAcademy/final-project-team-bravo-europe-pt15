@@ -1,3 +1,4 @@
+// src/pages/Dashboard.js
 import React, { useEffect, useState } from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import {
@@ -10,6 +11,8 @@ import UploadWidget from "../component/UploadWidget";
 import ImageSlider from "react-image-comparison-slider";
 import "../../styles/dashboard.css";
 import { useNavigate } from "react-router-dom";
+import PayPalCheckout from "../component/paypalCheckout";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 // Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
@@ -29,6 +32,7 @@ const Dashboard = () => {
   const [appliedEffect, setAppliedEffect] = useState(null); // Effect that has been applied
   const [username, setUsername] = useState(""); // State to hold the username
   const [credits, setCredits] = useState(0); // State to hold user credits
+  const [showPayPal, setShowPayPal] = useState(false); // Flag to show PayPal modal
   const navigate = useNavigate(); // Hook for navigation
 
   // Check if user is authenticated when the component mounts
@@ -144,46 +148,48 @@ const Dashboard = () => {
           };
         }
         break;
-        case "applyChanges":
-          if (effect) {
-            if (credits > 0) {
-              if (showPrompt) {
-                setEffect(effect.prompt(promptText));
-              } else if (showPrompts) {
-                setEffect(effect.from(prompt1).to(prompt2));
-              }
-              setAppliedEffect(effect);
-              setShowPrompt(false);
-              setShowPrompts(false);
-    
-              // Deduct one credit
-              const newCredits = credits - 1;
-              setCredits(newCredits);
-    
-              // Update credits in the backend
-              fetch(`${process.env.BACKEND_URL}/api/user/credits`, {
-                method: 'PUT',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-                },
-                body: JSON.stringify({ credits: newCredits })
-              })
-                .then((response) => response.json())
-                .then((data) => {
-                  setCredits(data.credits); // Update credits state
-                })
-                .catch((error) => {
-                  console.error("Error updating user credits:", error);
-                });
-            } else {
-              alert("You have no credits left. Please fill up your credits.");
+      case "applyChanges":
+        if (effect) {
+          if (credits > 0) {
+            if (showPrompt) {
+              setEffect(effect.prompt(promptText));
+            } else if (showPrompts) {
+              setEffect(effect.from(prompt1).to(prompt2));
             }
+            setAppliedEffect(effect);
+            setShowPrompt(false);
+            setShowPrompts(false);
+
+            // Deduct one credit
+            const newCredits = credits - 1;
+            setCredits(newCredits);
+
+            // Update credits in the backend
+            fetch(`${process.env.BACKEND_URL}/api/user/credits`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+              body: JSON.stringify({ credits: newCredits }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                setCredits(data.credits); // Update credits state
+              })
+              .catch((error) => {
+                console.error("Error updating user credits:", error);
+              });
           } else {
-            alert("Please select an effect to apply.");
+            alert("You have no credits left. Please fill up your credits.");
           }
-          break;
-    
+        } else {
+          alert("Please select an effect to apply.");
+        }
+        break;
+      case "credits":
+        setShowPayPal(true);
+        break;
     }
   };
 
@@ -209,6 +215,30 @@ const Dashboard = () => {
       console.error("Error downloading the image:", error);
       alert("Failed to download the image. Please try again.");
     }
+  };
+
+  const handlePayPalSuccess = (details) => {
+    const newCredits = credits + 10; // 1 USD = 10 credits
+    setCredits(newCredits);
+
+    // Update credits in the backend
+    fetch(`${process.env.BACKEND_URL}/api/user/credits`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ credits: newCredits }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCredits(data.credits); // Update credits state
+      })
+      .catch((error) => {
+        console.error("Error updating user credits:", error);
+      });
+
+    setShowPayPal(false);
   };
 
   return (
@@ -308,6 +338,18 @@ const Dashboard = () => {
           />
         </div>
       </div>
+      {showPayPal && (
+        <div className="paypal-modal-overlay">
+          <PayPalScriptProvider
+            options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
+          >
+            <PayPalCheckout
+              onClose={() => setShowPayPal(false)}
+              onSuccess={handlePayPalSuccess}
+            />
+          </PayPalScriptProvider>
+        </div>
+      )}
     </div>
   );
 };
