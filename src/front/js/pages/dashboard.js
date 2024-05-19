@@ -1,4 +1,3 @@
-// src/pages/Dashboard.js
 import React, { useEffect, useState } from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import {
@@ -35,6 +34,8 @@ const Dashboard = () => {
   const [showPayPal, setShowPayPal] = useState(false); // Flag to show PayPal modal
   const navigate = useNavigate(); // Hook for navigation
   const [isLoading, setIsLoading] = useState(false); // State to manage loading status
+  const [instructionText, setInstructionText] = useState("Please upload an image to enable transformations");
+
 
   // Check if user is authenticated when the component mounts
   useEffect(() => {
@@ -79,6 +80,7 @@ const Dashboard = () => {
     if (match && match.length > 1) {
       setPublicID(match[1]);
       setAppliedEffect(null);
+      setInstructionText("Choose a transformation to apply to your image");
     }
   };
 
@@ -278,16 +280,29 @@ const Dashboard = () => {
             <p>Click here to upload image for transformation</p>
           </div>
           <div className="operations-buttons">
-            <button onClick={() => handleClick("removeBackground")}>
+            <p>{instructionText}</p>
+            <button 
+              onClick={() => handleClick("removeBackground")}
+              disabled={!publicID}
+            >
               Remove Background
             </button>
-            <button onClick={() => handleClick("removeObject")}>
+            <button 
+              onClick={() => handleClick("removeObject")}
+              disabled={!publicID}
+            >
               Remove object from image
             </button>
-            <button onClick={() => handleClick("replaceObject")}>
+            <button 
+              onClick={() => handleClick("replaceObject")}
+              disabled={!publicID}
+            >
               Replace object in image
             </button>
-            <button onClick={() => handleClick("upscaleImage")}>
+            <button 
+              onClick={() => handleClick("upscaleImage")}
+              disabled={!publicID}
+            >
               Upscale image
             </button>
           </div>
