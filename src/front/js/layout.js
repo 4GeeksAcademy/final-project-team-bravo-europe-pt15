@@ -10,6 +10,7 @@ import { Signup } from "./pages/signup";
 import { Login } from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import injectContext from "./store/appContext";
+import TransformedImages from "./pages/transformed-images";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -35,6 +36,7 @@ const Layout = () => {
           <Route element={<Signup />} path="/signup" />
           <Route element={<Login />} path="/login" />
           <Route element={<Dashboard />} path="/dashboard" />
+          <Route element={<TransformedImages />} path="/transformed-images" />
           <Route element={<h1>Not found!</h1>} />
         </Routes>
         {/* <Footer />

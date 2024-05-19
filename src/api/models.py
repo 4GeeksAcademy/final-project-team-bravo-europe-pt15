@@ -2,6 +2,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+class TransformedImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -9,6 +14,7 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     username = db.Column(db.String(80), unique=False, nullable=True)
     credits = db.Column(db.Integer, nullable=False, default=10)  # Add credits field
+    transformed_images = db.relationship('TransformedImage', backref='user', lazy=True)
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -18,5 +24,6 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            "credits": self.credits  # Include credits in serialization
+            "credits": self.credits,  # Include credits in serialization
+            "transformed_images": [image.url for image in self.transformed_images]  # Include transformed images in serialization
         }

@@ -34,36 +34,55 @@ const Dashboard = () => {
   const [showPayPal, setShowPayPal] = useState(false); // Flag to show PayPal modal
   const navigate = useNavigate(); // Hook for navigation
   const [isLoading, setIsLoading] = useState(false); // State to manage loading status
-  const [instructionText, setInstructionText] = useState("Please upload an image to enable transformations");
-
+  const [instructionText, setInstructionText] = useState(
+    "Please upload an image to enable transformations"
+  );
+  const [storedImages, setStoredImages] = useState([]);
 
   // Check if user is authenticated when the component mounts
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem("token") !== null;
-    if (!isAuthenticated) {
+    const token = localStorage.getItem("token");
+    if (!token) {
       navigate("/login");
       alert("You have to be logged in to access this page. Click OK to login");
-    } else {
-      // Fetch user details
-      fetch(`${process.env.BACKEND_URL}/api/user`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setUsername(data.username); // Update username state
-          setCredits(data.credits); // Update credits state
-        })
-        .catch((error) => {
-          console.error("Error fetching user details:", error);
-        });
+      return;
     }
+
+    // Fetch user details
+    fetch(`${process.env.BACKEND_URL}/api/user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.setItem("user_id", data.id); // Store user ID in local storage
+        setUsername(data.username); // Update username state
+        setCredits(data.credits); // Update credits state
+
+        // Fetch the transformed images
+        fetch(`${process.env.BACKEND_URL}/api/user/transformed-images`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setStoredImages(data.transformed_images); // Update stored images state
+          })
+          .catch((error) => {
+            console.error("Error fetching transformed images:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error fetching user details:", error);
+      });
   }, [navigate]);
 
   // Handle user logout
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user_id");
     navigate("/");
   };
 
@@ -161,7 +180,7 @@ const Dashboard = () => {
       case "applyChanges":
         if (effect) {
           if (credits > 0) {
-            setIsLoading(true); // Set loading state to true
+            setIsLoading(true);
             if (showPrompt) {
               setEffect(effect.prompt(promptText));
             } else if (showPrompts) {
@@ -169,16 +188,13 @@ const Dashboard = () => {
             }
             setAppliedEffect(effect);
 
-            // Simulate API call to Cloudinary for effect application
             setTimeout(async () => {
               setShowPrompt(false);
               setShowPrompts(false);
 
-              // Deduct one credit after transformation is complete
               const newCredits = credits - 1;
               setCredits(newCredits);
 
-              // Update credits in the backend
               try {
                 const response = await fetch(
                   `${process.env.BACKEND_URL}/api/user/credits`,
@@ -192,14 +208,44 @@ const Dashboard = () => {
                   }
                 );
                 const data = await response.json();
-                setCredits(data.credits); // Update credits state
+                setCredits(data.credits);
+
+                // Store the transformed image URL in the backend
+                const transformedImage = cld
+                  .image(publicID)
+                  .effect(effect)
+                  .toURL();
+                await fetch(
+                  `${process.env.BACKEND_URL}/api/user/transformed-images`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                    body: JSON.stringify({
+                      user_id: data.id,
+                      url: transformedImage,
+                    }),
+                  }
+                );
+
+                // Update the stored images state
+                setStoredImages((prevImages) => [
+                  ...prevImages,
+                  transformedImage,
+                ]);
+
                 alert("Image processing complete. Credits have been deducted.");
               } catch (error) {
-                console.error("Error updating user credits:", error);
+                console.error(
+                  "Error updating user credits or storing the image:",
+                  error
+                );
               } finally {
-                setIsLoading(false); // Set loading state to false after processing is done
+                setIsLoading(false);
               }
-            }, 3000); // Simulate delay for processing
+            }, 3000);
           } else {
             alert("You have no credits left. Please fill up your credits.");
           }
@@ -281,25 +327,25 @@ const Dashboard = () => {
           </div>
           <div className="operations-buttons">
             <p>{instructionText}</p>
-            <button 
+            <button
               onClick={() => handleClick("removeBackground")}
               disabled={!publicID}
             >
               Remove Background
             </button>
-            <button 
+            <button
               onClick={() => handleClick("removeObject")}
               disabled={!publicID}
             >
               Remove object from image
             </button>
-            <button 
+            <button
               onClick={() => handleClick("replaceObject")}
               disabled={!publicID}
             >
               Replace object in image
             </button>
-            <button 
+            <button
               onClick={() => handleClick("upscaleImage")}
               disabled={!publicID}
             >
@@ -348,6 +394,10 @@ const Dashboard = () => {
                 Download Transformed Image
               </button>
             )}
+            <button onClick={() => navigate("/transformed-images")}>
+              Transformed Images
+              <span className="badge">{storedImages.length}</span>
+            </button>
             <button onClick={handleLogout}>Logout</button>
           </div>
         </div>

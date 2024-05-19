@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import os
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, TransformedImage
 from api.utils import generate_sitemap, APIException, send_password_reset_email
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -209,6 +209,35 @@ def update_user_credits():
     db.session.commit()
     return jsonify({"credits": user.credits}), 200
 
+
+#Endpoints for Transformed images
+
+@api.route('/user/transformed-images', methods=['GET'])
+@jwt_required()
+def get_transformed_images():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if user:
+        return jsonify(user.serialize()), 200
+    else:
+        return jsonify({"error": "User not found"}), 404
+
+@api.route('/user/transformed-images', methods=['POST'])
+@jwt_required()
+def add_transformed_image():
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+    url = data['url']
+    user = User.query.get(current_user_id)
+    if user:
+        new_image = TransformedImage(url=url, user_id=current_user_id)
+        db.session.add(new_image)
+        db.session.commit()
+        return jsonify({"message": "Image added"}), 201
+    else:
+        return jsonify({"error": "User not found"}), 404
+    
+        
 
 # Test endpoint
 @api.route('/hello', methods=['POST', 'GET'])
