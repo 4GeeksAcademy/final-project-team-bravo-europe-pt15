@@ -245,7 +245,7 @@ const Dashboard = () => {
               } finally {
                 setIsLoading(false);
               }
-            }, 3000);
+            }, 5000);
           } else {
             alert("You have no credits left. Please fill up your credits.");
           }

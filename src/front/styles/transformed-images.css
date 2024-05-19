@@ -1,6 +1,10 @@
 .transformed-images-container {
   padding: 20px;
   text-align: center;
+  margin-top: 80px;
+}
+.transformed-images-container h2 {
+  color: #ccc;
 }
 
 .images-grid {
