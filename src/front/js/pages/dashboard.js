@@ -9,12 +9,18 @@ import {
 import UploadWidget from "../component/UploadWidget";
 import ImageSlider from "react-image-comparison-slider";
 import "../../styles/dashboard.css";
+import "../../styles/imagePlaceholder.css";
 import { useNavigate } from "react-router-dom";
+import PayPalCheckout from "../component/paypalCheckout";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { useAuth } from "../utils/auth";
+import { downloadImage } from "../utils/imageDownload"; // Import the new image download utility
+import { delay, retryRequest } from "../utils/retryUtilis"; // Import the new retry utility
 
 // Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
   cloud: {
-    cloudName: "dfxwm93pu",
+    cloudName: "dcoocmssy",
   },
 });
 
@@ -27,21 +33,58 @@ const Dashboard = () => {
   const [showPrompts, setShowPrompts] = useState(false); // Flag to show dual prompts input
   const [publicID, setPublicID] = useState(""); // Cloudinary public ID of the uploaded image
   const [appliedEffect, setAppliedEffect] = useState(null); // Effect that has been applied
+  const [username, setUsername] = useState(""); // State to hold the username
+  const [credits, setCredits] = useState(0); // State to hold user credits
+  const [showPayPal, setShowPayPal] = useState(false); // Flag to show PayPal modal
   const navigate = useNavigate(); // Hook for navigation
-
-  // Check if user is authenticated when the component mounts
-  useEffect(() => {
-    const isAuthenticated = localStorage.getItem("token") !== null;
-    if (!isAuthenticated) {
-      navigate("/login");
-      alert("You have to be logged in to access this page. Click OK to login");
-    }
-  }, [navigate]);
+  const [isLoading, setIsLoading] = useState(false); // State to manage loading status
+  const [instructionText, setInstructionText] = useState(
+    "Please upload an image to enable transformations"
+  );
+  const [storedImages, setStoredImages] = useState([]);
+  const { checkAuth } = useAuth(); // Use the new auth.js utility
 
   // Handle user logout
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user_id");
     navigate("/");
+  };
+
+  // Check if user is authenticated when the component mounts
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("user_id");
+
+    if (!token || !userId) {
+      navigate("/login");
+      return;
+    } else {
+      fetchUserDetails();
+    }
+  }, []);
+
+  const fetchUserDetails = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const data = await checkAuth();
+      setUsername(data.username); // Update username state
+      setCredits(data.credits); // Update credits state
+
+      const response = await fetch(
+        `${process.env.BACKEND_URL}/api/user/transformed-images`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const imageData = await response.json();
+      setStoredImages(imageData.transformed_images); // Update stored images state
+    } catch (error) {
+      console.error("Error fetching user details or images:", error);
+    }
   };
 
   // URLs for original and transformed images
@@ -57,54 +100,42 @@ const Dashboard = () => {
     if (match && match.length > 1) {
       setPublicID(match[1]);
       setAppliedEffect(null);
+      setInstructionText("Choose a transformation to apply to your image");
     }
-  };
-
-  // Helper function for delay
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  // Retry logic for background removal request
-  const retryRequest = async (url, retries = 5, delayTime = 3000) => {
-    for (let i = 0; i < retries; i++) {
-      try {
-        const response = await fetch(url);
-        if (response.status !== 423) {
-          return response;
-        }
-        await delay(delayTime);
-      } catch (error) {
-        console.error("Error fetching the URL:", error);
-      }
-    }
-    return null;
   };
 
   // Handle button clicks for various transformations
   const handleClick = async (button) => {
     switch (button) {
       case "removeBackground":
+        setIsLoading(true); // Set loading state to true
         const url = cld.image(publicID).effect(backgroundRemoval()).toURL();
         const response = await retryRequest(url);
+        setIsLoading(false); // Set loading state to false after response
+
         if (response && response.ok) {
           setEffect(backgroundRemoval());
           setShowPrompt(false);
           setShowPrompts(false);
         } else {
           alert(
-            "Background removal is still in progress. Please try again later."
+            "Background removal is experiencing issues. Please try again later."
           );
         }
         break;
+
       case "removeObject":
         setEffect(generativeRemove());
         setShowPrompt(true);
         setShowPrompts(false);
         break;
+
       case "replaceObject":
         setEffect(generativeReplace());
         setShowPrompt(false);
         setShowPrompts(true);
         break;
+
       case "upscaleImage":
         if (originalImageURL) {
           const img = new Image();
@@ -127,71 +158,163 @@ const Dashboard = () => {
           };
         }
         break;
+
       case "applyChanges":
         if (effect) {
-          if (showPrompt) {
-            setEffect(effect.prompt(promptText));
-          } else if (showPrompts) {
-            setEffect(effect.from(prompt1).to(prompt2));
+          if (credits > 0) {
+            setIsLoading(true);
+            if (showPrompt) {
+              setEffect(effect.prompt(promptText));
+            } else if (showPrompts) {
+              setEffect(effect.from(prompt1).to(prompt2));
+            }
+            setAppliedEffect(effect);
+
+            setTimeout(async () => {
+              setShowPrompt(false);
+              setShowPrompts(false);
+
+              const newCredits = credits - 1;
+              setCredits(newCredits);
+
+              try {
+                const response = await fetch(
+                  `${process.env.BACKEND_URL}/api/user/credits`,
+                  {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                    body: JSON.stringify({ credits: newCredits }),
+                  }
+                );
+                const data = await response.json();
+                setCredits(data.credits);
+
+                // Store the transformed image URL in the backend
+                const transformedImage = cld
+                  .image(publicID)
+                  .effect(effect)
+                  .toURL();
+                await fetch(
+                  `${process.env.BACKEND_URL}/api/user/transformed-images`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                    body: JSON.stringify({
+                      user_id: data.id,
+                      url: transformedImage,
+                    }),
+                  }
+                );
+
+                // Update the stored images state
+                setStoredImages((prevImages) => [
+                  ...prevImages,
+                  transformedImage,
+                ]);
+
+                alert("Image processing complete. Credits have been deducted.");
+              } catch (error) {
+                console.error(
+                  "Error updating user credits or storing the image:",
+                  error
+                );
+              } finally {
+                setIsLoading(false);
+              }
+            }, 5000);
+          } else {
+            alert("You have no credits left. Please fill up your credits.");
           }
-          setAppliedEffect(effect);
-          setShowPrompt(false);
-          setShowPrompts(false);
         } else {
           alert("Please select an effect to apply.");
         }
         break;
+
       case "credits":
-        // Logic for handling "Available Credits" button click
+        setShowPayPal(true);
         break;
+
       default:
         break;
     }
   };
 
-  // Handle image download
-  const handleDownloadImage = async () => {
-    if (!transformedImageURL) {
-      alert("No transformed image available for download.");
-      return;
-    }
+  // Handle image download using the new utility function
+  const handleDownloadImage = () => {
+    const transformedImageURL = appliedEffect
+      ? cld.image(publicID).effect(appliedEffect).toURL()
+      : cld.image(publicID).toURL();
+    downloadImage(transformedImageURL);
+  };
 
-    try {
-      const response = await fetch(transformedImageURL);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "transformed-image.png";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading the image:", error);
-      alert("Failed to download the image. Please try again.");
-    }
+  const handlePayPalSuccess = (details) => {
+    const newCredits = credits + 10; // 1 USD = 10 credits
+    setCredits(newCredits);
+
+    // Update credits in the backend
+    fetch(`${process.env.BACKEND_URL}/api/user/credits`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ credits: newCredits }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCredits(data.credits); // Update credits state
+      })
+      .catch((error) => {
+        console.error("Error updating user credits:", error);
+      });
+
+    setShowPayPal(false);
   };
 
   return (
     <div className="center">
-      <div className="operations-container">
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+          <p>Processing image, please wait...</p>
+        </div>
+      )}
+      <div className={`operations-container ${isLoading ? "blurred" : ""}`}>
         <div className="command-container">
           <div className="upload-widget">
             <UploadWidget onImageUpload={handleImageUpload} />
             <p>Click here to upload image for transformation</p>
           </div>
           <div className="operations-buttons">
-            <button onClick={() => handleClick("removeBackground")}>
+            <p>{instructionText}</p>
+            <button
+              onClick={() => handleClick("removeBackground")}
+              disabled={!publicID}
+            >
               Remove Background
             </button>
-            <button onClick={() => handleClick("removeObject")}>
+            <button
+              onClick={() => handleClick("removeObject")}
+              disabled={!publicID}
+            >
               Remove object from image
             </button>
-            <button onClick={() => handleClick("replaceObject")}>
+            <button
+              onClick={() => handleClick("replaceObject")}
+              disabled={!publicID}
+            >
               Replace object in image
             </button>
-            <button onClick={() => handleClick("upscaleImage")}>
+            <button
+              onClick={() => handleClick("upscaleImage")}
+              disabled={!publicID}
+            >
               Upscale image
             </button>
           </div>
@@ -228,15 +351,19 @@ const Dashboard = () => {
             </button>
           </div>
           <div className="user-options">
-            <h4>User options</h4>
+            <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
             <button onClick={() => handleClick("credits")}>
-              Available Credits
+              Available Credits <span className="badge">{credits}</span>
             </button>
             {appliedEffect && (
               <button onClick={handleDownloadImage}>
                 Download Transformed Image
               </button>
             )}
+            <button onClick={() => navigate("/transformed-images")}>
+              Transformed Images
+              <span className="badge">{storedImages.length}</span>
+            </button>
             <button onClick={handleLogout}>Logout</button>
           </div>
         </div>
@@ -248,27 +375,25 @@ const Dashboard = () => {
             rightLabelText="Original image"
             showPlaceholder={true}
             customPlaceholder={
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "top",
-                  width: "100%",
-                  height: "100%",
-                  backgroundColor: "#f0f0f0",
-                  border: "2px dashed #ccc",
-                  color: "#333",
-                  fontSize: "1.2em",
-                  textAlign: "center",
-                  padding: "20px",
-                }}
-              >
-                Please upload your image to see possible transformations
+              <div className="custom-placeholder">
+                Please upload your image first
               </div>
             }
           />
         </div>
       </div>
+      {showPayPal && (
+        <div className="paypal-modal-overlay">
+          <PayPalScriptProvider
+            options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
+          >
+            <PayPalCheckout
+              onClose={() => setShowPayPal(false)}
+              onSuccess={handlePayPalSuccess}
+            />
+          </PayPalScriptProvider>
+        </div>
+      )}
     </div>
   );
 };

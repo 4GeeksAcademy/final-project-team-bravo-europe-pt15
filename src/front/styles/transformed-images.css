@@ -1,0 +1,28 @@
+.transformed-images-container {
+  padding: 20px;
+  text-align: center;
+  margin-top: 80px;
+}
+.transformed-images-container h2 {
+  color: #ccc;
+}
+
+.images-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.image-card {
+  width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.image-card img {
+  width: 100%;
+  height: auto;
+}
