@@ -15,6 +15,7 @@ import PayPalCheckout from "../component/paypalCheckout";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useAuth } from "../utils/auth";
 import { downloadImage } from "../utils/imageDownload"; // Import the new image download utility
+import { delay, retryRequest } from "../utils/retryUtilis"; // Import the new retry utility
 
 // Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
@@ -93,25 +94,6 @@ const Dashboard = () => {
       setAppliedEffect(null);
       setInstructionText("Choose a transformation to apply to your image");
     }
-  };
-
-  // Helper function for delay
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  // Retry logic for background removal request
-  const retryRequest = async (url, retries = 5, delayTime = 3000) => {
-    for (let i = 0; i < retries; i++) {
-      try {
-        const response = await fetch(url);
-        if (response.status !== 423) {
-          return response;
-        }
-        await delay(delayTime);
-      } catch (error) {
-        console.error("Error fetching the URL:", error);
-      }
-    }
-    return null;
   };
 
   // Handle button clicks for various transformations
