@@ -44,16 +44,29 @@ const Dashboard = () => {
   const [storedImages, setStoredImages] = useState([]);
   const { checkAuth } = useAuth(); // Use the new auth.js utility
 
+  // Handle user logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_id");
+    navigate("/");
+  };
+
   // Check if user is authenticated when the component mounts
   useEffect(() => {
     const fetchUserDetails = async () => {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("user_id");
+
+      if (!token || !userId) {
+        navigate("/login");
+        return;
+      }
+
       try {
         const data = await checkAuth();
         setUsername(data.username); // Update username state
         setCredits(data.credits); // Update credits state
 
-        // Fetch the transformed images
-        const token = localStorage.getItem("token");
         const response = await fetch(
           `${process.env.BACKEND_URL}/api/user/transformed-images`,
           {
@@ -71,13 +84,6 @@ const Dashboard = () => {
 
     fetchUserDetails();
   }, [checkAuth, navigate]);
-
-  // Handle user logout
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user_id");
-    navigate("/");
-  };
 
   // URLs for original and transformed images
   const originalImageURL = cld.image(publicID).toURL();
