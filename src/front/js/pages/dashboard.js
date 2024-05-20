@@ -9,6 +9,7 @@ import {
 import UploadWidget from "../component/UploadWidget";
 import ImageSlider from "react-image-comparison-slider";
 import "../../styles/dashboard.css";
+import "../../styles/imagePlaceholder.css";
 import { useNavigate } from "react-router-dom";
 import PayPalCheckout from "../component/paypalCheckout";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
@@ -408,22 +409,8 @@ const Dashboard = () => {
             rightLabelText="Original image"
             showPlaceholder={true}
             customPlaceholder={
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "top",
-                  width: "100%",
-                  height: "100%",
-                  backgroundColor: "#f0f0f0",
-                  border: "2px dashed #ccc",
-                  color: "#333",
-                  fontSize: "1.2em",
-                  textAlign: "center",
-                  padding: "20px",
-                }}
-              >
-                Please upload your image to see possible transformations
+              <div className="custom-placeholder">
+                Please upload your image first
               </div>
             }
           />
