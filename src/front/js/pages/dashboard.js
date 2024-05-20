@@ -13,6 +13,7 @@ import "../../styles/imagePlaceholder.css";
 import { useNavigate } from "react-router-dom";
 import PayPalCheckout from "../component/paypalCheckout";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { useAuth } from "../utils/auth";
 
 // Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
@@ -39,46 +40,35 @@ const Dashboard = () => {
     "Please upload an image to enable transformations"
   );
   const [storedImages, setStoredImages] = useState([]);
+  const { checkAuth } = useAuth(); // Use the new auth.js utility
 
   // Check if user is authenticated when the component mounts
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-      alert("You have to be logged in to access this page. Click OK to login");
-      return;
-    }
-
-    // Fetch user details
-    fetch(`${process.env.BACKEND_URL}/api/user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        localStorage.setItem("user_id", data.id); // Store user ID in local storage
+    const fetchUserDetails = async () => {
+      try {
+        const data = await checkAuth();
         setUsername(data.username); // Update username state
         setCredits(data.credits); // Update credits state
 
         // Fetch the transformed images
-        fetch(`${process.env.BACKEND_URL}/api/user/transformed-images`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setStoredImages(data.transformed_images); // Update stored images state
-          })
-          .catch((error) => {
-            console.error("Error fetching transformed images:", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
-      });
-  }, [navigate]);
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          `${process.env.BACKEND_URL}/api/user/transformed-images`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const imageData = await response.json();
+        setStoredImages(imageData.transformed_images); // Update stored images state
+      } catch (error) {
+        console.error("Error fetching user details or images:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, [checkAuth, navigate]);
 
   // Handle user logout
   const handleLogout = () => {
