@@ -14,35 +14,38 @@ const TransformedImages = () => {
       // Redirect to login if not authenticated
       navigate("/login");
       return;
+    } else {
+      fetchImages();
     }
+  }, []);
 
-    const fetchImages = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.BACKEND_URL}/api/user/transformed-images?user_id=${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+  const fetchImages = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("user_id");
 
-        if (!response.ok) {
-          // Handle the case where the response is not ok (e.g., unauthorized)
-          throw new Error("Failed to fetch transformed images");
+      const response = await fetch(
+        `${process.env.BACKEND_URL}/api/user/transformed-images?user_id=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        const data = await response.json();
-        setStoredImages(data.transformed_images);
-      } catch (error) {
-        console.error("Error fetching transformed images:", error);
-        // Redirect to login if there's an error fetching images (e.g., token expired)
-        navigate("/login");
+      if (!response.ok) {
+        // Handle the case where the response is not ok (e.g., unauthorized)
+        throw new Error("Failed to fetch transformed images");
       }
-    };
 
-    fetchImages();
-  }, [navigate]);
+      const data = await response.json();
+      setStoredImages(data.transformed_images);
+    } catch (error) {
+      console.error("Error fetching transformed images:", error);
+      // Redirect to login if there's an error fetching images (e.g., token expired)
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="transformed-images-container">

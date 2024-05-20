@@ -41,9 +41,11 @@ export const Login = () => {
         // Handle successful login
         const data = await response.json();
         const token = data.token;
+        const user_id = data.user_id;
 
         // Store token in local storage
         localStorage.setItem("token", token);
+        localStorage.setItem("user_id", user_id);
 
         // Redirect to dashboard
         navigate("/dashboard");

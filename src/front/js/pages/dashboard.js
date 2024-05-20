@@ -53,37 +53,39 @@ const Dashboard = () => {
 
   // Check if user is authenticated when the component mounts
   useEffect(() => {
-    const fetchUserDetails = async () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("user_id");
+
+    if (!token || !userId) {
+      navigate("/login");
+      return;
+    } else {
+      fetchUserDetails();
+    }
+  }, []);
+
+  const fetchUserDetails = async () => {
+    try {
       const token = localStorage.getItem("token");
-      const userId = localStorage.getItem("user_id");
 
-      if (!token || !userId) {
-        navigate("/login");
-        return;
-      }
+      const data = await checkAuth();
+      setUsername(data.username); // Update username state
+      setCredits(data.credits); // Update credits state
 
-      try {
-        const data = await checkAuth();
-        setUsername(data.username); // Update username state
-        setCredits(data.credits); // Update credits state
-
-        const response = await fetch(
-          `${process.env.BACKEND_URL}/api/user/transformed-images`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const imageData = await response.json();
-        setStoredImages(imageData.transformed_images); // Update stored images state
-      } catch (error) {
-        console.error("Error fetching user details or images:", error);
-      }
-    };
-
-    fetchUserDetails();
-  }, [checkAuth, navigate]);
+      const response = await fetch(
+        `${process.env.BACKEND_URL}/api/user/transformed-images`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const imageData = await response.json();
+      setStoredImages(imageData.transformed_images); // Update stored images state
+    } catch (error) {
+      console.error("Error fetching user details or images:", error);
+    }
+  };
 
   // URLs for original and transformed images
   const originalImageURL = cld.image(publicID).toURL();
