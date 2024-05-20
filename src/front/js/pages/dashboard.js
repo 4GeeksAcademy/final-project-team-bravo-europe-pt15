@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import PayPalCheckout from "../component/paypalCheckout";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useAuth } from "../utils/auth";
+import { downloadImage } from "../utils/imageDownload"; // Import the new image download utility
 
 // Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
@@ -254,27 +255,12 @@ const Dashboard = () => {
     }
   };
 
-  // Handle image download
-  const handleDownloadImage = async () => {
-    if (!transformedImageURL) {
-      alert("No transformed image available for download.");
-      return;
-    }
-    try {
-      const response = await fetch(transformedImageURL);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "transformed-image.png";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading the image:", error);
-      alert("Failed to download the image. Please try again.");
-    }
+  // Handle image download using the new utility function
+  const handleDownloadImage = () => {
+    const transformedImageURL = appliedEffect
+      ? cld.image(publicID).effect(appliedEffect).toURL()
+      : cld.image(publicID).toURL();
+    downloadImage(transformedImageURL);
   };
 
   const handlePayPalSuccess = (details) => {
