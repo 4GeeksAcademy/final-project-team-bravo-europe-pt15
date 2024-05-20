@@ -269,7 +269,6 @@ const Dashboard = () => {
       alert("No transformed image available for download.");
       return;
     }
-
     try {
       const response = await fetch(transformedImageURL);
       const blob = await response.blob();

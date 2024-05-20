@@ -12,7 +12,6 @@ const TransformedImages = () => {
 
     if (!token || !userId) {
       // Redirect to login if not authenticated
-      console.log(token);
       navigate("/login");
       return;
     }
