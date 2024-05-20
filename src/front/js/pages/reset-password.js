@@ -20,40 +20,40 @@ export const ResetPassword = () => {
     return hasUpperCase && hasLowerCase && hasNumbers && hasSymbol && hasEightCharacters;
   };
 
-  useEffect(() => {
-    const checkTokenValidity = async () => {
-      const token = searchParams.get("token");
-      if (!token) {
-        navigate("/forgot-password");
-        return;
-      }
+  // useEffect(() => {
+  //   const checkTokenValidity = async () => {
+  //     const token = searchParams.get("token");
+  //     if (!token) {
+  //       navigate("/forgot-password");
+  //       return;
+  //     }
 
-      try {
-        const response = await fetch(
-          `${process.env.BACKEND_URL}/api/check-token/${token}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+  //     try {
+  //       const response = await fetch(
+  //         `${process.env.BACKEND_URL}/api/check-token/${token}`,
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
 
-        if (!response.ok) {
-          throw new Error("Token is invalid");
-        }
+  //       if (!response.ok) {
+  //         throw new Error("Token is invalid");
+  //       }
 
-        const data = await response.json();
-        if (!data.success) {
-          navigate("/forgot-password");
-        }
-      } catch (error) {
-        console.error("Error checking token validity:", error);
-        navigate("/forgot-password");
-      }
-    };
+  //       const data = await response.json();
+  //       if (!data.success) {
+  //         navigate("/forgot-password");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking token validity:", error);
+  //       navigate("/forgot-password");
+  //     }
+  //   };
 
-    checkTokenValidity();
-  }, [searchParams, navigate]);
+  //   checkTokenValidity();
+  // }, [searchParams, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

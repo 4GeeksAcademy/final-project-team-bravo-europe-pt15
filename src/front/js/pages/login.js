@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
+import "../../styles/login-test.css";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -62,7 +63,7 @@ export const Login = () => {
       <Row className="justify-content-center">
         <Col xs={12} md={6}>
           <div className="login-form">
-            <h2>Login</h2>
+            <h2 className="white-text">Login</h2>
             <Form onSubmit={handleSubmit}>
               <FloatingLabel
                 controlId="email"
@@ -99,11 +100,11 @@ export const Login = () => {
               </Button>
             </Form>
             <div>
-              <Link to="/forgot-password">Forgot your password?</Link>
+              <Link to="/forgot-password" className="white-text">Forgot your password?</Link>
             </div>
             <div>
               <p>
-                Not yet a user? <Link to="/signup">Sign up here</Link>
+                Not yet a user? <Link to="/signup" className="white-text">Sign up here</Link>
               </p>
             </div>
           </div>

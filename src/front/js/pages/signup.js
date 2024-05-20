@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
 
+
 export const Signup = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -168,7 +169,7 @@ export const Signup = () => {
               </Button>
             </Form>
             <div>
-              <p>
+              <p >
                 Already have an account? <Link to="/login">Login</Link>
               </p>
             </div>

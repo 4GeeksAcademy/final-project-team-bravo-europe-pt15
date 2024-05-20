@@ -1,0 +1,106 @@
+/* login-test.css */
+
+/* Global styles */
+.mt-3 {
+    all: unset;
+    background: linear-gradient(
+      90deg,
+      rgb(148.2, 179.82, 248.04) 2%,
+      rgb(144.46, 154.12, 241.08) 14.5%,
+      rgb(143.53, 131.56, 217.07) 30.5%,
+      rgb(64.64, 0, 248.63) 87%
+    );
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    margin-left: 10px; /* Add margin between buttons */
+    padding: 12px 28px;
+    text-decoration: none;
+    margin-bottom: 10px;
+    margin-top: 0px;
+  }
+  
+  @media (min-width: 1200px) {
+    .h2,
+    h2 {
+      font-size: 2rem;
+      color: white;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+  }
+  
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: indianred;
+  }
+
+  
+  /* Specific styles for login */
+  .justify-content-center {
+    display: flex;
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full height of the viewport */
+    position: relative;
+  }
+  
+  .col-md-6 {
+    flex: 0 0 auto;
+    width: 50%;
+    background-color: #17171b;
+    border-radius: 20px;
+  }
+  
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    text-align: center;
+  }
+  
+  .top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .top-right {
+      position: absolute; /* Change to absolute */
+      top: 10px;
+      right: 10px;
+    }
+  
+    .login-content {
+      width: 90%;
+    }
+  }
+  
+  .login-content {
+    width: 400px;
+    padding: 20px;
+    border: 1px solid #7344f5; /* Border color */
+    border-radius: 12px; /* Border radius */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+    margin: 0 auto;
+  }
+  
+  .login-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  @media (max-width: 768px) {
+    .login-buttons {
+      flex-direction: column;
+    }
+  }
+  
+  .white-text {
+    color: white; /* Set text color to white */
+  }
+  
