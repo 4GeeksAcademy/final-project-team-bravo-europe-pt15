@@ -1,0 +1,12 @@
+.login-form {
+    margin-top: 80px; /* Adjust this value as needed */
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  @media (max-width: 576px) {
+    .login-form {
+      margin-top: 60px; /* Adjust for smaller screens */
+    }
+  }

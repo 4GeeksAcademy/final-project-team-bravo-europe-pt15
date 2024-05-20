@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
+import "../../styles/signup.css"
 
 export const Signup = () => {
   const [email, setEmail] = useState("");
