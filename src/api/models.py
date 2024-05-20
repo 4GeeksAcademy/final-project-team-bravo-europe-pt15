@@ -7,6 +7,14 @@ class TransformedImage(db.Model):
     url = db.Column(db.String(255), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "url": self.url, 
+            "user_id": self.user_id,
+        }
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
