@@ -59,11 +59,11 @@ const Dashboard = () => {
   const fetchUserDetails = async () => {
     try {
       const token = localStorage.getItem("token");
-  
+
       const data = await checkAuth();
       setUsername(data.username); // Update username state
       setCredits(data.credits); // Update credits state
-  
+
       const response = await fetch(
         `${process.env.BACKEND_URL}/api/user/transformed-images`,
         {
@@ -81,7 +81,7 @@ const Dashboard = () => {
       console.error("Error fetching user details or images:", error);
     }
   };
-  
+
   // URLs for original and transformed images
   const originalImageURL = cld.image(publicID).toURL();
   const transformedImageURL = appliedEffect
@@ -274,6 +274,16 @@ const Dashboard = () => {
       )}
       <div className={`operations-container ${isLoading ? "blurred" : ""}`}>
         <div className="command-container">
+          <div className="user-options">
+            <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
+            <button onClick={() => handleClick("credits")}>
+              Available Credits <span className="badge">{credits}</span>
+            </button>
+            <button onClick={() => navigate("/transformed-images")}>
+              Transformed Images
+              <span className="badge">{storedImages.length}</span>
+            </button>
+          </div>
           <div className="upload-widget">
             <UploadWidget onImageUpload={handleImageUpload} />
             <p>Click here to upload image for transformation</p>
@@ -335,16 +345,6 @@ const Dashboard = () => {
             )}
             <button onClick={() => handleClick("applyChanges")}>
               Apply Changes
-            </button>
-          </div>
-          <div className="user-options">
-            <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
-            <button onClick={() => handleClick("credits")}>
-              Available Credits <span className="badge">{credits}</span>
-            </button>
-            <button onClick={() => navigate("/transformed-images")}>
-              Transformed Images
-              <span className="badge">{storedImages.length}</span>
             </button>
           </div>
         </div>
