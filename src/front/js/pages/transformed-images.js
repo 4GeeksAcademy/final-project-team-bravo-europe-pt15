@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/transformed-images.css";
+import { downloadImage } from "../utils/imageDownload"; // Import the new image download utility
 
 const TransformedImages = () => {
   const [storedImages, setStoredImages] = useState([]);
@@ -12,7 +13,7 @@ const TransformedImages = () => {
 
     if (!token || !userId) {
       // Redirect to login if not authenticated
-      navigate("/login");
+      navigate("/");
       return;
     } else {
       fetchImages();
@@ -25,7 +26,7 @@ const TransformedImages = () => {
       const userId = localStorage.getItem("user_id");
 
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/user/transformed-images?user_id=${userId}`,
+        `${process.env.BACKEND_URL}/api/user/transformed-images`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -43,8 +44,13 @@ const TransformedImages = () => {
     } catch (error) {
       console.error("Error fetching transformed images:", error);
       // Redirect to login if there's an error fetching images (e.g., token expired)
-      navigate("/login");
+      navigate("/");
     }
+  };
+
+  // Handle image download using the new utility function
+  const handleDownloadImage = (url) => {
+    downloadImage(url);
   };
 
   return (
@@ -56,6 +62,9 @@ const TransformedImages = () => {
           storedImages.map((url, index) => (
             <div className="image-card" key={index}>
               <img src={url} alt={`Transformed ${index + 1}`} />
+              <button onClick={() => handleDownloadImage(url)}>
+                Download Image
+              </button>
             </div>
           ))
         ) : (

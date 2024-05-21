@@ -192,6 +192,8 @@ def reset_password(token):
 
 # Endpoints for credits
 
+
+
 @api.route('/user/credits', methods=['GET'])
 @jwt_required()
 def get_user_credits():
@@ -218,7 +220,9 @@ def get_transformed_images():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     if user:
-        return jsonify(user.serialize()), 200
+        images = TransformedImage.query.filter_by(user_id=current_user_id).all()
+        transformed_images = [image.url for image in images]
+        return jsonify({"transformed_images": transformed_images}), 200
     else:
         return jsonify({"error": "User not found"}), 404
 

@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import PayPalCheckout from "../component/paypalCheckout";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useAuth } from "../utils/auth";
-import { downloadImage } from "../utils/imageDownload"; // Import the new image download utility
 import { delay, retryRequest } from "../utils/retryUtilis"; // Import the new retry utility
 
 // Initialize Cloudinary with your cloud name
@@ -44,20 +43,13 @@ const Dashboard = () => {
   const [storedImages, setStoredImages] = useState([]);
   const { checkAuth } = useAuth(); // Use the new auth.js utility
 
-  // Handle user logout
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user_id");
-    navigate("/");
-  };
-
   // Check if user is authenticated when the component mounts
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("user_id");
 
     if (!token || !userId) {
-      navigate("/login");
+      navigate("/");
       return;
     } else {
       fetchUserDetails();
@@ -67,11 +59,11 @@ const Dashboard = () => {
   const fetchUserDetails = async () => {
     try {
       const token = localStorage.getItem("token");
-
+  
       const data = await checkAuth();
       setUsername(data.username); // Update username state
       setCredits(data.credits); // Update credits state
-
+  
       const response = await fetch(
         `${process.env.BACKEND_URL}/api/user/transformed-images`,
         {
@@ -80,13 +72,16 @@ const Dashboard = () => {
           },
         }
       );
+      if (!response.ok) {
+        throw new Error("Failed to fetch images");
+      }
       const imageData = await response.json();
       setStoredImages(imageData.transformed_images); // Update stored images state
     } catch (error) {
       console.error("Error fetching user details or images:", error);
     }
   };
-
+  
   // URLs for original and transformed images
   const originalImageURL = cld.image(publicID).toURL();
   const transformedImageURL = appliedEffect
@@ -245,14 +240,6 @@ const Dashboard = () => {
     }
   };
 
-  // Handle image download using the new utility function
-  const handleDownloadImage = () => {
-    const transformedImageURL = appliedEffect
-      ? cld.image(publicID).effect(appliedEffect).toURL()
-      : cld.image(publicID).toURL();
-    downloadImage(transformedImageURL);
-  };
-
   const handlePayPalSuccess = (details) => {
     const newCredits = credits + 10; // 1 USD = 10 credits
     setCredits(newCredits);
@@ -355,16 +342,10 @@ const Dashboard = () => {
             <button onClick={() => handleClick("credits")}>
               Available Credits <span className="badge">{credits}</span>
             </button>
-            {appliedEffect && (
-              <button onClick={handleDownloadImage}>
-                Download Transformed Image
-              </button>
-            )}
             <button onClick={() => navigate("/transformed-images")}>
               Transformed Images
               <span className="badge">{storedImages.length}</span>
             </button>
-            <button onClick={handleLogout}>Logout</button>
           </div>
         </div>
         <div className="image-slider-container">
