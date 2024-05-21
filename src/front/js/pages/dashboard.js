@@ -348,6 +348,18 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
+        {showPayPal && (
+          <div className="paypal-modal-overlay">
+            <PayPalScriptProvider
+              options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
+            >
+              <PayPalCheckout
+                onClose={() => setShowPayPal(false)}
+                onSuccess={handlePayPalSuccess}
+              />
+            </PayPalScriptProvider>
+          </div>
+        )}
         <div className="image-slider-container">
           <ImageSlider
             image1={originalImageURL}
@@ -363,18 +375,6 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      {showPayPal && (
-        <div className="paypal-modal-overlay">
-          <PayPalScriptProvider
-            options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
-          >
-            <PayPalCheckout
-              onClose={() => setShowPayPal(false)}
-              onSuccess={handlePayPalSuccess}
-            />
-          </PayPalScriptProvider>
-        </div>
-      )}
     </div>
   );
 };
