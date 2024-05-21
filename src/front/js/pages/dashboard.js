@@ -16,7 +16,6 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useAuth } from "../utils/auth";
 import { delay, retryRequest } from "../utils/retryUtilis"; // Import the new retry utility
 
-// Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
   cloud: {
     cloudName: "dcoocmssy",
@@ -83,7 +82,7 @@ const Dashboard = () => {
   };
 
   // URLs for original and transformed images
-  const originalImageURL = cld.image(publicID).toURL();
+  const originalImageURL = publicID ? cld.image(publicID).toURL() : "";
   const transformedImageURL = appliedEffect
     ? cld.image(publicID).effect(appliedEffect).toURL()
     : originalImageURL;
@@ -364,8 +363,8 @@ const Dashboard = () => {
           <ImageSlider
             image1={originalImageURL}
             image2={transformedImageURL}
-            leftLabelText="Transformed image"
-            rightLabelText="Original image"
+            leftLabelText="Original image"
+            rightLabelText="Transformed image"
             showPlaceholder={true}
             customPlaceholder={
               <div className="custom-placeholder">
