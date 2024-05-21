@@ -1,78 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext"; // Assuming you have a context provider
 import "../../styles/transformed-images.css";
-import { downloadImage } from "../utils/imageDownload"; // Import the new image download utility
+import { downloadImage } from "../utils/imageDownload";
 
 const TransformedImages = () => {
-  const [storedImages, setStoredImages] = useState([]);
-  const navigate = useNavigate();
+    const { store, actions } = useContext(Context);
+    const [storedImages, setStoredImages] = useState([]); // Define the storedImages state
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("user_id");
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("user_id");
 
-    if (!token || !userId) {
-      // Redirect to login if not authenticated
-      navigate("/");
-      return;
-    } else {
-      fetchImages();
-    }
-  }, []);
-
-  const fetchImages = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const userId = localStorage.getItem("user_id");
-
-      const response = await fetch(
-        `${process.env.BACKEND_URL}/api/user/transformed-images`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        if (!token || !userId) {
+            navigate("/");
+            return;
+        } else {
+            fetchImages();
         }
-      );
+    }, []);
 
-      if (!response.ok) {
-        // Handle the case where the response is not ok (e.g., unauthorized)
-        throw new Error("Failed to fetch transformed images");
-      }
+    const fetchImages = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`${process.env.BACKEND_URL}/api/user/transformed-images`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-      const data = await response.json();
-      setStoredImages(data.transformed_images);
-    } catch (error) {
-      console.error("Error fetching transformed images:", error);
-      // Redirect to login if there's an error fetching images (e.g., token expired)
-      navigate("/");
-    }
-  };
+            if (!response.ok) {
+                throw new Error("Failed to fetch transformed images");
+            }
 
-  // Handle image download using the new utility function
-  const handleDownloadImage = (url) => {
-    downloadImage(url);
-  };
+            const data = await response.json();
+            setStoredImages(data.transformed_images);
+        } catch (error) {
+            console.error("Error fetching transformed images:", error);
+            navigate("/");
+        }
+    };
 
-  return (
-    <div className="transformed-images-container">
-      <h2>Transformed Images</h2>
-      <button onClick={() => navigate("/dashboard")}>Back to Dashboard</button>
-      <div className="images-grid">
-        {storedImages.length > 0 ? (
-          storedImages.map((url, index) => (
-            <div className="image-card" key={index}>
-              <img src={url} alt={`Transformed ${index + 1}`} />
-              <button onClick={() => handleDownloadImage(url)}>
-                Download Image
-              </button>
+    const handleDownloadImage = (url) => {
+        downloadImage(url);
+    };
+
+    return (
+        <div className="transformed-images-container">
+            <h2>Transformed Images of {store.username}</h2>
+            <button onClick={() => navigate("/dashboard")}>Back to Dashboard</button>
+            <div className="images-grid">
+                {storedImages.length > 0 ? (
+                    storedImages.map((url, index) => (
+                        <div className="image-card" key={index}>
+                            <img src={url} alt={`Transformed ${index + 1}`} />
+                            <button onClick={() => handleDownloadImage(url)}>Download Image</button>
+                        </div>
+                    ))
+                ) : (
+                    <p>No transformed images found</p>
+                )}
             </div>
-          ))
-        ) : (
-          <p>No transformed images found</p>
-        )}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default TransformedImages;

@@ -30,6 +30,7 @@ export const useAuth = () => {
       }
       const data = await response.json();
       localStorage.setItem("user_id", data.id);
+      localStorage.setItem("username", data.username); // Store username in localStorage
       return data;
     } catch (error) {
       console.error("Error fetching user details:", error);
