@@ -131,7 +131,7 @@ export const Signup = () => {
                   {errors.email}
                 </Form.Control.Feedback>
               </FloatingLabel>
-              <FloatingLabel controlId="password" label="Password">
+              <FloatingLabel className="passwordstyle" controlId="password" label="Password">
                 <Form.Control
                   type="password"
                   placeholder="Password"
@@ -145,6 +145,7 @@ export const Signup = () => {
                 </Form.Control.Feedback>
               </FloatingLabel>
               <FloatingLabel
+                className="passwordstyle"
                 controlId="confirmPassword"
                 label="Confirm Password"
               >
@@ -164,9 +165,11 @@ export const Signup = () => {
                 Password must be at least 8 characters long, include one capital
                 letter, one digit, and one special character
               </p>
-              <Button variant="primary" type="submit" className="mt-3">
-                Signup
-              </Button>
+              <div className="buttonwrapper">
+                <Button variant="primary" type="submit" className="mt-3 my-3">
+                  Signup
+                </Button>
+              </div>
             </Form>
             <div>
               <p>
