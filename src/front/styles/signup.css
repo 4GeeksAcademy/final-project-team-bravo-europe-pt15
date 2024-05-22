@@ -1,10 +1,29 @@
 .signup-form {
     margin-top: 80px; /* Adjust this value as needed */
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color:#1C1C1E;
     border-radius: 8px;
   }
+
+  .signup-form h2 {
+    color: white;
+    padding-bottom: 20px;
+  }
   
+  .signup-form p {
+    color: white;
+  }
+
+  .passwordstyle {
+    padding-bottom: 20px;
+  }
+
+  .buttonwrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   @media (max-width: 576px) {
     .signup-form {
       margin-top: 60px; /* Adjust for smaller screens */

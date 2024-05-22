@@ -97,9 +97,12 @@ export const Login = () => {
                   {errors.password}
                 </Form.Control.Feedback>
               </FloatingLabel>
-              <Button variant="primary" type="submit" className="mt-3">
-                Login
-              </Button>
+              <div className="buttonwrapper">
+                <Button variant="primary" type="submit" className="mt-3">
+                  Login
+                </Button>
+              </div>
+              
             </Form>
             <div>
               <Link to="/forgot-password">Forgot your password?</Link>
