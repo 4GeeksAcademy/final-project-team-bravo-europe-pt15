@@ -26,13 +26,32 @@
   background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
   border: none;
   padding-top: 12px;
+  justify-content: center;
+}
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .custom-card {
   background-color: #1c1c1e;
   color: #fff;
+
+
+}
+.custom-card {
+  background-color: #1c1c1e;
+  color: #fff;
+  border: 1px solid #333; /* Add a border to the card */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19); /* 3D effect using shadow */
+  transition: transform 0.2s; /* Smooth transition for hover effect */
 }
 
+.custom-card:hover {
+  transform: translateY(-10px); /* Slightly raise the card on hover */
+}
 .api-section {
   background-color: #1c1c1e;
   padding: 50px 0;
