@@ -31,7 +31,12 @@ export const Home = () => {
   ];
 
   return (
+    
     <div className="home">
+      {/* Ellipses */}
+      {Array.from({ length: 10 }, (_, i) => (
+        <div key={i} className={`ellipse ellipse-${i + 1}`}></div>
+      ))}
       <Container className="text-center hero">
         <h1>USING AI HAS NEVER BEEN THAT EASY</h1>
         <p>
@@ -88,9 +93,9 @@ export const Home = () => {
             <Form.Label>Name</Form.Label>
             <Form.Control type="text" placeholder="Enter your name" />
           </Form.Group>
-          <Form.Group controlId="formMessage">
+          <Form.Group className="btn-space" controlId="formMessage">
             <Form.Label>Message</Form.Label>
-            <Form.Control
+            <Form.Control 
               as="textarea"
               rows={3}
               placeholder="Enter your message"

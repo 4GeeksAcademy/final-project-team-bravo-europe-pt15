@@ -1,7 +1,21 @@
 .home {
-  background-color: #000;
+  /* background-color: #000; */
   color: #fff;
   min-height: 100vh;
+}
+.text-center h1 {
+  color: #ffffff;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 46px;
+  font-weight: 700;
+  letter-spacing: -1.28px;
+  line-height: normal;
+  text-align: center;
+  text-shadow: 5px 5px 50px #0037ff97;
+  top: 198px;
+}
+.text-center p {
+  font-size: 16px;
 }
 
 .hero {
@@ -11,6 +25,7 @@
 .gradient-button {
   background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
   border: none;
+  padding-top: 12px;
 }
 
 .custom-card {
@@ -27,10 +42,99 @@
   width: 200px;
 }
 
-.contact-section .contact-form {
+.btn-space {
+  margin-bottom: 12px;
+}
+
+.contact-form {
   max-width: 500px;
   margin: 0 auto;
   background-color: #1c1c1e;
   padding: 20px;
   border-radius: 10px;
+}
+
+/* //ELLIPSES MADNESSSSS SORRY FOOOR THE CONFUSION GUYS // */
+
+.ellipse {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(73, 73, 85, 0.8) 0%,
+    rgba(20, 20, 20, 0.8) 100%
+  );
+  border-radius: 50%;
+  filter: blur(10px); /* Adjust the blur effect as desired */
+  position: absolute;
+  z-index: -1;
+}
+
+/* Specific positions for each ellipse */
+.ellipse-1 {
+  width: 100px; /* Adjust width */
+  height: 100px; /* Adjust height */
+  top: 50px;
+  left: 30%;
+}
+
+.ellipse-2 {
+  width: 150px;
+  height: 150px;
+  top: 200px;
+  left: 60%;
+}
+
+.ellipse-3 {
+  width: 75px;
+  height: 75px;
+  top: 400px;
+  left: 10%;
+}
+
+.ellipse-4 {
+  width: 125px;
+  height: 125px;
+  top: 600px;
+  left: 50%;
+}
+
+.ellipse-5 {
+  width: 80px;
+  height: 80px;
+  top: 800px;
+  left: 80%;
+}
+
+.ellipse-6 {
+  width: 110px;
+  height: 110px;
+  top: 1000px;
+  left: 20%;
+}
+
+.ellipse-7 {
+  width: 70px;
+  height: 70px;
+  top: 1200px;
+  left: 40%;
+}
+
+.ellipse-8 {
+  width: 95px;
+  height: 95px;
+  top: 1400px;
+  left: 70%;
+}
+
+.ellipse-9 {
+  width: 120px;
+  height: 120px;
+  top: 1600px;
+  left: 30%;
+}
+
+.ellipse-10 {
+  width: 85px;
+  height: 85px;
+  top: 1800px;
+  left: 50%;
 }
