@@ -1,0 +1,36 @@
+.home {
+  background-color: #000;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.hero {
+  padding: 100px 0;
+}
+
+.gradient-button {
+  background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+  border: none;
+}
+
+.custom-card {
+  background-color: #1c1c1e;
+  color: #fff;
+}
+
+.api-section {
+  background-color: #1c1c1e;
+  padding: 50px 0;
+}
+
+.api-logo {
+  width: 200px;
+}
+
+.contact-section .contact-form {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #1c1c1e;
+  padding: 20px;
+  border-radius: 10px;
+}
