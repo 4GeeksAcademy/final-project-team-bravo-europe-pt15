@@ -1,116 +1,124 @@
-/* Navbar.css */
 body {
-    background-color: black;
+  background-color: black;
 }
 
-nav .navbar {
-    position: fixed;
-    top: 0;
-    border: 1px solid;
-    border-color: #00000000;
-    background-color: rgba(0, 0, 0, 0.038);
-    height: 82px;
-    position: relative;
-    width: 100%; /* Set width to 100% to ensure it spans the entire page */
-    display: flex; /* Use flexbox for easier alignment */
-    justify-content: flex-start; /* Align items to the left */
-    padding: 0 20px; /* Add padding for spacing */
+.navbar-container {
+  margin-bottom: 80px;
 }
-.navbar .navbar-brand{
-    padding-left: 20px;
-    font-size: 32px;
-}
+
 .navbar {
-    transition: background-color 0.3s ease; /* Add transition effect for smoothness */
-
-    border: 1px solid;
-    border-color: #000000;
-    width: 100%;
-    height: 82px;
-    display: flex;
-    justify-content: space-between; /* Align items to the left and right */
-    align-items: center; /* Align items vertically */
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margin */
-    position: fixed; /* Set position to fixed */
-    top: 0; /* Fix it at the top of the viewport */
-    background-color: black; /* Optionally set a background color */
-    z-index: 1000; /* Ensure it's above other content */
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 82px;
+  background-color: black;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
 }
 .navbar.scrolled {
-    background-color: rgba(0, 0, 0, 0.8); /* Adjust the opacity as needed */
+  background-color: rgba(0, 0, 0, 0.8);
 }
-
-.navbar .frame,
-.navbar .div-wrapper,
-.navbar .text-wrapper-2,
-.navbar .text-wrapper-3 {
-    position: relative; /* Remove absolute positioning */
+.navbar-brand {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  font-family: "Poller One", sans-serif;
 }
-
-.navbar .text-wrapper-2 {
-    color: #9e9e9e;
-    font-family: "Poppins-Regular", Helvetica;
-    font-size: 14px;
-    font-weight: 400;
-    margin-right: 20px; /* Add margin to create space between items */
+.menu-icon {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
 }
-
-.navbar .text-wrapper-3 {
-    color: #ffffff;
-    font-family: "Poller One-Regular", Helvetica;
-    font-size: 40px;
-    font-weight: 400;
-    margin-right: 20px; /* Add margin to create space between items */
+.menu-icon-line {
+  width: 25px;
+  height: 3px;
+  background-color: #ffffff;
+  margin: 4px 0;
+  transition: 0.4s;
 }
-
-
-
-
-@import url('https://fonts.googleapis.com/css2?family=Poller+One&display=swap');
-
-body{
-     background-color: #000000; }
-.navbar {
-    border: 1px solid;
-    border-color: #000000;
+.menu-icon-line.open:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.menu-icon-line.open:nth-child(2) {
+  opacity: 0;
+}
+.menu-icon-line.open:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+.contbut {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  transition: transform 0.3s ease-in-out;
+}
+.nav-link,
+.btn {
+  margin-left: 10px;
+  text-decoration: none;
+  width: 50%;
+}
+.btn {
+  all: unset;
+  background: linear-gradient(
+    90deg,
+    rgb(148.2, 179.82, 248.04) 2%,
+    rgb(144.46, 154.12, 241.08) 14.5%,
+    rgb(143.53, 131.56, 217.07) 30.5%,
+    rgb(64.64, 0, 248.63) 87%
+  );
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 12px 28px;
+  margin-left: 10px;
+}
+@media (max-width: 768px) {
+  .contbut {
+    display: none;
+    flex-direction: column;
     width: 100%;
-    height: 82px;
+    background-color: black;
+    position: absolute;
+    top: 82px;
+    left: 0;
+  }
+  .contbut.open {
     display: flex;
-    justify-content: space-between; /* Align items to the left and right */
-    align-items: center; /* Align items vertically */
-    padding:20px;
-    position: fixed;
-}
-
-.navbar .navbar-brand {
-    color: #ffffff;
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
-    font-family: 'Poller One', sans-serif; 
-}
-
-.navbar .contbut {
+    animation: slide-down 0.3s forwards;
+    width: 100%;
+  }
+  .contbut.closing {
+    animation: slide-up 0.3s forwards;
+  }
+  .nav-link,
+  .btn {
+    width: 50%;
+    text-align: center;
+    margin: 10px 0;
+    padding: 8px 20px; /* Adjusted padding for smaller buttons */
+  }
+  .menu-icon {
     display: flex;
-    align-items: center;
-    margin-left: auto; /* Move the buttons to the right */
-    margin-right: 20px; /* Add space to the right side */
+  }
 }
-
-.navbar .btn {
-    all: unset;
-    background: linear-gradient(
-        90deg,
-        rgb(148.2, 179.82, 248.04) 2%,
-        rgb(144.46, 154.12, 241.08) 14.5%,
-        rgb(143.53, 131.56, 217.07) 30.5%,
-        rgb(64.64, 0, 248.63) 87%
-    );
-    border-radius: 5px;
-    color: #ffffff;
-    cursor: pointer;
-    margin-left: 10px; /* Add margin between buttons */
-    padding: 12px 28px;
-    text-decoration: none;
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slide-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
 }
