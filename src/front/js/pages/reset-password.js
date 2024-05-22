@@ -105,7 +105,7 @@ export const ResetPassword = () => {
 
   return (
     <div className="container mt-5 d-flex justify-content-center">
-      <div className="card w-50">
+      <div className="auth-form card w-50">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             {errorMessage && <p className="error-message">{errorMessage}</p>}

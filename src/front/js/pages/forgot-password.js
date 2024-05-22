@@ -29,7 +29,7 @@ export const ForgotPassword = () => {
 
   return (
     <div className="container mt-5 d-flex justify-content-center">
-      <div className="card w-50">
+      <div className="auth-form card w-50">
         <div className="card-body">
           <h1 className="card-title">Forgot your password?</h1>
           <p className="card-text">
