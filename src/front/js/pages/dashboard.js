@@ -14,10 +14,8 @@ import { useNavigate } from "react-router-dom";
 import PayPalCheckout from "../component/paypalCheckout";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useAuth } from "../utils/auth";
-import { downloadImage } from "../utils/imageDownload"; // Import the new image download utility
 import { delay, retryRequest } from "../utils/retryUtilis"; // Import the new retry utility
 
-// Initialize Cloudinary with your cloud name
 const cld = new Cloudinary({
   cloud: {
     cloudName: "dcoocmssy",
@@ -44,20 +42,13 @@ const Dashboard = () => {
   const [storedImages, setStoredImages] = useState([]);
   const { checkAuth } = useAuth(); // Use the new auth.js utility
 
-  // Handle user logout
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user_id");
-    navigate("/");
-  };
-
   // Check if user is authenticated when the component mounts
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("user_id");
 
     if (!token || !userId) {
-      navigate("/login");
+      navigate("/");
       return;
     } else {
       fetchUserDetails();
@@ -80,6 +71,9 @@ const Dashboard = () => {
           },
         }
       );
+      if (!response.ok) {
+        throw new Error("Failed to fetch images");
+      }
       const imageData = await response.json();
       setStoredImages(imageData.transformed_images); // Update stored images state
     } catch (error) {
@@ -88,7 +82,7 @@ const Dashboard = () => {
   };
 
   // URLs for original and transformed images
-  const originalImageURL = cld.image(publicID).toURL();
+  const originalImageURL = publicID ? cld.image(publicID).toURL() : "";
   const transformedImageURL = appliedEffect
     ? cld.image(publicID).effect(appliedEffect).toURL()
     : originalImageURL;
@@ -245,14 +239,6 @@ const Dashboard = () => {
     }
   };
 
-  // Handle image download using the new utility function
-  const handleDownloadImage = () => {
-    const transformedImageURL = appliedEffect
-      ? cld.image(publicID).effect(appliedEffect).toURL()
-      : cld.image(publicID).toURL();
-    downloadImage(transformedImageURL);
-  };
-
   const handlePayPalSuccess = (details) => {
     const newCredits = credits + 10; // 1 USD = 10 credits
     setCredits(newCredits);
@@ -287,6 +273,16 @@ const Dashboard = () => {
       )}
       <div className={`operations-container ${isLoading ? "blurred" : ""}`}>
         <div className="command-container">
+          <div className="user-options">
+            <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
+            <button onClick={() => handleClick("credits")}>
+              Available Credits <span className="badge">{credits}</span>
+            </button>
+            <button onClick={() => navigate("/transformed-images")}>
+              Transformed Images
+              <span className="badge">{storedImages.length}</span>
+            </button>
+          </div>
           <div className="upload-widget">
             <UploadWidget onImageUpload={handleImageUpload} />
             <p>Click here to upload image for transformation</p>
@@ -350,23 +346,19 @@ const Dashboard = () => {
               Apply Changes
             </button>
           </div>
-          <div className="user-options">
-            <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
-            <button onClick={() => handleClick("credits")}>
-              Available Credits <span className="badge">{credits}</span>
-            </button>
-            {appliedEffect && (
-              <button onClick={handleDownloadImage}>
-                Download Transformed Image
-              </button>
-            )}
-            <button onClick={() => navigate("/transformed-images")}>
-              Transformed Images
-              <span className="badge">{storedImages.length}</span>
-            </button>
-            <button onClick={handleLogout}>Logout</button>
-          </div>
         </div>
+        {showPayPal && (
+          <div className="paypal-modal-overlay">
+            <PayPalScriptProvider
+              options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
+            >
+              <PayPalCheckout
+                onClose={() => setShowPayPal(false)}
+                onSuccess={handlePayPalSuccess}
+              />
+            </PayPalScriptProvider>
+          </div>
+        )}
         <div className="image-slider-container">
           <ImageSlider
             image1={originalImageURL}
@@ -382,18 +374,6 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      {showPayPal && (
-        <div className="paypal-modal-overlay">
-          <PayPalScriptProvider
-            options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
-          >
-            <PayPalCheckout
-              onClose={() => setShowPayPal(false)}
-              onSuccess={handlePayPalSuccess}
-            />
-          </PayPalScriptProvider>
-        </div>
-      )}
     </div>
   );
 };
