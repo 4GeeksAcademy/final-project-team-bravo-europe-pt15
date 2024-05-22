@@ -363,8 +363,8 @@ const Dashboard = () => {
           <ImageSlider
             image1={originalImageURL}
             image2={transformedImageURL}
-            leftLabelText="Original image"
-            rightLabelText="Transformed image"
+            leftLabelText="Transformed image"
+            rightLabelText="Original image"
             showPlaceholder={true}
             customPlaceholder={
               <div className="custom-placeholder">
