@@ -6,10 +6,9 @@
   align-items: top;
   width: 100%;
   height: 100%;
-  background-color: #f0f0f0;
-  border: 2px dashed #ccc;
-  color: #333;
+  background-color: #1c1c1e;
+  border: 2px #ccc;
+  color: #fff;
   font-size: 1.2em;
   text-align: center;
-  padding: 20px;
 }

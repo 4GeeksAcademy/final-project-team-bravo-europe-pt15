@@ -1,8 +1,8 @@
 /* UploadWidget.css */
 
 .upload-button {
-  background-color: white; /* White background color */
-  border: none;
+  background-color: #1c1c1e;
+  border: 2;
   color: white; /* Text color */
   padding: 15px 32px;
   text-align: center;
