@@ -24,14 +24,13 @@ export const Home = () => {
   };
 
   const videos = [
-    "https://demo-res.cloudinary.com/video/upload/c_pad,h_400,w_711,b_blurred:1000/w_400/ang_dub_vertical.webm",
-    "https://demo-res.cloudinary.com/video/upload/c_pad,h_400,w_711,b_blurred:1000/w_400/ang_dub_vertical.webm",
-    "https://demo-res.cloudinary.com/video/upload/c_pad,h_400,w_711,b_blurred:1000/w_400/ang_dub_vertical.webm",
-    "https://demo-res.cloudinary.com/video/upload/c_pad,h_400,w_711,b_blurred:1000/w_400/ang_dub_vertical.webm",
+    "https://res.cloudinary.com/dcoocmssy/video/upload/v1716572625/mafl/lu4vrszysxcnt7s65epn.webm",
+    "https://res.cloudinary.com/dfxwm93pu/video/upload/v1716573357/MAFL_-_ImageAlchemy_-_Google_Chrome_2024-05-24_19-48-19_j7zapv.mp4",
+    "https://res.cloudinary.com/dfxwm93pu/video/upload/v1716574042/MAFL_-_ImageAlchemy_-_Google_Chrome_2024-05-24_20-04-34_qb7grb.mp4",
+    "https://res.cloudinary.com/dcoocmssy/video/upload/v1716573869/mafl/wcpflrgpcvxtnoclljmu.webm",
   ];
 
   return (
-    
     <div className="home">
       {/* Ellipses */}
       {Array.from({ length: 10 }, (_, i) => (
@@ -58,12 +57,14 @@ export const Home = () => {
                     Some quick example text to build on the card title and make
                     up the bulk of the card's content.
                   </Card.Text>
-                  <div className="button-wrapper"><Button
-                    className="gradient-button"
-                    onClick={() => handleShowVideo(videoUrl)}
-                  >
-                    Show example
-                  </Button></div>
+                  <div className="button-wrapper">
+                    <Button
+                      className="gradient-button"
+                      onClick={() => handleShowVideo(videoUrl)}
+                    >
+                      Show example
+                    </Button>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>
@@ -95,7 +96,7 @@ export const Home = () => {
           </Form.Group>
           <Form.Group className="btn-space" controlId="formMessage">
             <Form.Label>Message</Form.Label>
-            <Form.Control 
+            <Form.Control
               as="textarea"
               rows={3}
               placeholder="Enter your message"
