@@ -29,7 +29,6 @@ export const ForgotPassword = () => {
 
   return (
     <div className="container mt-5 d-flex justify-content-center">
-      <div className="auth-form card w-50">
         <div className="card-body">
           <h1 className="card-title">Forgot your password?</h1>
           <p className="card-text">
@@ -50,13 +49,14 @@ export const ForgotPassword = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
+            <div className="buttonwrapper">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
           </form>
           {/* <Link to="/login" className="btn btn-link">Back to login page</Link> Add real link to login page */}
         </div>
-      </div>
     </div>
   );
 };

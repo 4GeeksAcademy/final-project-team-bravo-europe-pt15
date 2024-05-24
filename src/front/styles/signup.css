@@ -26,6 +26,6 @@
 
   @media (max-width: 576px) {
     .signup-form {
-      margin-top: 60px; /* Adjust for smaller screens */
+      margin-top: 60px; 
     }
   }
