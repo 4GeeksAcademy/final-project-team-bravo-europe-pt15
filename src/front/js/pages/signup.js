@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
-import "../../styles/signup.css"
+import Swal from "sweetalert2";
+import "../../styles/signup.css";
 
 export const Signup = () => {
   const [email, setEmail] = useState("");
@@ -81,7 +82,12 @@ export const Signup = () => {
         console.log("User signed up successfully!");
         navigate("/login"); // Navigate to login page
       } catch (error) {
-        alert("User with this email already exists");
+        Swal.fire({
+          title: "Error!",
+          text: "User with this email already exists",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
         console.error("Error signing up:", error.message);
       }
     } else {
@@ -131,7 +137,11 @@ export const Signup = () => {
                   {errors.email}
                 </Form.Control.Feedback>
               </FloatingLabel>
-              <FloatingLabel className="passwordstyle" controlId="password" label="Password">
+              <FloatingLabel
+                className="passwordstyle"
+                controlId="password"
+                label="Password"
+              >
                 <Form.Control
                   type="password"
                   placeholder="Password"

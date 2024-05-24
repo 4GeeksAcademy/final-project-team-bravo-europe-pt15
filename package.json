@@ -90,6 +90,7 @@
 		"react-polyfills": "0.0.1",
 		"react-router-dom": "^6.23.1",
 		"react-slick": "^0.30.2",
-		"slick-carousel": "^1.8.1"
+		"slick-carousel": "^1.8.1",
+		"sweetalert2": "^11.11.0"
 	}
 }

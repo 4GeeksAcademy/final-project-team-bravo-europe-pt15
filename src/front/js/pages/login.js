@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
-import "../../styles/login.css"
+import Swal from "sweetalert2";
+import "../../styles/login.css";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -51,7 +52,12 @@ export const Login = () => {
         // Redirect to dashboard
         navigate("/dashboard");
       } catch (error) {
-        alert(" Wrong password or email");
+        Swal.fire({
+          title: "Error!",
+          text: "Wrong password or email",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
         console.error("Error logging in:", error.message);
       }
     } else {
@@ -102,7 +108,6 @@ export const Login = () => {
                   Login
                 </Button>
               </div>
-              
             </Form>
             <div>
               <Link to="/forgot-password">Forgot your password?</Link>
