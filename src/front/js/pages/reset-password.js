@@ -30,38 +30,38 @@ export const ResetPassword = () => {
   };
 
   useEffect(() => {
-    const checkTokenValidity = async () => {
-      const token = searchParams.get("token");
-      if (!token) {
-        navigate("/forgot-password");
-        return;
-      }
+    // const checkTokenValidity = async () => {
+    //   const token = searchParams.get("token");
+    //   if (!token) {
+    //     navigate("/forgot-password");
+    //     return;
+    //   }
 
-      try {
-        const response = await fetch(
-          `${process.env.BACKEND_URL}/api/check-token/${token}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+    //   try {
+    //     const response = await fetch(
+    //       `${process.env.BACKEND_URL}/api/check-token/${token}`,
+    //       {
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //       }
+    //     );
 
-        if (!response.ok) {
-          throw new Error("Token is invalid");
-        }
+    //     if (!response.ok) {
+    //       throw new Error("Token is invalid");
+    //     }
 
-        const data = await response.json();
-        if (!data.success) {
-          navigate("/forgot-password");
-        }
-      } catch (error) {
-        console.error("Error checking token validity:", error);
-        navigate("/forgot-password");
-      }
-    };
+    //     const data = await response.json();
+    //     if (!data.success) {
+    //       navigate("/forgot-password");
+    //     }
+    //   } catch (error) {
+    //     console.error("Error checking token validity:", error);
+    //     navigate("/forgot-password");
+    //   }
+    // };
 
-    checkTokenValidity();
+    // checkTokenValidity();
   }, [searchParams, navigate]);
 
   const handleSubmit = async (event) => {
@@ -77,35 +77,34 @@ export const ResetPassword = () => {
       return;
     }
 
-    try {
-      const token = searchParams.get("token");
-      const response = await fetch(
-        `${process.env.BACKEND_URL}/api/reset-password/${token}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ new_password: password }),
-        }
-      );
+    // try {
+    //   const token = searchParams.get("token");
+    //   const response = await fetch(
+    //     `${process.env.BACKEND_URL}/api/reset-password/${token}`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({ new_password: password }),
+    //     }
+    //   );
 
-      if (!response.ok) {
-        throw new Error("Failed to reset password");
-      }
+    //   if (!response.ok) {
+    //     throw new Error("Failed to reset password");
+    //   }
 
-      const data = await response.json();
-      setSuccessMessage(data.msg);
-      navigate("/login");
-    } catch (error) {
-      console.error("Error resetting password:", error);
-      setErrorMessage("Error resetting password");
-    }
+    //   const data = await response.json();
+    //   setSuccessMessage(data.msg);
+    //   navigate("/login");
+    // } catch (error) {
+    //   console.error("Error resetting password:", error);
+    //   setErrorMessage("Error resetting password");
+    // }
   };
 
   return (
     <div className="container mt-5 d-flex justify-content-center">
-      <div className="auth-form card w-50">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -145,12 +144,13 @@ export const ResetPassword = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
+            <div className="buttonwrapper">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
           </form>
         </div>
       </div>
-    </div>
   );
 }
