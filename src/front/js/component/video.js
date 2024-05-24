@@ -35,12 +35,12 @@ export const VideoCard = ({ show, onHide, videoUrl }) => (
         </video>
       </CardMedia>
       <CardContent>
-        <Typography variant="h6" component="div">
+        {/* <Typography variant="h6" component="div">
           Video Title
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Video description goes here. This is a sample video inside a card.
-        </Typography>
+        </Typography> */}
       </CardContent>
       <Box sx={{ display: "flex", justifyContent: "flex-end", p: 2 }}>
         <Button onClick={onHide} variant="contained" color="primary">
