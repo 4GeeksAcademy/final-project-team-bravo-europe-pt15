@@ -30,6 +30,25 @@ export const Home = () => {
     "https://res.cloudinary.com/dcoocmssy/video/upload/v1716573869/mafl/wcpflrgpcvxtnoclljmu.webm",
   ];
 
+  const cards = [
+    {
+      title: "Upscale",
+      text: "Enhance the quality of images when upscaling them, making them clearer and sharper (maximum possible image size: 625 x 400 pixels",
+    },
+    {
+      title: "Background Removal",
+      text: "Dynamically extracts the foreground subject in images while removing the background on the fly.",
+    },
+    {
+      title: "Generative Remove",
+      text: "Effortlessly eliminates unwanted objects, text, or user-defined regions from images.",
+    },
+    {
+      title: "Generative Replace",
+      text: "Replace objects within images with alternative objects or images, while maintaining a natural look.",
+    },
+  ];
+
   return (
     <div className="home">
       {/* Ellipses */}
@@ -37,9 +56,9 @@ export const Home = () => {
         <div key={i} className={`ellipse ellipse-${i + 1}`}></div>
       ))}
       <Container className="text-center hero">
-        <h1>USING AI HAS NEVER BEEN THAT EASY</h1>
+        <h1>USING AI HAS NEVER BEEN THIS EASY</h1>
         <p>
-          Editing, transcribing, and formatting texts and photos were never that
+          Editing and formatting photos and pictures has never been this
           easy!
         </p>
         <Button onClick={handleClick} className="gradient-button">
@@ -48,24 +67,21 @@ export const Home = () => {
       </Container>
       <Container>
         <Row className="mt-5">
-          {videos.map((videoUrl, index) => (
+          {cards.map((card, index) => (
             <Col md={6} lg={3} className="mb-4" key={index}>
-              <Card className="custom-card">
-                <Card.Body>
-                  <Card.Title>Card Title {index + 1}</Card.Title>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Card.Text>
-                  <div className="button-wrapper">
-                    <Button
-                      className="gradient-button"
-                      onClick={() => handleShowVideo(videoUrl)}
-                    >
-                      Show example
-                    </Button>
-                  </div>
+              <Card className="card-size custom-card">
+                <Card.Body className="card-content">
+                  <Card.Title>{card.title}</Card.Title>
+                  <Card.Text>{card.text}</Card.Text>
                 </Card.Body>
+                <div className="button-wrapper">
+                  <Button
+                    className="gradient-button"
+                    onClick={() => handleShowVideo(videos[index])}
+                  >
+                    Show example
+                  </Button>
+                </div>
               </Card>
             </Col>
           ))}
