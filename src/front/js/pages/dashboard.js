@@ -8,6 +8,7 @@ import {
 } from "@cloudinary/url-gen/actions/effect";
 import UploadWidget from "../component/UploadWidget";
 import ImageSlider from "react-image-comparison-slider";
+import Swal from 'sweetalert2';
 import "../../styles/dashboard.css";
 import "../../styles/imagePlaceholder.css";
 import { useNavigate } from "react-router-dom";
@@ -112,9 +113,12 @@ const Dashboard = () => {
           setShowPrompt(false);
           setShowPrompts(false);
         } else {
-          alert(
-            "Background removal is experiencing issues. Please try again later."
-          );
+          Swal.fire({
+            title: 'Error!',
+            text: 'Background removal is experiencing issues. Please try again later.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
         }
         break;
 
@@ -138,9 +142,12 @@ const Dashboard = () => {
             const width = this.width;
             const height = this.height;
             if (width > 625 || height > 400) {
-              alert(
-                "The uploaded image is too big for upscaling. Maximum dimensions required: 625x400 pixels."
-              );
+              Swal.fire({
+                title: 'Error!',
+                text: 'The uploaded image is too big for upscaling. Maximum dimensions required: 625x400 pixels.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
             } else {
               setEffect(upscale());
               setShowPrompt(false);
@@ -212,7 +219,12 @@ const Dashboard = () => {
                   transformedImage,
                 ]);
 
-                alert("Image processing complete. Credits have been deducted.");
+                Swal.fire({
+                  title: 'Success!',
+                  text: 'Image processing complete. Credits have been deducted.',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+                });
               } catch (error) {
                 console.error(
                   "Error updating user credits or storing the image:",
@@ -223,10 +235,20 @@ const Dashboard = () => {
               }
             }, 5000);
           } else {
-            alert("You have no credits left. Please fill up your credits.");
+            Swal.fire({
+              title: 'Error!',
+              text: 'You have no credits left. Please fill up your credits.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
           }
         } else {
-          alert("Please select an effect to apply.");
+          Swal.fire({
+            title: 'Error!',
+            text: 'Please select an effect to apply.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
         }
         break;
 
