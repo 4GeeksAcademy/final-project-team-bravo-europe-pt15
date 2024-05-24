@@ -49,9 +49,17 @@ export const Navbar = () => {
     (location.pathname === "/dashboard" ||
       location.pathname === "/transformed-images");
 
+  const isDashboardOrImagesPage =
+    location.pathname === "/dashboard" ||
+    location.pathname === "/transformed-images";
+
   return (
     <div className="navbar-container">
-      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      <nav
+        className={`navbar ${scrolled ? "scrolled" : ""} ${
+          isDashboardOrImagesPage ? "static" : ""
+        }`}
+      >
         <Link to="/" className="navbar-brand" onClick={handleLinkClick}>
           MAFL
         </Link>
