@@ -9,8 +9,8 @@ const UploadWidget = ({ onImageUpload }) => {
     cloudinaryRef.current = window.cloudinary;
     widgetRef.current = cloudinaryRef.current.createUploadWidget(
       {
-        cloudName: "dcoocmssy",
-        uploadPreset: "jsm_mafl",
+        cloudName: "dfxwm93pu",
+        uploadPreset: "my-preset",
       },
       function (error, result) {
         if (!error && result && result.event === "success") {

@@ -19,7 +19,7 @@ import { delay, retryRequest } from "../utils/retryUtilis"; // Import the new re
 
 const cld = new Cloudinary({
   cloud: {
-    cloudName: "dcoocmssy",
+    cloudName: "dfxwm93pu",
   },
 });
 
