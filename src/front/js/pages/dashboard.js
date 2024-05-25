@@ -304,10 +304,10 @@ const Dashboard = () => {
               Transformed Images
               <span className="badge">{storedImages.length}</span>
             </button>
-          </div>
-          <div className="upload-widget">
-            <UploadWidget onImageUpload={handleImageUpload} />
-            <p>Click here to upload image for transformation</p>
+            <div className="upload-widget">
+              <UploadWidget onImageUpload={handleImageUpload} />
+              <p>Click here to upload image for transformation</p>
+            </div>
           </div>
           <div className="operations-buttons">
             <p>{instructionText}</p>

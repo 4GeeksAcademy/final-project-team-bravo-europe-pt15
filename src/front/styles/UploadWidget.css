@@ -4,18 +4,14 @@
   background-color: #1c1c1e;
   border: 2;
   color: white; /* Text color */
-  padding: 15px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin-top: 20px; /* Adjust spacing as needed */
   cursor: pointer;
   border-radius: 10px; /* Rounded border radius */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
   position: relative;
-  height: 80px;
-  width: 80px;
+  height: 50px;
   font-weight: bold;
 }
 
