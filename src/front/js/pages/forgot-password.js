@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import "../../styles/forgot-password.css";
 
 export const ForgotPassword = () => {
@@ -11,30 +11,33 @@ export const ForgotPassword = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`${process.env.BACKEND_URL}/api/forgot-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        `${process.env.BACKEND_URL}/api/forgot-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
       const data = await response.json();
       console.log(data);
       Swal.fire({
-        title: 'Success!',
+        title: "Success!",
         text: data.msg,
-        icon: 'success',
-        confirmButtonText: 'OK'
+        icon: "success",
+        confirmButtonText: "OK",
       }).then(() => {
         navigate("/");
       });
     } catch (error) {
       console.error("Error:", error);
       Swal.fire({
-        title: 'Error!',
-        text: 'Something went wrong. Please try again later.',
-        icon: 'error',
-        confirmButtonText: 'OK'
+        title: "Error!",
+        text: "Something went wrong. Please try again later.",
+        icon: "error",
+        confirmButtonText: "OK",
       });
     }
   };
