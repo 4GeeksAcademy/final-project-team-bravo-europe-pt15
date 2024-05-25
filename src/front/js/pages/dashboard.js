@@ -8,7 +8,7 @@ import {
 } from "@cloudinary/url-gen/actions/effect";
 import UploadWidget from "../component/UploadWidget";
 import ImageSlider from "react-image-comparison-slider";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import "../../styles/dashboard.css";
 import "../../styles/imagePlaceholder.css";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ import { delay, retryRequest } from "../utils/retryUtilis"; // Import the new re
 
 const cld = new Cloudinary({
   cloud: {
-    cloudName: "dfxwm93pu",
+    cloudName: "dcoocmssy",
   },
 });
 
@@ -114,10 +114,10 @@ const Dashboard = () => {
           setShowPrompts(false);
         } else {
           Swal.fire({
-            title: 'Error!',
-            text: 'Background removal is experiencing issues. Please try again later.',
-            icon: 'error',
-            confirmButtonText: 'OK'
+            title: "Error!",
+            text: "Background removal is experiencing issues. Please try again later.",
+            icon: "error",
+            confirmButtonText: "OK",
           });
         }
         break;
@@ -143,10 +143,10 @@ const Dashboard = () => {
             const height = this.height;
             if (width > 625 || height > 400) {
               Swal.fire({
-                title: 'Error!',
-                text: 'The uploaded image is too big for upscaling. Maximum dimensions required: 625x400 pixels.',
-                icon: 'error',
-                confirmButtonText: 'OK'
+                title: "Error!",
+                text: "The uploaded image is too big for upscaling. Maximum dimensions required: 625x400 pixels.",
+                icon: "error",
+                confirmButtonText: "OK",
               });
             } else {
               setEffect(upscale());
@@ -220,10 +220,10 @@ const Dashboard = () => {
                 ]);
 
                 Swal.fire({
-                  title: 'Success!',
-                  text: 'Image processing complete. Credits have been deducted.',
-                  icon: 'success',
-                  confirmButtonText: 'OK'
+                  title: "Success!",
+                  text: "Image processing complete. Credits have been deducted.",
+                  icon: "success",
+                  confirmButtonText: "OK",
                 });
               } catch (error) {
                 console.error(
@@ -236,18 +236,18 @@ const Dashboard = () => {
             }, 5000);
           } else {
             Swal.fire({
-              title: 'Error!',
-              text: 'You have no credits left. Please fill up your credits.',
-              icon: 'error',
-              confirmButtonText: 'OK'
+              title: "Error!",
+              text: "You have no credits left. Please fill up your credits.",
+              icon: "error",
+              confirmButtonText: "OK",
             });
           }
         } else {
           Swal.fire({
-            title: 'Error!',
-            text: 'Please select an effect to apply.',
-            icon: 'error',
-            confirmButtonText: 'OK'
+            title: "Error!",
+            text: "Please select an effect to apply.",
+            icon: "error",
+            confirmButtonText: "OK",
           });
         }
         break;
@@ -304,10 +304,10 @@ const Dashboard = () => {
               Transformed Images
               <span className="badge">{storedImages.length}</span>
             </button>
-          </div>
-          <div className="upload-widget">
-            <UploadWidget onImageUpload={handleImageUpload} />
-            <p>Click here to upload image for transformation</p>
+            <div className="upload-widget">
+              <UploadWidget onImageUpload={handleImageUpload} />
+              <p>Click here to upload image for transformation</p>
+            </div>
           </div>
           <div className="operations-buttons">
             <p>{instructionText}</p>
