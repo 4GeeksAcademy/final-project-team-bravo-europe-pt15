@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { Context } from "../store/appContext"; // Assuming you have a context provider
 import "../../styles/transformed-images.css";
 import { downloadImage } from "../utils/imageDownload";
 
 const TransformedImages = () => {
   const { store, actions } = useContext(Context);
-  const [storedImages, setStoredImages] = useState([]); // Define the storedImages state
+  const [storedImages, setStoredImages] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,8 +50,45 @@ const TransformedImages = () => {
     downloadImage(url);
   };
 
-  const handleDeleteImage = (url) => {
-    // Logic for deleting the image will go here
+  const handleDeleteImage = async (url) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `${process.env.BACKEND_URL}/api/user/transformed-images`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ url }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete image");
+      }
+
+      // Remove the deleted image from the local state
+      setStoredImages(storedImages.filter((imageUrl) => imageUrl !== url));
+
+      // Show success message
+      Swal.fire({
+        title: "Deleted!",
+        text: "The image has been deleted.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to delete the image. Please try again later.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (
