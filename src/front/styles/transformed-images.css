@@ -1,28 +1,69 @@
+/* styles/transformed-images.css */
+
 .transformed-images-container {
-  padding: 20px;
   text-align: center;
-  margin-top: 80px;
+  padding: 20px;
 }
+
 .transformed-images-container h2 {
-  color: #ccc;
+  color: #fff;
 }
 
 .images-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 20px;
+  justify-content: center;
 }
 
 .image-card {
-  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  width: 200px;
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image-card img {
   width: 100%;
-  height: auto;
+  display: block;
+}
+
+.image-card-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #1c1c1e;
+}
+
+.download-btn {
+  background-color: #28a745; /* Green color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+  background-color: #218838;
+}
+
+.delete-btn {
+  background-color: #dc3545; /* Red color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
 }
