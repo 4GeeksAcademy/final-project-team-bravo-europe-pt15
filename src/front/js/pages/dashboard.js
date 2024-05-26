@@ -42,6 +42,12 @@ const Dashboard = () => {
   );
   const [storedImages, setStoredImages] = useState([]);
   const { checkAuth } = useAuth(); // Use the new auth.js utility
+  const [showModal, setShowModal] = useState(false); // State to show or hide the modal
+  const closeModal = () => {
+    setShowModal(false);
+    setShowPrompt(false);
+    setShowPrompts(false);
+  };
 
   // Check if user is authenticated when the component mounts
   useEffect(() => {
@@ -101,6 +107,7 @@ const Dashboard = () => {
 
   // Handle button clicks for various transformations
   const handleClick = async (button) => {
+    setShowModal(true); // Show the modal when a button is clicked
     switch (button) {
       case "removeBackground":
         setIsLoading(true); // Set loading state to true
@@ -118,6 +125,9 @@ const Dashboard = () => {
             text: "Background removal is experiencing issues. Please try again later.",
             icon: "error",
             confirmButtonText: "OK",
+          }).then(() => {
+            setEffect(null); // Disable the effect
+            setShowModal(false); // Close the modal
           });
         }
         break;
@@ -224,6 +234,8 @@ const Dashboard = () => {
                   text: "Image processing complete. Credits have been deducted.",
                   icon: "success",
                   confirmButtonText: "OK",
+                }).then(() => {
+                  setShowModal(false); // Close the modal after SweetAlert
                 });
               } catch (error) {
                 console.error(
@@ -336,38 +348,46 @@ const Dashboard = () => {
               Upscale image
             </button>
           </div>
-          <div className="additional-options">
-            <h4>Additional options</h4>
-            {showPrompt && (
-              <div className="prompt">
-                <input
-                  type="text"
-                  value={promptText}
-                  onChange={(e) => setPromptText(e.target.value)}
-                  placeholder="Object to remove from image"
-                />
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <button className="close-modal-btn" onClick={closeModal}>
+                  X
+                </button>
+                <div className="additional-options">
+                  {showPrompt && (
+                    <div className="prompt">
+                      <input
+                        type="text"
+                        value={promptText}
+                        onChange={(e) => setPromptText(e.target.value)}
+                        placeholder="Object to remove from image"
+                      />
+                    </div>
+                  )}
+                  {showPrompts && (
+                    <div className="prompts">
+                      <input
+                        type="text"
+                        value={prompt1}
+                        onChange={(e) => setPrompt1(e.target.value)}
+                        placeholder="Object to remove"
+                      />
+                      <input
+                        type="text"
+                        value={prompt2}
+                        onChange={(e) => setPrompt2(e.target.value)}
+                        placeholder="Object to replace removed object"
+                      />
+                    </div>
+                  )}
+                  <button onClick={() => handleClick("applyChanges")}>
+                    Apply Changes
+                  </button>
+                </div>
               </div>
-            )}
-            {showPrompts && (
-              <div className="prompts">
-                <input
-                  type="text"
-                  value={prompt1}
-                  onChange={(e) => setPrompt1(e.target.value)}
-                  placeholder="Object to remove"
-                />
-                <input
-                  type="text"
-                  value={prompt2}
-                  onChange={(e) => setPrompt2(e.target.value)}
-                  placeholder="Object to replace removed object"
-                />
-              </div>
-            )}
-            <button onClick={() => handleClick("applyChanges")}>
-              Apply Changes
-            </button>
-          </div>
+            </div>
+          )}
         </div>
         {showPayPal && (
           <div className="paypal-modal-overlay">
