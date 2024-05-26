@@ -85,6 +85,7 @@
 		"react-bootstrap": "^2.10.2",
 		"react-compare-slider": "^3.1.0",
 		"react-dom": "^18.3.1",
+		"react-icons": "^5.2.1",
 		"react-image-comparison-slider": "^1.8.4",
 		"react-paypal-js": "^0.0.1-security",
 		"react-polyfills": "0.0.1",

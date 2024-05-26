@@ -1,5 +1,3 @@
-/* styles/transformed-images.css */
-
 .transformed-images-container {
   text-align: center;
   padding: 20px;
@@ -9,6 +7,52 @@
   color: #fff;
 }
 
+button {
+  margin: 10px;
+  padding: 10px;
+}
+
+.switch-view-btn {
+  background-color: gray;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 20px;
+}
+
+.switch-view-btn:hover {
+  background-color: darkgray;
+}
+
+.switch-view-btn .tooltip-text {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the button */
+  left: 50%;
+  margin-left: -80px; /* Center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.switch-view-btn:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
 .images-grid {
   display: flex;
   flex-wrap: wrap;
@@ -16,16 +60,28 @@
   justify-content: center;
 }
 
+.images-grid .image-card {
+  width: 300px; /* Larger width for grid view */
+}
+
+.images-list {
+  display: block;
+}
+
 .image-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  width: 200px;
+  width: 200px; /* Default width */
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.images-list .image-card {
+  width: 100%; /* Full width for list view */
 }
 
 .image-card img {
@@ -38,6 +94,9 @@
   justify-content: space-between;
   padding: 10px;
   background-color: #1c1c1e;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .download-btn {
