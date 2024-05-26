@@ -10,6 +10,7 @@ const TransformedImages = () => {
   const { store, actions } = useContext(Context);
   const [storedImages, setStoredImages] = useState([]);
   const [isGridView, setIsGridView] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,6 +23,15 @@ const TransformedImages = () => {
     } else {
       fetchImages();
     }
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const fetchImages = async () => {
@@ -100,14 +110,17 @@ const TransformedImages = () => {
   return (
     <div className="transformed-images-container">
       <h2>Transformed Images of {store.username}</h2>
-      <button onClick={() => navigate("/dashboard")}>Back to Dashboard</button>
-      <br></br>
-      <button className="switch-view-btn" onClick={toggleView}>
-        {isGridView ? <FaThList /> : <FaThLarge />}
-        <span className="tooltip-text">
-          Switch to {isGridView ? "List View" : "Grid View"}
-        </span>
-      </button>
+      <div className={`sticky-header ${isScrolled ? "scrolled" : ""}`}>
+        <button onClick={() => navigate("/dashboard")}>
+          Back to Dashboard
+        </button>
+        <button className="switch-view-btn" onClick={toggleView}>
+          {isGridView ? <FaThList /> : <FaThLarge />}
+          <span className="tooltip-text">
+            Switch to {isGridView ? "List View" : "Grid View"}
+          </span>
+        </button>
+      </div>
       <div className={`images-${isGridView ? "grid" : "list"}`}>
         {storedImages.length > 0 ? (
           storedImages.map((url, index) => (

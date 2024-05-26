@@ -7,6 +7,21 @@
   color: #fff;
 }
 
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+}
+
+.sticky-header.scrolled {
+  background-color: rgba(0, 0, 0, 0.8); /* Less transparent when scrolled */
+}
+
 button {
   margin: 10px;
   padding: 10px;
@@ -24,7 +39,6 @@ button {
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-top: 20px;
 }
 
 .switch-view-btn:hover {
