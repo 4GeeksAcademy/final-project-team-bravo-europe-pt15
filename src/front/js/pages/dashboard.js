@@ -151,6 +151,7 @@ const Dashboard = () => {
             const width = this.width;
             const height = this.height;
             if (width > 625 || height > 400) {
+              setShowModal(false);
               Swal.fire({
                 title: "Error!",
                 text: "The uploaded image is too big for upscaling. Maximum dimensions required: 625x400 pixels.",
@@ -320,7 +321,6 @@ const Dashboard = () => {
             </button>
             <div className="upload-widget">
               <UploadWidget onImageUpload={handleImageUpload} />
-              <p>Click here to upload image for transformation</p>
             </div>
           </div>
           <div className="operations-buttons">
