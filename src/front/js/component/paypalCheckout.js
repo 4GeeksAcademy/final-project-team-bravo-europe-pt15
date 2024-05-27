@@ -8,7 +8,8 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
 
   const handleApprove = (data, actions) => {
     return actions.order.capture().then((details) => {
-      onSuccess(details);
+      const amountPaid = details.purchase_units[0].amount.value;
+      onSuccess(details, amountPaid); // Pass the amountPaid to onSuccess
     });
   };
 
@@ -94,7 +95,7 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
           </div>
         ) : (
           <>
-            <p>Please choose your payment method to contiunue</p>
+            <p>Please choose your payment method to continue</p>
             <PayPalButtons
               createOrder={createOrder}
               onApprove={handleApprove}

@@ -273,8 +273,10 @@ const Dashboard = () => {
     }
   };
 
-  const handlePayPalSuccess = (details) => {
-    const newCredits = credits + 10; // 1 USD = 10 credits
+  const handlePayPalSuccess = (details, amount) => {
+    const paidAmount = parseFloat(amount);
+    const newCredits = credits + paidAmount * 10; // Calculate credits based on amount paid
+
     setCredits(newCredits);
 
     // Update credits in the backend
@@ -401,8 +403,10 @@ const Dashboard = () => {
               options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
             >
               <PayPalCheckout
-                onClose={closePayPalModal} // Use the new function to close PayPal modal
-                onSuccess={handlePayPalSuccess}
+                onClose={() => setShowPayPal(false)}
+                onSuccess={(details, amount) =>
+                  handlePayPalSuccess(details, amount)
+                } // Updated prop
               />
             </PayPalScriptProvider>
           </div>
