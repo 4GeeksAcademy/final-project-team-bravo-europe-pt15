@@ -43,10 +43,9 @@ const Dashboard = () => {
   const [storedImages, setStoredImages] = useState([]);
   const { checkAuth } = useAuth(); // Use the new auth.js utility
   const [showModal, setShowModal] = useState(false); // State to show or hide the modal
-  const closeModal = () => {
-    setShowModal(false);
-    setShowPrompt(false);
-    setShowPrompts(false);
+  const closePayPalModal = () => {
+    setShowPayPal(false);
+    setShowModal(false); // Reset showModal state
   };
 
   // Check if user is authenticated when the component mounts
@@ -300,11 +299,6 @@ const Dashboard = () => {
     setShowModal(false); // Reset showModal state
   };
 
-  const closePayPalModal = () => {
-    setShowPayPal(false);
-    setShowModal(false); // Reset showModal state
-  };
-
   return (
     <div className="center">
       {isLoading && (
@@ -403,10 +397,10 @@ const Dashboard = () => {
               options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
             >
               <PayPalCheckout
-                onClose={() => setShowPayPal(false)}
+                onClose={closePayPalModal} // Use the new function to close PayPal modal
                 onSuccess={(details, amount) =>
                   handlePayPalSuccess(details, amount)
-                } // Updated prop
+                }
               />
             </PayPalScriptProvider>
           </div>
