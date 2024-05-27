@@ -295,6 +295,12 @@ const Dashboard = () => {
       });
 
     setShowPayPal(false);
+    setShowModal(false); // Reset showModal state
+  };
+
+  const closePayPalModal = () => {
+    setShowPayPal(false);
+    setShowModal(false); // Reset showModal state
   };
 
   return (
@@ -351,7 +357,7 @@ const Dashboard = () => {
           {showModal && (
             <div className="modal-overlay">
               <div className="modal-content">
-                <button className="close-modal-btn" onClick={closeModal}>
+                <button className="close-modal-btn" onClick={closePayPalModal}>
                   X
                 </button>
                 <div className="additional-options">
@@ -395,12 +401,13 @@ const Dashboard = () => {
               options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
             >
               <PayPalCheckout
-                onClose={() => setShowPayPal(false)}
+                onClose={closePayPalModal} // Use the new function to close PayPal modal
                 onSuccess={handlePayPalSuccess}
               />
             </PayPalScriptProvider>
           </div>
         )}
+
         <div className="image-slider-container">
           <ImageSlider
             image1={originalImageURL}
