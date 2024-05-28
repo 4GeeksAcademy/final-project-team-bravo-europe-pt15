@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import "../../styles/reset-password.css";
 
 export const ResetPassword = () => {
@@ -62,7 +62,7 @@ export const ResetPassword = () => {
       }
     };
 
-    // checkTokenValidity();
+    checkTokenValidity();
   }, [searchParams, navigate]);
 
   const handleSubmit = async (event) => {
@@ -108,20 +108,20 @@ export const ResetPassword = () => {
 
       const data = await response.json();
       Swal.fire({
-        title: 'Success!',
+        title: "Success!",
         text: data.msg,
-        icon: 'success',
-        confirmButtonText: 'OK'
+        icon: "success",
+        confirmButtonText: "OK",
       }).then(() => {
         navigate("/login");
       });
     } catch (error) {
       console.error("Error resetting password:", error);
       Swal.fire({
-        title: 'Error!',
-        text: 'Error resetting password',
-        icon: 'error',
-        confirmButtonText: 'OK'
+        title: "Error!",
+        text: "Error resetting password",
+        icon: "error",
+        confirmButtonText: "OK",
       });
     }
   };
