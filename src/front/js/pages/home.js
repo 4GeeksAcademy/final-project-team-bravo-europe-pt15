@@ -29,6 +29,17 @@ export const Home = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Validation check
+    if (!email || !name || !message) {
+      Swal.fire(
+        "Error",
+        "Please fill up all fields to get in touch with us",
+        "error"
+      );
+      return;
+    }
+
     const response = await fetch(
       `${process.env.BACKEND_URL}/api/send-contact-form`,
       {
@@ -42,6 +53,9 @@ export const Home = () => {
 
     if (response.ok) {
       Swal.fire("Success", "Message sent successfully!", "success");
+      setEmail(""); // Clear form fields after successful submission
+      setName("");
+      setMessage("");
     } else {
       Swal.fire("Error", "Failed to send message.", "error");
     }
