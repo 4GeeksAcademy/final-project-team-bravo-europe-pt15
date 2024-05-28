@@ -80,6 +80,7 @@ button {
 
 .images-list {
   display: block;
+  text-align: center;
 }
 
 .image-card {
@@ -95,7 +96,8 @@ button {
 }
 
 .images-list .image-card {
-  width: 100%; /* Full width for list view */
+  width: 80%; /* Adjust as needed */
+  margin: 50px auto; /* Center horizontally */
 }
 
 .image-card img {
