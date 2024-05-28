@@ -16,8 +16,17 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
   const handleChange = (event) => {
     const value = event.target.value;
     if (/^\d*$/.test(value)) {
-      // Ensure only digits are entered
-      setAmount(value);
+      if (parseInt(value, 10) < 2) {
+        Swal.fire({
+          title: "Invalid Input",
+          text: "Please enter a value of 2 or more.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+        setAmount("");
+      } else {
+        setAmount(value);
+      }
     } else {
       Swal.fire({
         title: "Invalid Input",
@@ -34,16 +43,7 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
   };
 
   const handleContinueWithCustom = () => {
-    if (parseInt(amount, 10) >= 2) {
-      setShowCheckout(true);
-    } else {
-      Swal.fire({
-        title: "Minimum Value",
-        text: "Minimum value is 2.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
+    setShowCheckout(true);
   };
 
   const createOrder = (data, actions) => {
@@ -67,6 +67,11 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
         </button>
         {!showCheckout ? (
           <div>
+            
+            <button onClick={handleContinueWithDefault}>
+              Continue with default value of 1$
+            </button>
+            <h6>Or</h6>
             <h6>
               <span>Select amount to purchase:</span>
               <br></br>
@@ -77,20 +82,13 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
               type="text"
               value={amount}
               onChange={handleChange}
-              placeholder="Enter amount"
+              placeholder="Enter amount 2 or more"
               className="amount-input"
             />
-            {amount.trim() !== "" ? (
+            {amount.trim() !== "" && (
               <button onClick={handleContinueWithCustom}>
                 Continue with {amount} $
               </button>
-            ) : (
-              <>
-                <h6>Or</h6>
-                <button onClick={handleContinueWithDefault}>
-                  Continue with default value of 1$
-                </button>
-              </>
             )}
           </div>
         ) : (
