@@ -145,6 +145,7 @@ export const ResetPassword = () => {
               value={password}
               onChange={handlePasswordChange} // Use the new handler
               required
+              autoFocus
             />
             {/* Display the status of each condition */}
             <div className="password-conditions">
