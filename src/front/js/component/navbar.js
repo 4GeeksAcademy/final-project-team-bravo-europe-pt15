@@ -17,11 +17,14 @@ export const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    actions.checkAuth();
+  }, [location.pathname]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -34,10 +37,6 @@ export const Navbar = () => {
   const handleLinkClick = () => {
     closeMenu();
   };
-
-  useEffect(() => {
-    actions.checkAuth();
-  }, [location.pathname]);
 
   const handleLogout = () => {
     actions.logout();
@@ -53,44 +52,52 @@ export const Navbar = () => {
     location.pathname === "/dashboard" ||
     location.pathname === "/transformed-images";
 
+  const isResetPasswordPage = location.pathname === "/reset-password";
+
   return (
     <div className="navbar-container">
       <nav
-        className={`navbar ${scrolled ? "scrolled" : ""} ${
-          isDashboardOrImagesPage ? "static" : ""
-        }`}
+        className={`navbar ${scrolled ? "scrolled" : ""} ${isDashboardOrImagesPage ? "static" : ""}`}
       >
         <Link to="/" className="navbar-brand" onClick={handleLinkClick}>
           MAFL
         </Link>
-        <div className="menu-icon" onClick={toggleMenu}>
-          <div className={`menu-icon-line ${menuOpen ? "open" : ""}`}></div>
-          <div className={`menu-icon-line ${menuOpen ? "open" : ""}`}></div>
-          <div className={`menu-icon-line ${menuOpen ? "open" : ""}`}></div>
-        </div>
-        <div className={`contbut ${menuOpen ? "open" : ""}`}>
-          {showLoggedInNavItems ? (
-            <button className="btn" onClick={handleLogout}>
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link to="/" className="nav-link" onClick={handleLinkClick}>
-                Home
-              </Link>
-              <Link
-                to="/signup"
-                className="btn Signin"
-                onClick={handleLinkClick}
-              >
-                Signup
-              </Link>
-              <Link to="/login" className="btn Login" onClick={handleLinkClick}>
-                Login
-              </Link>
-            </>
-          )}
-        </div>
+        {!isResetPasswordPage && (
+          <>
+            <div className="menu-icon" onClick={toggleMenu}>
+              <div className={`menu-icon-line ${menuOpen ? "open" : ""}`}></div>
+              <div className={`menu-icon-line ${menuOpen ? "open" : ""}`}></div>
+              <div className={`menu-icon-line ${menuOpen ? "open" : ""}`}></div>
+            </div>
+            <div className={`contbut ${menuOpen ? "open" : ""}`}>
+              {showLoggedInNavItems ? (
+                <button className="btn" onClick={handleLogout}>
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link to="/" className="nav-link" onClick={handleLinkClick}>
+                    Home
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="btn Signin"
+                    onClick={handleLinkClick}
+                  >
+                    Signup
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="btn Login"
+                    onClick={handleLinkClick}
+                  >
+                    Login
+                  </Link>
+                </>
+              )}
+            </div>
+          </>
+        )}
       </nav>
     </div>
   );

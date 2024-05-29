@@ -115,6 +115,7 @@ export const Signup = () => {
                   onChange={(e) => setUsername(e.target.value)}
                   isInvalid={!!errors.username}
                   required
+                  autoFocus
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.username}

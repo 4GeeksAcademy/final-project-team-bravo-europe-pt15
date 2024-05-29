@@ -85,6 +85,7 @@ export const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   isInvalid={!!errors.email}
                   required
+                  autoFocus
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.email}
