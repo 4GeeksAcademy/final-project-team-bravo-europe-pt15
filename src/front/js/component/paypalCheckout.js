@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 import Swal from "sweetalert2";
 
 const PayPalCheckout = ({ onClose, onSuccess }) => {
@@ -14,45 +14,40 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
   };
 
   const handleChange = (event) => {
-    const value = event.target.value;
-    if (/^\d*$/.test(value)) {
-      if (parseInt(value, 10) < 2) {
-        Swal.fire({
-          title: "Invalid Input",
-          text: "Please enter a value of 2 or more.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-        setAmount("");
-      } else {
-        setAmount(value);
-      }
-    } else {
-      Swal.fire({
-        title: "Invalid Input",
-        text: "Please enter a valid whole number.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+    setAmount(event.target.value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent the default form submission on Enter key
+      handleContinueWithCustom(); // Trigger custom checkout on Enter key
     }
   };
 
   const handleContinueWithDefault = () => {
-    setAmount("1.00");
+    setAmount("1.00"); // Set to $1.00 for default checkout
     setShowCheckout(true);
   };
 
   const handleContinueWithCustom = () => {
-    setShowCheckout(true);
+    if (amount.trim() === "1") {
+      Swal.fire({
+        title: "Invalid Amount",
+        text: "The amount of $1 is not allowed for custom payment. Please enter a value of 2 or more.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    } else {
+      setShowCheckout(true);
+    }
   };
 
   const createOrder = (data, actions) => {
-    const orderAmount = amount.trim() !== "" ? amount : "1.00";
     return actions.order.create({
       purchase_units: [
         {
           amount: {
-            value: orderAmount, // Use entered amount or default to $1.00
+            value: amount || "1.00", // Use entered amount or default to $1.00
           },
         },
       ],
@@ -68,27 +63,25 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
         {!showCheckout ? (
           <div>
             <button onClick={handleContinueWithDefault}>
-              Checkout with 1$
+              Checkout with $1
             </button>
             <h6>or</h6>
             <h6>
               <span>Select amount to purchase:</span>
-              <br></br>
-              <br></br>
+              <br />
               <span>1$ = 10 credits</span>
             </h6>
             <input
               type="text"
               value={amount}
               onChange={handleChange}
+              onKeyDown={handleKeyDown} // Listen for the Enter key press
               placeholder="Enter amount 2 or more"
               className="amount-input"
             />
-            {amount.trim() !== "" && (
-              <button onClick={handleContinueWithCustom}>
-                Checkout with {amount} $
-              </button>
-            )}
+            <button onClick={handleContinueWithCustom}>
+              Checkout with ${amount || "default amount"}
+            </button>
           </div>
         ) : (
           <>
