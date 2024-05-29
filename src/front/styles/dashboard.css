@@ -218,6 +218,11 @@
   height: auto;
 }
 
+.paypal-checkout-modal p {
+  text-align: center;
+  padding: 20px;
+}
+
 .paypal-checkout-content {
   display: flex;
   flex-direction: column;
@@ -239,14 +244,14 @@ h6 {
   margin-bottom: 20px;
   font-size: 1.1rem;
   color: #333;
-  text-align: center;
+  text-align: left;
   padding-left: 10%;
   padding-right: 10%;
 }
 
 .amount-input {
   width: 100%;
-  padding: 10px;
+  padding: 20px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
