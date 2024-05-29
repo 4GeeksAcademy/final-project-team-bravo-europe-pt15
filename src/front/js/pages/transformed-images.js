@@ -11,6 +11,8 @@ const TransformedImages = () => {
   const [storedImages, setStoredImages] = useState([]);
   const [isGridView, setIsGridView] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -107,6 +109,20 @@ const TransformedImages = () => {
     setIsGridView(!isGridView);
   };
 
+  const handleImageClick = (url) => {
+    if (isModalOpen) {
+      closeModal();
+    } else {
+      setCurrentImage(url);
+      setIsModalOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentImage(null);
+  };
+
   return (
     <div className="transformed-images-container">
       <h2>Transformed Images of {store.username}</h2>
@@ -125,7 +141,11 @@ const TransformedImages = () => {
         {storedImages.length > 0 ? (
           storedImages.map((url, index) => (
             <div className="image-card" key={index}>
-              <img src={url} alt={`Transformed ${index + 1}`} />
+              <img
+                src={url}
+                alt={`Transformed ${index + 1}`}
+                onClick={() => handleImageClick(url)}
+              />
               <div className="image-card-buttons">
                 <button
                   className="download-btn"
@@ -146,6 +166,20 @@ const TransformedImages = () => {
           <p>No transformed images found</p>
         )}
       </div>
+      {isModalOpen && (
+        <div className="modal" onClick={closeModal}>
+          <div className="modal-content-container">
+            <span className="close" onClick={closeModal}>
+              &times;
+            </span>
+            <img
+              className="modal-content"
+              src={currentImage}
+              alt="Modal View"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
