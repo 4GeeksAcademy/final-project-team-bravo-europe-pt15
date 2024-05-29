@@ -1,29 +1,29 @@
 .login-form {
-    margin-top: 80px; /* Adjust this value as needed */
-    padding: 20px;
-    background-color:#1C1C1E;
-    border-radius: 8px;
-  }
+  margin-top: 80px; /* Adjust this value as needed */
+  padding: 20px;
+  background-color: #1c1c1e;
+  border-radius: 8px;
+}
 
-  .login-form h2 {
-    color: white;
-    padding-bottom: 20px;
-  }
-  
-  .login-form p {
-    color: white;
-  }
+.login-form h2 {
+  color: white;
+  padding-bottom: 20px;
+}
 
-  .buttonwrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 20px;
-    padding-top: 20px;
+.login-form p {
+  color: white;
+}
+
+.buttonwrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+@media (max-width: 576px) {
+  .login-form {
+    margin-top: 60px; /* Adjust for smaller screens */
   }
-  
-  @media (max-width: 576px) {
-    .login-form {
-      margin-top: 60px; /* Adjust for smaller screens */
-    }
-  }
+}

@@ -17,20 +17,6 @@
   gap: 20px;
 }
 
-.upload-widget {
-  text-align: center;
-  border: 1px solid #ccc;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  background-color: #1c1c1e;
-  color: #fff;
-  border-radius: 8px;
-}
-
-.upload-widget p {
-  margin-top: 20px;
-}
-
 .operations-buttons {
   display: flex;
   flex-direction: column;
@@ -67,8 +53,10 @@
 .user-options {
   border: 1px solid #ccc;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  background-color: #1c1c1e;
+  padding-right: 30px;
+  padding-left: 10px;
+  padding-top: 20px;
+  /* background-color: #1c1c1e; */
   color: #fff;
   border-radius: 8px;
   text-align: center;
@@ -88,6 +76,10 @@
   transition:
     background-color 0.3s,
     box-shadow 0.3s;
+}
+
+.additional-options button {
+  margin-top: 40px;
 }
 
 .additional-options button:hover,
@@ -110,6 +102,42 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  min-width: 400px;
+  min-height: 200px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #333;
 }
 
 .user-options button {
@@ -165,6 +193,36 @@
   height: auto;
 }
 
+/* Center the PayPal modal within the viewport */
+.paypal-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.paypal-checkout-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 80%;
+  max-width: 500px;
+  height: auto;
+}
+
+.paypal-checkout-modal p {
+  text-align: center;
+  padding: 20px;
+}
+
 .paypal-checkout-content {
   display: flex;
   flex-direction: column;
@@ -177,8 +235,47 @@
   right: 10px;
   background: none;
   border: none;
-  font-size: 1.5em;
+  font-size: 1.2em; /* Adjusted size */
   cursor: pointer;
+  color: #333; /* Always visible */
+}
+
+h6 {
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: #333;
+  text-align: left;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.amount-input {
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+button {
+  background-color: #0070ba;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 112, 186, 0.5);
 }
 
 .loading-overlay {
@@ -219,7 +316,7 @@
 
 .image-slider-container {
   width: 100%;
-  height: 47.5vw;
+  height: 43.5vw;
   margin: auto;
   border: 1px solid #ccc;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);

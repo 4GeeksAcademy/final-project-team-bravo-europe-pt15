@@ -8,7 +8,7 @@ import {
 } from "@cloudinary/url-gen/actions/effect";
 import UploadWidget from "../component/UploadWidget";
 import ImageSlider from "react-image-comparison-slider";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import "../../styles/dashboard.css";
 import "../../styles/imagePlaceholder.css";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ import { delay, retryRequest } from "../utils/retryUtilis"; // Import the new re
 
 const cld = new Cloudinary({
   cloud: {
-    cloudName: "dfxwm93pu",
+    cloudName: "dcoocmssy",
   },
 });
 
@@ -42,6 +42,11 @@ const Dashboard = () => {
   );
   const [storedImages, setStoredImages] = useState([]);
   const { checkAuth } = useAuth(); // Use the new auth.js utility
+  const [showModal, setShowModal] = useState(false); // State to show or hide the modal
+  const closePayPalModal = () => {
+    setShowPayPal(false);
+    setShowModal(false); // Reset showModal state
+  };
 
   // Check if user is authenticated when the component mounts
   useEffect(() => {
@@ -101,6 +106,7 @@ const Dashboard = () => {
 
   // Handle button clicks for various transformations
   const handleClick = async (button) => {
+    setShowModal(true); // Show the modal when a button is clicked
     switch (button) {
       case "removeBackground":
         setIsLoading(true); // Set loading state to true
@@ -114,10 +120,13 @@ const Dashboard = () => {
           setShowPrompts(false);
         } else {
           Swal.fire({
-            title: 'Error!',
-            text: 'Background removal is experiencing issues. Please try again later.',
-            icon: 'error',
-            confirmButtonText: 'OK'
+            title: "Error!",
+            text: "Background removal is experiencing issues. Please try again later.",
+            icon: "error",
+            confirmButtonText: "OK",
+          }).then(() => {
+            setEffect(null); // Disable the effect
+            setShowModal(false); // Close the modal
           });
         }
         break;
@@ -142,11 +151,12 @@ const Dashboard = () => {
             const width = this.width;
             const height = this.height;
             if (width > 625 || height > 400) {
+              setShowModal(false);
               Swal.fire({
-                title: 'Error!',
-                text: 'The uploaded image is too big for upscaling. Maximum dimensions required: 625x400 pixels.',
-                icon: 'error',
-                confirmButtonText: 'OK'
+                title: "Error!",
+                text: "The uploaded image is too big for upscaling. Maximum dimensions required: 625x400 pixels.",
+                icon: "error",
+                confirmButtonText: "OK",
               });
             } else {
               setEffect(upscale());
@@ -220,10 +230,12 @@ const Dashboard = () => {
                 ]);
 
                 Swal.fire({
-                  title: 'Success!',
-                  text: 'Image processing complete. Credits have been deducted.',
-                  icon: 'success',
-                  confirmButtonText: 'OK'
+                  title: "Success!",
+                  text: "Image processing complete. Credits have been deducted.",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                }).then(() => {
+                  setShowModal(false); // Close the modal after SweetAlert
                 });
               } catch (error) {
                 console.error(
@@ -236,18 +248,18 @@ const Dashboard = () => {
             }, 5000);
           } else {
             Swal.fire({
-              title: 'Error!',
-              text: 'You have no credits left. Please fill up your credits.',
-              icon: 'error',
-              confirmButtonText: 'OK'
+              title: "Error!",
+              text: "You have no credits left. Please fill up your credits.",
+              icon: "error",
+              confirmButtonText: "OK",
             });
           }
         } else {
           Swal.fire({
-            title: 'Error!',
-            text: 'Please select an effect to apply.',
-            icon: 'error',
-            confirmButtonText: 'OK'
+            title: "Error!",
+            text: "Please select an effect to apply.",
+            icon: "error",
+            confirmButtonText: "OK",
           });
         }
         break;
@@ -261,8 +273,10 @@ const Dashboard = () => {
     }
   };
 
-  const handlePayPalSuccess = (details) => {
-    const newCredits = credits + 10; // 1 USD = 10 credits
+  const handlePayPalSuccess = (details, amount) => {
+    const paidAmount = parseFloat(amount);
+    const newCredits = credits + paidAmount * 10; // Calculate credits based on amount paid
+
     setCredits(newCredits);
 
     // Update credits in the backend
@@ -283,6 +297,7 @@ const Dashboard = () => {
       });
 
     setShowPayPal(false);
+    setShowModal(false); // Reset showModal state
   };
 
   return (
@@ -304,10 +319,9 @@ const Dashboard = () => {
               Transformed Images
               <span className="badge">{storedImages.length}</span>
             </button>
-          </div>
-          <div className="upload-widget">
-            <UploadWidget onImageUpload={handleImageUpload} />
-            <p>Click here to upload image for transformation</p>
+            <div className="upload-widget">
+              <UploadWidget onImageUpload={handleImageUpload} />
+            </div>
           </div>
           <div className="operations-buttons">
             <p>{instructionText}</p>
@@ -336,38 +350,46 @@ const Dashboard = () => {
               Upscale image
             </button>
           </div>
-          <div className="additional-options">
-            <h4>Additional options</h4>
-            {showPrompt && (
-              <div className="prompt">
-                <input
-                  type="text"
-                  value={promptText}
-                  onChange={(e) => setPromptText(e.target.value)}
-                  placeholder="Object to remove from image"
-                />
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <button className="close-modal-btn" onClick={closePayPalModal}>
+                  X
+                </button>
+                <div className="additional-options">
+                  {showPrompt && (
+                    <div className="prompt">
+                      <input
+                        type="text"
+                        value={promptText}
+                        onChange={(e) => setPromptText(e.target.value)}
+                        placeholder="Object to remove from image"
+                      />
+                    </div>
+                  )}
+                  {showPrompts && (
+                    <div className="prompts">
+                      <input
+                        type="text"
+                        value={prompt1}
+                        onChange={(e) => setPrompt1(e.target.value)}
+                        placeholder="Object to remove"
+                      />
+                      <input
+                        type="text"
+                        value={prompt2}
+                        onChange={(e) => setPrompt2(e.target.value)}
+                        placeholder="Object to replace removed object"
+                      />
+                    </div>
+                  )}
+                  <button onClick={() => handleClick("applyChanges")}>
+                    Apply Changes
+                  </button>
+                </div>
               </div>
-            )}
-            {showPrompts && (
-              <div className="prompts">
-                <input
-                  type="text"
-                  value={prompt1}
-                  onChange={(e) => setPrompt1(e.target.value)}
-                  placeholder="Object to remove"
-                />
-                <input
-                  type="text"
-                  value={prompt2}
-                  onChange={(e) => setPrompt2(e.target.value)}
-                  placeholder="Object to replace removed object"
-                />
-              </div>
-            )}
-            <button onClick={() => handleClick("applyChanges")}>
-              Apply Changes
-            </button>
-          </div>
+            </div>
+          )}
         </div>
         {showPayPal && (
           <div className="paypal-modal-overlay">
@@ -375,12 +397,15 @@ const Dashboard = () => {
               options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
             >
               <PayPalCheckout
-                onClose={() => setShowPayPal(false)}
-                onSuccess={handlePayPalSuccess}
+                onClose={closePayPalModal} // Use the new function to close PayPal modal
+                onSuccess={(details, amount) =>
+                  handlePayPalSuccess(details, amount)
+                }
               />
             </PayPalScriptProvider>
           </div>
         )}
+
         <div className="image-slider-container">
           <ImageSlider
             image1={originalImageURL}

@@ -9,8 +9,8 @@ const UploadWidget = ({ onImageUpload }) => {
     cloudinaryRef.current = window.cloudinary;
     widgetRef.current = cloudinaryRef.current.createUploadWidget(
       {
-        cloudName: "dfxwm93pu",
-        uploadPreset: "my-preset",
+        cloudName: "dcoocmssy",
+        uploadPreset: "jsm_mafl",
       },
       function (error, result) {
         if (!error && result && result.event === "success") {
@@ -21,14 +21,10 @@ const UploadWidget = ({ onImageUpload }) => {
   }, [onImageUpload]);
 
   return (
-    <div className="upload-button-container">
-      <button
-        className="upload-button"
-        onClick={() => widgetRef.current.open()}
-      >
-        <span className="plus-sign"></span>
+    <div id="upload-button-container">
+      <button id="upload-button" onClick={() => widgetRef.current.open()}>
+        <span id="text-color">Upload image here</span>
       </button>
-      {/* <p className="mt-2">Press button to upload image</p> */}
     </div>
   );
 };

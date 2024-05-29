@@ -3,11 +3,15 @@ import { Container, Row, Col, Button, Card, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import VideoCard from "../component/video";
 import "../../styles/home.css";
+import Swal from "sweetalert2";
 
 export const Home = () => {
   const navigate = useNavigate();
   const [showVideo, setShowVideo] = useState(false);
   const [videoUrl, setVideoUrl] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleClick = () => {
     navigate("/signup");
@@ -21,6 +25,40 @@ export const Home = () => {
   const handleCloseVideo = () => {
     setShowVideo(false);
     setVideoUrl("");
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // Validation check
+    if (!email || !name || !message) {
+      Swal.fire(
+        "Error",
+        "Please fill up all fields to get in touch with us",
+        "error"
+      );
+      return;
+    }
+
+    const response = await fetch(
+      `${process.env.BACKEND_URL}/api/send-contact-form`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, name, message }),
+      }
+    );
+
+    if (response.ok) {
+      Swal.fire("Success", "Message sent successfully!", "success");
+      setEmail(""); // Clear form fields after successful submission
+      setName("");
+      setMessage("");
+    } else {
+      Swal.fire("Error", "Failed to send message.", "error");
+    }
   };
 
   const videos = [
@@ -58,8 +96,7 @@ export const Home = () => {
       <Container className="text-center hero">
         <h1>USING AI HAS NEVER BEEN THIS EASY</h1>
         <p>
-          Editing and formatting photos and pictures has never been this
-          easy!
+          Editing and formatting photos and pictures has never been this easy!
         </p>
         <Button onClick={handleClick} className="gradient-button">
           Sign up Now
@@ -101,14 +138,24 @@ export const Home = () => {
           MAFL would love to hear your opinion and know how we can improve our
           services.
         </p>
-        <Form className="contact-form">
+        <Form className="contact-form" onSubmit={handleSubmit}>
           <Form.Group controlId="formEmail">
             <Form.Label>Your Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter your email" />
+            <Form.Control
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </Form.Group>
           <Form.Group controlId="formName">
             <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter your name" />
+            <Form.Control
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </Form.Group>
           <Form.Group className="btn-space" controlId="formMessage">
             <Form.Label>Message</Form.Label>
@@ -116,6 +163,8 @@ export const Home = () => {
               as="textarea"
               rows={3}
               placeholder="Enter your message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             />
           </Form.Group>
           <Button variant="primary" type="submit" className="gradient-button">

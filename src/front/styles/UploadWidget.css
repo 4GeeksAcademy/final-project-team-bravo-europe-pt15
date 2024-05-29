@@ -1,49 +1,13 @@
-/* UploadWidget.css */
+#upload-button-container{
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 
-.upload-button {
-  background-color: #1c1c1e;
-  border: 2;
-  color: white; /* Text color */
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 20px; /* Adjust spacing as needed */
-  cursor: pointer;
-  border-radius: 10px; /* Rounded border radius */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
-  position: relative;
-  height: 80px;
-  width: 80px;
+#upload-button {
+  background-color: rgb(211, 233, 90);
+}
+
+#text-color {
+  color: rgb(11, 10, 31);
   font-weight: bold;
-}
-
-.upload-button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 35px;
-  height: 35px;
-  background-color: #7a18fc; /* Purple color for inner square */
-  transform: translate(-50%, -50%);
-  border-radius: 5px;
-}
-
-.upload-button::after {
-  content: "+"; /* Plus sign */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-size: 20px; /* Adjust size of plus sign */
-  transform: translate(-50%, -50%);
-}
-
-.upload-button:hover {
-  background-color: #f2f2f2; /* Light gray background color on hover */
-}
-
-.upload-button:hover::before {
-  background-color: #5e0591; /* Darker purple color for inner square on hover */
+  font-size: large;
 }

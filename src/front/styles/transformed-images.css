@@ -1,28 +1,192 @@
 .transformed-images-container {
-  padding: 20px;
   text-align: center;
-  margin-top: 80px;
+  padding: 20px;
 }
+
 .transformed-images-container h2 {
-  color: #ccc;
+  color: #fff;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+}
+
+.sticky-header.scrolled {
+  background-color: rgba(0, 0, 0, 0.8); /* Less transparent when scrolled */
+}
+
+button {
+  margin: 10px;
+  padding: 10px;
+}
+
+.switch-view-btn {
+  background-color: gray;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.switch-view-btn:hover {
+  background-color: darkgray;
+}
+
+.switch-view-btn .tooltip-text {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the button */
+  left: 50%;
+  margin-left: -80px; /* Center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.switch-view-btn:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 .images-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 20px;
+  justify-content: center;
+}
+
+.images-grid .image-card {
+  width: 300px; /* Larger width for grid view */
+}
+
+.images-list {
+  display: block;
+  text-align: center;
 }
 
 .image-card {
-  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  width: 200px; /* Default width */
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.images-list .image-card {
+  width: 80%; /* Adjust as needed */
+  margin: 50px auto; /* Center horizontally */
 }
 
 .image-card img {
   width: 100%;
+  display: block;
+  cursor: pointer; /* Add cursor pointer */
+}
+
+.image-card-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #1c1c1e;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.download-btn {
+  background-color: #28a745; /* Green color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+  background-color: #218838;
+}
+
+.delete-btn {
+  background-color: #dc3545; /* Red color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content {
+  width: auto;
   height: auto;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #f1f1f1;
+  font-size: 30px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
 }

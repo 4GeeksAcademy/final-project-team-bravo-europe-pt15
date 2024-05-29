@@ -7,6 +7,10 @@ from api.models import db, User, TransformedImage
 from api.utils import generate_sitemap, APIException, send_password_reset_email
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_mail import Message, Mail
+
+mail = Mail()
+
 
 # Generate a token for password reset (using itsdangerous)
 from itsdangerous import URLSafeTimedSerializer
@@ -189,6 +193,30 @@ def reset_password(token):
         return jsonify({"msg": "Invalid or expired token"}), 400
 
 
+# Endpoint for Get in contact
+
+@api.route("/send-contact-form", methods=['POST'])
+def send_contact_form():
+    data = request.get_json()
+    email = data.get("email", "")
+    name = data.get("name", "")
+    message = data.get("message", "")
+    
+    try:
+        msg = Message(
+            subject='New Contact Form Submission', 
+            sender=os.getenv("my_email"), 
+            recipients=[os.getenv('CONTACT_MAIL')]
+        )
+        msg.body = f"Name: {name}\nEmail: {email}\nMessage: {message}"
+        
+        mail.send(msg)
+        return jsonify({"msg": "Contact form data sent successfully"}), 200
+    except Exception as e:
+        error_message = f"Failed to send contact form data: {str(e)}"
+        print(error_message)  # Log the error for debugging
+        return jsonify({"msg": error_message}), 500
+
 
 # Endpoints for credits
 
@@ -225,6 +253,24 @@ def get_transformed_images():
         return jsonify({"transformed_images": transformed_images}), 200
     else:
         return jsonify({"error": "User not found"}), 404
+    
+@api.route('/user/transformed-images', methods=['DELETE'])
+@jwt_required()
+def delete_transformed_image():
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+    url = data['url']
+    
+    # Query the image to be deleted
+    image_to_delete = TransformedImage.query.filter_by(user_id=current_user_id, url=url).first()
+    
+    if image_to_delete:
+        db.session.delete(image_to_delete)
+        db.session.commit()
+        return jsonify({"message": "Image deleted"}), 200
+    else:
+        return jsonify({"error": "Image not found"}), 404
+
 
 @api.route('/user/transformed-images', methods=['POST'])
 @jwt_required()
