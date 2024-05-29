@@ -67,11 +67,10 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
         </button>
         {!showCheckout ? (
           <div>
-            
             <button onClick={handleContinueWithDefault}>
-              Continue with default value of 1$
+              Checkout with 1$
             </button>
-            <h6>Or</h6>
+            <h6>or</h6>
             <h6>
               <span>Select amount to purchase:</span>
               <br></br>
@@ -87,7 +86,7 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
             />
             {amount.trim() !== "" && (
               <button onClick={handleContinueWithCustom}>
-                Continue with {amount} $
+                Checkout with {amount} $
               </button>
             )}
           </div>
