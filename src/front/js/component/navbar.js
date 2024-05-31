@@ -34,9 +34,14 @@ export const Navbar = () => {
     setMenuOpen(false);
   };
 
-  const handleLinkClick = () => {
-    closeMenu();
+  const handleLinkClick = (e) => {
+    if (store.isLoggedIn) {
+      e.preventDefault();
+    } else {
+      closeMenu();
+    }
   };
+  
 
   const handleLogout = () => {
     actions.logout();
