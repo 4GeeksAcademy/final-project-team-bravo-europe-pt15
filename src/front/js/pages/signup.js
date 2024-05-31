@@ -11,6 +11,20 @@ export const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [hasCapital, setHasCapital] = useState(false);
+  const [hasDigit, setHasDigit] = useState(false);
+  const [hasSpecialChar, setHasSpecialChar] = useState(false);
+  const [hasEightChars, setHasEightChars] = useState(false);
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+  
+    setHasCapital(/[A-Z]/.test(value));
+    setHasDigit(/\d/.test(value));
+    setHasSpecialChar(/[@$!%*?&.]/.test(value));
+    setHasEightChars(value.length >= 8);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -139,7 +153,7 @@ export const Signup = () => {
                 </Form.Control.Feedback>
               </FloatingLabel>
               <FloatingLabel
-                className="passwordstyle"
+                className="passwordstyle custom-margin"
                 controlId="password"
                 label="Password"
               >
@@ -147,7 +161,7 @@ export const Signup = () => {
                   type="password"
                   placeholder="Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   isInvalid={!!errors.password}
                   required
                 />
@@ -155,6 +169,22 @@ export const Signup = () => {
                   {errors.password}
                 </Form.Control.Feedback>
               </FloatingLabel>
+              <p style={{ lineHeight: "1.3", fontSize: "0.9em"}}>
+                <span>Password must be at least </span>
+                <span style={{ color: hasEightChars ? "lime" : "indianred" }}>
+                  8 characters long
+                </span>
+                <span> and include </span>
+                <span style={{ color: hasCapital ? "lime" : "indianred" }}>
+                  one capital letter,&nbsp;
+                </span>
+                <span style={{ color: hasDigit ? "lime" : "indianred" }}>
+                   one digit,&nbsp;
+                </span>
+                <span style={{ color: hasSpecialChar ? "lime" : "indianred" }}>
+                   one special character
+                </span>
+              </p>
               <FloatingLabel
                 className="passwordstyle"
                 controlId="confirmPassword"
@@ -172,10 +202,6 @@ export const Signup = () => {
                   {errors.confirmPassword}
                 </Form.Control.Feedback>
               </FloatingLabel>
-              <p>
-                Password must be at least 8 characters long, include one capital
-                letter, one digit, and one special character
-              </p>
               <div className="buttonwrapper">
                 <Button variant="primary" type="submit" className="mt-3 my-3">
                   Signup

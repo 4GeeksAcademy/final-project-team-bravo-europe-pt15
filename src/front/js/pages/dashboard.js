@@ -325,30 +325,55 @@ const Dashboard = () => {
           </div>
           <div className="operations-buttons">
             <p>{instructionText}</p>
-            <button
-              onClick={() => handleClick("removeBackground")}
-              disabled={!publicID}
-            >
-              Remove Background
-            </button>
-            <button
-              onClick={() => handleClick("removeObject")}
-              disabled={!publicID}
-            >
-              Remove object from image
-            </button>
-            <button
-              onClick={() => handleClick("replaceObject")}
-              disabled={!publicID}
-            >
-              Replace object in image
-            </button>
-            <button
-              onClick={() => handleClick("upscaleImage")}
-              disabled={!publicID}
-            >
-              Upscale image
-            </button>
+            <div className="tooltip-container">
+              <button
+                onClick={() => handleClick("removeBackground")}
+                disabled={!publicID}
+              >
+                Remove Background
+              </button>
+              <span className="tooltip-text">
+                Dynamically extracts the foreground subject in images while
+                removing the background on the fly.
+              </span>
+            </div>
+            <div className="tooltip-container">
+              <button
+                onClick={() => handleClick("removeObject")}
+                disabled={!publicID}
+              >
+                Remove object from image
+              </button>
+              <span className="tooltip-text">
+                Effortlessly eliminates unwanted objects, text, or user-defined
+                regions from images.
+              </span>
+            </div>
+            <div className="tooltip-container">
+              <button
+                onClick={() => handleClick("replaceObject")}
+                disabled={!publicID}
+              >
+                Replace object in image
+              </button>
+              <span className="tooltip-text">
+                Replace objects within images with alternative objects or
+                images, while maintaining a natural look.
+              </span>
+            </div>
+            <div className="tooltip-container">
+              <button
+                onClick={() => handleClick("upscaleImage")}
+                disabled={!publicID}
+              >
+                Upscale image
+              </button>
+              <span className="tooltip-text">
+                Enhance the quality of images when upscaling them, making them
+                clearer and sharper (maximum possible image size: 625 x 400
+                pixels).
+              </span>
+            </div>
           </div>
           {showModal && (
             <div className="modal-overlay">
