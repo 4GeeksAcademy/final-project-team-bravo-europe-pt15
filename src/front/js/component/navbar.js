@@ -76,9 +76,7 @@ export const Navbar = () => {
                 </button>
               ) : (
                 <>
-                  <Link to="/" className="nav-link" onClick={handleLinkClick}>
-                    Home
-                  </Link>
+                  
                   <Link
                     to="/signup"
                     className="btn Signin"

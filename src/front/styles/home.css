@@ -27,7 +27,14 @@
   border: none;
   padding-top: 12px;
   justify-content: center;
+  color: #fff; /* Ensure text is white by default */
+  transition: color 0.2s ease; /* Smooth transition for text color */
 }
+
+.gradient-button:hover {
+  color: #000; /* Change text color to black on hover */
+}
+
 .button-wrapper {
   display: flex;
   justify-content: center;
