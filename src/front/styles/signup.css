@@ -24,6 +24,18 @@
     align-items: center;
   }
 
+  .condition-met {
+    color: lime;
+  }
+
+  .condition-unmet {
+    color: indianred;
+  }
+
+  .custom-margin .form-control {
+    margin-bottom: 1px; 
+  }
+
   @media (max-width: 576px) {
     .signup-form {
       margin-top: 60px; 
