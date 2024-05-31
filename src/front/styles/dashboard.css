@@ -32,6 +32,7 @@
 
 .operations-buttons button {
   width: 100%;
+  min-width: 250px;
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
@@ -190,7 +191,7 @@
   position: absolute;
   z-index: 1;
   bottom: 125%; /* Position above the container */
-  left: 10%;
+  left: 20%;
   margin-left: -60px;
   opacity: 0;
   transition: opacity 0.3s;
