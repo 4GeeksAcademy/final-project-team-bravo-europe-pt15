@@ -27,3 +27,6 @@
     margin-top: 60px; /* Adjust for smaller screens */
   }
 }
+.buttonwrapper .btn-primary:hover {
+  color: black;
+}
