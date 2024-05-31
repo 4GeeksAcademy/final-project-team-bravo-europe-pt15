@@ -71,7 +71,7 @@ export const Home = () => {
   const cards = [
     {
       title: "Upscale",
-      text: "Enhance the quality of images when upscaling them, making them clearer and sharper (maximum possible image size: 625 x 400 pixels",
+      text: "Enhance the quality of images when upscaling them, making them clearer and sharper (maximum possible image size: 625 x 400 pixels).",
     },
     {
       title: "Background Removal",
