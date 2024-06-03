@@ -30,10 +30,10 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
   };
 
   const handleContinueWithCustom = () => {
-    if (amount.trim() === "1") {
+    if (amount.trim() === "" || amount.trim() === "1") {
       Swal.fire({
         title: "Invalid Amount",
-        text: "The amount of $1 is not allowed for custom payment. Please enter a value of 2 or more.",
+        text: "Please enter a value of 2 or more.",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -62,15 +62,19 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
         </button>
         {!showCheckout ? (
           <div>
-            <button onClick={handleContinueWithDefault}>
-              Checkout with $1
-            </button>
-            <h6>or</h6>
-            <h6>
-              <span>Select amount to purchase:</span>
-              <br />
-              <span>1$ = 10 credits</span>
-            </h6>
+            {!amount.trim() && (
+              <>
+                <button onClick={handleContinueWithDefault}>
+                  Checkout with $1
+                </button>
+                <h6>or</h6>
+                <h6>
+                  <span>Select amount to purchase:</span>
+                  <br />
+                  <span>1$ = 10 credits</span>
+                </h6>
+              </>
+            )}
             <input
               type="text"
               value={amount}
@@ -80,7 +84,9 @@ const PayPalCheckout = ({ onClose, onSuccess }) => {
               className="amount-input"
             />
             <button onClick={handleContinueWithCustom}>
-              Checkout with ${amount || "default amount"}
+              {amount.trim()
+                ? `Checkout with $${amount}`
+                : "Checkout with custom amount"}
             </button>
           </div>
         ) : (
