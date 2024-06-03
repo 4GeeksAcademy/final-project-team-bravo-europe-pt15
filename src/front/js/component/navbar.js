@@ -41,7 +41,6 @@ export const Navbar = () => {
       closeMenu();
     }
   };
-  
 
   const handleLogout = () => {
     actions.logout();
@@ -58,6 +57,8 @@ export const Navbar = () => {
     location.pathname === "/transformed-images";
 
   const isResetPasswordPage = location.pathname === "/reset-password";
+  const isLoginPage = location.pathname === "/login";
+  const isSignupPage = location.pathname === "/signup";
 
   return (
     <div className="navbar-container">
@@ -81,21 +82,24 @@ export const Navbar = () => {
                 </button>
               ) : (
                 <>
-                  
-                  <Link
-                    to="/signup"
-                    className="btn Signin"
-                    onClick={handleLinkClick}
-                  >
-                    Signup
-                  </Link>
-                  <Link
-                    to="/login"
-                    className="btn Login"
-                    onClick={handleLinkClick}
-                  >
-                    Login
-                  </Link>
+                  {!isLoginPage && !isSignupPage && (
+                    <>
+                      <Link
+                        to="/signup"
+                        className="btn Signin"
+                        onClick={handleLinkClick}
+                      >
+                        Signup
+                      </Link>
+                      <Link
+                        to="/login"
+                        className="btn Login"
+                        onClick={handleLinkClick}
+                      >
+                        Login
+                      </Link>
+                    </>
+                  )}
                 </>
               )}
             </div>
