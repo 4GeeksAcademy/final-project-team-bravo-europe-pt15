@@ -39,6 +39,19 @@
     margin-bottom: 1px; 
   }
 
+  .password-input {
+    position: relative;
+  }
+  
+  .password-toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+
   @media (max-width: 576px) {
     .signup-form {
       margin-top: 60px; 

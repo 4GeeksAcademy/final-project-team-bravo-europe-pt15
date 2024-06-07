@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import "../../styles/reset-password.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -17,6 +19,10 @@ export const ResetPassword = () => {
   const [hasNumbers, setHasNumbers] = useState(false);
   const [hasSymbol, setHasSymbol] = useState(false);
   const [hasEightCharacters, setHasEightCharacters] = useState(false);
+
+  // Add states for showing/hiding passwords
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handlePasswordChange = (e) => {
     const password = e.target.value;
@@ -138,15 +144,22 @@ export const ResetPassword = () => {
             <label htmlFor="newPassword" className="form-label">
               New Password:
             </label>
-            <input
-              type="password"
-              id="newPassword"
-              className="form-control"
-              value={password}
-              onChange={handlePasswordChange} // Use the new handler
-              required
-              autoFocus
-            />
+            <div className="password-input">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="newPassword"
+                className="form-control"
+                value={password}
+                onChange={handlePasswordChange}
+                required
+                autoFocus
+              />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                onClick={() => setShowPassword(!showPassword)}
+                className="password-toggle-icon"
+              />
+            </div>
             {/* Display the status of each condition */}
             <div className="password-conditions">
               <p className={hasUpperCase ? "condition-met" : "condition-unmet"}>
@@ -174,14 +187,21 @@ export const ResetPassword = () => {
             <label htmlFor="confirmPassword" className="form-label">
               Confirm New Password:
             </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              className="form-control"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
+            <div className="password-input">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                className="form-control"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <FontAwesomeIcon
+                icon={showConfirmPassword ? faEyeSlash : faEye}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="password-toggle-icon"
+              />
+            </div>
           </div>
           <div className="buttonwrapper">
             <button type="submit" className="btn btn-primary">

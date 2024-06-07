@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { loginUser } from "../utils/authUtils"; // Import the login utility
 import "../../styles/signup.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export const Signup = () => {
   const [email, setEmail] = useState("");
@@ -15,11 +18,13 @@ export const Signup = () => {
   const [hasDigit, setHasDigit] = useState(false);
   const [hasSpecialChar, setHasSpecialChar] = useState(false);
   const [hasEightChars, setHasEightChars] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setPassword(value);
-  
+
     setHasCapital(/[A-Z]/.test(value));
     setHasDigit(/\d/.test(value));
     setHasSpecialChar(/[@$!%*?&.]/.test(value));
@@ -30,54 +35,49 @@ export const Signup = () => {
     e.preventDefault();
 
     // Clear previous errors
-    const errors = {};
+    const newErrors = {};
 
     // Email validation
     if (!email.trim()) {
-      errors.email = "Email is required";
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Email is invalid";
+      newErrors.email = "Email is invalid";
     }
 
     // Username validation
     if (!username.trim()) {
-      errors.username = "Username is required";
+      newErrors.username = "Username is required";
     } else if (username.length < 4) {
-      errors.username = "Username must be at least 4 characters long";
+      newErrors.username = "Username must be at least 4 characters long";
     }
-
-    // Define specific regular expressions for each requirement
-    const capitalLetterRequirement = /[A-Z]/;
-    const digitRequirement = /\d/;
-    const symbolRequirement = /[@$!%*?&.]/; // Updated to include "."
-    const lengthRequirement = /.{8,}/;
 
     // Password validation
     if (!password.trim()) {
-      errors.password = "Password is required";
+      newErrors.password = "Password is required";
     } else {
-      if (!capitalLetterRequirement.test(password)) {
-        errors.password = "Password must include at least one capital letter";
+      if (!hasCapital) {
+        newErrors.password =
+          "Password must include at least one capital letter";
       }
-      if (!digitRequirement.test(password)) {
-        errors.password = "Password must include at least one digit";
+      if (!hasDigit) {
+        newErrors.password = "Password must include at least one digit";
       }
-      if (!symbolRequirement.test(password)) {
-        errors.password =
+      if (!hasSpecialChar) {
+        newErrors.password =
           "Password must include at least one special character (@, $, !, %, *, ?, &, .)";
       }
-      if (!lengthRequirement.test(password)) {
-        errors.password = "Password must be at least 8 characters long";
+      if (!hasEightChars) {
+        newErrors.password = "Password must be at least 8 characters long";
       }
     }
 
     // Confirm password validation
     if (password !== confirmPassword) {
-      errors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     // If no errors, proceed with form submission
-    if (Object.keys(errors).length === 0) {
+    if (Object.keys(newErrors).length === 0) {
       try {
         const response = await fetch(`${process.env.BACKEND_URL}/api/signup`, {
           method: "POST",
@@ -93,8 +93,16 @@ export const Signup = () => {
         }
 
         // Handle successful signup
-        console.log("User signed up successfully!");
-        navigate("/login"); // Navigate to login page
+        await loginUser(email, password, navigate); // Login user after successful signup
+        // Display success message
+        Swal.fire({
+          title: "Welcome!",
+          text: "Your account has been successfully created.",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          navigate("/dashboard"); // Redirect to dashboard or any other route after signup
+        });
       } catch (error) {
         Swal.fire({
           title: "Error!",
@@ -106,7 +114,14 @@ export const Signup = () => {
       }
     } else {
       // Update errors state to display validation errors
-      setErrors(errors);
+      setErrors(newErrors);
+      // Display validation errors using SweetAlert
+      Swal.fire({
+        title: "Validation Error",
+        html: Object.values(newErrors).join("<br/>"),
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -117,11 +132,7 @@ export const Signup = () => {
           <div className="signup-form">
             <h2>Signup</h2>
             <Form onSubmit={handleSubmit}>
-              <FloatingLabel
-                controlId="username"
-                label="Username"
-                className="mb-3"
-              >
+              <Form.Group controlId="username" className="mb-3">
                 <Form.Control
                   type="text"
                   placeholder="Username"
@@ -134,12 +145,9 @@ export const Signup = () => {
                 <Form.Control.Feedback type="invalid">
                   {errors.username}
                 </Form.Control.Feedback>
-              </FloatingLabel>
-              <FloatingLabel
-                controlId="email"
-                label="Email address"
-                className="mb-3"
-              >
+              </Form.Group>
+
+              <Form.Group controlId="email" className="mb-3">
                 <Form.Control
                   type="email"
                   placeholder="name@example.com"
@@ -151,25 +159,32 @@ export const Signup = () => {
                 <Form.Control.Feedback type="invalid">
                   {errors.email}
                 </Form.Control.Feedback>
-              </FloatingLabel>
+              </Form.Group>
+
               <FloatingLabel
                 className="passwordstyle custom-margin"
                 controlId="password"
-                label="Password"
               >
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  isInvalid={!!errors.password}
-                  required
-                />
+                <div className="password-input">
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    isInvalid={!!errors.password}
+                    required
+                  />
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="password-toggle-icon"
+                  />
+                </div>
                 <Form.Control.Feedback type="invalid">
                   {errors.password}
                 </Form.Control.Feedback>
               </FloatingLabel>
-              <p style={{ lineHeight: "1.3", fontSize: "0.9em"}}>
+              <p style={{ lineHeight: "1.3", fontSize: "0.9em" }}>
                 <span>Password must be at least </span>
                 <span style={{ color: hasEightChars ? "lime" : "indianred" }}>
                   8 characters long
@@ -179,25 +194,31 @@ export const Signup = () => {
                   one capital letter,&nbsp;
                 </span>
                 <span style={{ color: hasDigit ? "lime" : "indianred" }}>
-                   one digit,&nbsp;
+                  one digit,&nbsp;
                 </span>
                 <span style={{ color: hasSpecialChar ? "lime" : "indianred" }}>
-                   one special character
+                  one special character
                 </span>
               </p>
               <FloatingLabel
                 className="passwordstyle"
                 controlId="confirmPassword"
-                label="Confirm Password"
               >
-                <Form.Control
-                  type="password"
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  isInvalid={!!errors.confirmPassword}
-                  required
-                />
+                <div className="password-input">
+                  <Form.Control
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    isInvalid={!!errors.confirmPassword}
+                    required
+                  />
+                  <FontAwesomeIcon
+                    icon={showConfirmPassword ? faEyeSlash : faEye}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="password-toggle-icon"
+                  />
+                </div>
                 <Form.Control.Feedback type="invalid">
                   {errors.confirmPassword}
                 </Form.Control.Feedback>
