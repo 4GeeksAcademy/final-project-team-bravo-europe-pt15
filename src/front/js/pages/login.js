@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button } from "react-bootstrap";
 import { loginUser } from "../utils/authUtils"; // Import the login utility
 import Swal from "sweetalert2";
 import "../../styles/login.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,11 +44,7 @@ export const Login = () => {
           <div className="login-form">
             <h2>Login</h2>
             <Form onSubmit={handleSubmit}>
-              <FloatingLabel
-                controlId="email"
-                label="Email address"
-                className="mb-3"
-              >
+              <Form.Group controlId="email" className="mb-3">
                 <Form.Control
                   type="email"
                   placeholder="name@example.com"
@@ -58,20 +57,27 @@ export const Login = () => {
                 <Form.Control.Feedback type="invalid">
                   {errors.email}
                 </Form.Control.Feedback>
-              </FloatingLabel>
-              <FloatingLabel controlId="password" label="Password">
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  isInvalid={!!errors.password}
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.password}
-                </Form.Control.Feedback>
-              </FloatingLabel>
+              </Form.Group>
+              <Form.Group controlId="password">
+                <div className="password-input">
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    isInvalid={!!errors.password}
+                    required
+                  />
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="password-toggle-icon"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.password}
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
               <div className="buttonwrapper">
                 <Button variant="primary" type="submit" className="mt-3">
                   Login
