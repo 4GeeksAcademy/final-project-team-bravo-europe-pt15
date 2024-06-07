@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
+import { loginUser } from "../utils/authUtils"; // Import the login utility
 import Swal from "sweetalert2";
 import "../../styles/login.css";
 
@@ -25,41 +26,8 @@ export const Login = () => {
     }
 
     if (Object.keys(errors).length === 0) {
-      // Form is valid, proceed with submission
-      try {
-        const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.msg);
-        }
-
-        // Handle successful login
-        const data = await response.json();
-        const token = data.token;
-        const user_id = data.user_id;
-
-        // Store token in local storage
-        localStorage.setItem("token", token);
-        localStorage.setItem("user_id", user_id);
-
-        // Redirect to dashboard
-        navigate("/dashboard");
-      } catch (error) {
-        Swal.fire({
-          title: "Error!",
-          text: "Wrong password or email",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-        console.error("Error logging in:", error.message);
-      }
+      // Form is valid, proceed with login
+      await loginUser(email, password, navigate);
     } else {
       // Update errors state to display validation errors
       setErrors(errors);
