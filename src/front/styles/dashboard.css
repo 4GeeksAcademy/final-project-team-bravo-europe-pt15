@@ -36,8 +36,14 @@
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
-  background-color: #007bff;
-  color: white;
+  background: linear-gradient(
+    90deg,
+    rgb(148.2, 179.82, 248.04) 2%,
+    rgb(144.46, 154.12, 241.08) 14.5%,
+    rgb(143.53, 131.56, 217.07) 30.5%,
+    rgb(64.64, 0, 248.63) 87%
+  );
+  color: #ffffff;
   font-size: 16px;
   cursor: pointer;
   transition:
@@ -46,8 +52,42 @@
 }
 
 .operations-buttons button:hover {
-  background-color: #0056b3;
+  color: #141414;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.operations-buttons button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip-container .tooltip-text {
+  visibility: hidden;
+  width: 300px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -150px; /* Center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 .additional-options,

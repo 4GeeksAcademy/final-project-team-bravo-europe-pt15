@@ -332,10 +332,12 @@ const Dashboard = () => {
               >
                 Remove Background
               </button>
-              <span className="tooltip-text">
-                Dynamically extracts the foreground subject in images while
-                removing the background on the fly.
-              </span>
+              {publicID && (
+                <span className="tooltip-text">
+                  Dynamically extracts the foreground subject in images while
+                  removing the background on the fly.
+                </span>
+              )}
             </div>
             <div className="tooltip-container">
               <button
@@ -344,10 +346,12 @@ const Dashboard = () => {
               >
                 Remove object from image
               </button>
-              <span className="tooltip-text">
-                Effortlessly eliminates unwanted objects, text, or user-defined
-                regions from images.
-              </span>
+              {publicID && (
+                <span className="tooltip-text">
+                  Effortlessly eliminates unwanted objects, text, or
+                  user-defined regions from images.
+                </span>
+              )}
             </div>
             <div className="tooltip-container">
               <button
@@ -356,10 +360,12 @@ const Dashboard = () => {
               >
                 Replace object in image
               </button>
-              <span className="tooltip-text">
-                Replace objects within images with alternative objects or
-                images, while maintaining a natural look.
-              </span>
+              {publicID && (
+                <span className="tooltip-text">
+                  Replace objects within images with alternative objects or
+                  images, while maintaining a natural look.
+                </span>
+              )}
             </div>
             <div className="tooltip-container">
               <button
@@ -368,13 +374,16 @@ const Dashboard = () => {
               >
                 Upscale image
               </button>
-              <span className="tooltip-text">
-                Enhance the quality of images when upscaling them, making them
-                clearer and sharper (maximum possible image size: 625 x 400
-                pixels).
-              </span>
+              {publicID && (
+                <span className="tooltip-text">
+                  Enhance the quality of images when upscaling them, making them
+                  clearer and sharper (maximum possible image size: 625 x 400
+                  pixels).
+                </span>
+              )}
             </div>
           </div>
+
           {showModal && (
             <div className="modal-overlay">
               <div className="modal-content">
