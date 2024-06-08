@@ -312,17 +312,44 @@ const Dashboard = () => {
         <div className="command-container">
           <div className="user-options">
             <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
-            <button onClick={() => handleClick("credits")}>
-              Available Credits <span className="badge">{credits}</span>
-            </button>
-            <button onClick={() => navigate("/transformed-images")}>
-              Transformed Images
-              <span className="badge">{storedImages.length}</span>
-            </button>
+
+            <div className="info-container">
+              <div className="info-item">
+                <span className="info-text">Available Credits: {credits}</span>
+                <div className="tooltip-container">
+                  <button
+                    className="small-button"
+                    onClick={() => handleClick("credits")}
+                  >
+                    +
+                  </button>
+                  <span className="tooltip-text">
+                    Click to add more credits
+                  </span>
+                </div>
+              </div>
+
+              <div className="info-item">
+                <span className="info-text">
+                  Transformed Images: {storedImages.length}
+                </span>
+                <div className="tooltip-container">
+                  <button
+                    className="small-button"
+                    onClick={() => navigate("/transformed-images")}
+                  >
+                    &gt;
+                  </button>
+                  <span className="tooltip-text">View transformed images</span>
+                </div>
+              </div>
+            </div>
+
             <div className="upload-widget">
               <UploadWidget onImageUpload={handleImageUpload} />
             </div>
           </div>
+
           <div className="operations-buttons">
             <p>{instructionText}</p>
             <div className="tooltip-container">
@@ -417,7 +444,7 @@ const Dashboard = () => {
                       />
                     </div>
                   )}
-                  <button onClick={() => handleClick("applyChanges")}>
+                  <button className="apply-changes-modal-button" onClick={() => handleClick("applyChanges")}>
                     Apply Changes
                   </button>
                 </div>

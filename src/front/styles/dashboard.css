@@ -97,14 +97,14 @@
   padding-right: 30px;
   padding-left: 10px;
   padding-top: 20px;
-  /* background-color: #1c1c1e; */
+  background-color: #1c1c1e;
   color: #fff;
   border-radius: 8px;
   text-align: center;
   width: 100%;
 }
 
-.additional-options button,
+/* .additional-options button,
 .user-options button {
   width: 100%;
   padding: 10px 20px;
@@ -117,17 +117,35 @@
   transition:
     background-color 0.3s,
     box-shadow 0.3s;
+} */
+
+.apply-changes-modal-button {
+  background: linear-gradient(
+    90deg,
+    rgb(148.2, 179.82, 248.04) 2%,
+    rgb(144.46, 154.12, 241.08) 14.5%,
+    rgb(143.53, 131.56, 217.07) 30.5%,
+    rgb(64.64, 0, 248.63) 87%
+  );
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.apply-changes-modal-button:hover {
+  color: #141414;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .additional-options button {
   margin-top: 40px;
 }
 
-.additional-options button:hover,
+/* .additional-options button:hover,
 .user-options button:hover {
   background-color: #218838;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .prompt,
 .prompts {
@@ -159,7 +177,7 @@
 }
 
 .modal-content {
-  background: #fff;
+  background: rgba(0, 0, 0, 0.5);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -178,16 +196,22 @@
   border: none;
   font-size: 1.5em;
   cursor: pointer;
-  color: #333;
+  color: #fff;
 }
 
-.user-options button {
+.user-options .small-button {
   width: 100%;
   padding: 10px 20px;
   border: none;
-  border-radius: 8px;
-  background-color: #28a745;
-  color: white;
+  background: linear-gradient(
+    90deg,
+    rgb(148.2, 179.82, 248.04) 2%,
+    rgb(144.46, 154.12, 241.08) 14.5%,
+    rgb(143.53, 131.56, 217.07) 30.5%,
+    rgb(64.64, 0, 248.63) 87%
+  );
+  border-radius: 5px;
+  color: #ffffff;
   font-size: 16px;
   cursor: pointer;
   transition:
@@ -197,7 +221,7 @@
 }
 
 .user-options button:hover {
-  background-color: #218838;
+  color: #141414;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -210,31 +234,64 @@
   font-weight: bold;
 }
 
-/* Tooltip container */
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.info-text {
+  font-size: 1.3rem;
+}
+
+.small-button {
+  background-color: #0070ba;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 10px;
+  position: relative;
+}
+
+.small-button:hover {
+  background-color: #0056b3;
+}
+
 .tooltip-container {
   position: relative;
   display: inline-block;
-  cursor: pointer;
 }
 
-/* Tooltip text */
 .tooltip-container .tooltip-text {
   visibility: hidden;
-  width: 300px;
+  width: 200px;
   background-color: black;
   color: #fff;
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
-
-  /* Position the tooltip text */
   position: absolute;
   z-index: 1;
-  bottom: 125%; /* Position above the container */
-  left: 20%;
-  margin-left: -60px;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px; /* Center the tooltip */
   opacity: 0;
   transition: opacity 0.3s;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 .tooltip-container .tooltip-text::after {
@@ -246,11 +303,6 @@
   border-width: 5px;
   border-style: solid;
   border-color: black transparent transparent transparent;
-}
-
-.tooltip-container:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
 }
 
 .paypal-modal-overlay {
