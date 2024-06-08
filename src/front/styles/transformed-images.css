@@ -22,9 +22,22 @@
   background-color: rgba(0, 0, 0, 0.8); /* Less transparent when scrolled */
 }
 
-button {
+.transformed-images-container button {
   margin: 10px;
   padding: 10px;
+  background: linear-gradient(
+    90deg,
+    rgb(148.2, 179.82, 248.04) 2%,
+    rgb(144.46, 154.12, 241.08) 14.5%,
+    rgb(143.53, 131.56, 217.07) 30.5%,
+    rgb(64.64, 0, 248.63) 87%
+  );
+  color: #ffffff;
+}
+
+.transformed-images-container button:hover {
+  color: #141414;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .switch-view-btn {

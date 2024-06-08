@@ -312,17 +312,44 @@ const Dashboard = () => {
         <div className="command-container">
           <div className="user-options">
             <h4>{username ? `Welcome, ${username}` : "User options"}</h4>
-            <button onClick={() => handleClick("credits")}>
-              Available Credits <span className="badge">{credits}</span>
-            </button>
-            <button onClick={() => navigate("/transformed-images")}>
-              Transformed Images
-              <span className="badge">{storedImages.length}</span>
-            </button>
+
+            <div className="info-container">
+              <div className="info-item">
+                <span className="info-text">Available Credits: {credits}</span>
+                <div className="tooltip-container">
+                  <button
+                    className="small-button"
+                    onClick={() => handleClick("credits")}
+                  >
+                    +
+                  </button>
+                  <span className="tooltip-text">
+                    Click to add more credits
+                  </span>
+                </div>
+              </div>
+
+              <div className="info-item">
+                <span className="info-text">
+                  Transformed Images: {storedImages.length}
+                </span>
+                <div className="tooltip-container">
+                  <button
+                    className="small-button"
+                    onClick={() => navigate("/transformed-images")}
+                  >
+                    &gt;
+                  </button>
+                  <span className="tooltip-text">View transformed images</span>
+                </div>
+              </div>
+            </div>
+
             <div className="upload-widget">
               <UploadWidget onImageUpload={handleImageUpload} />
             </div>
           </div>
+
           <div className="operations-buttons">
             <p>{instructionText}</p>
             <div className="tooltip-container">
@@ -332,10 +359,12 @@ const Dashboard = () => {
               >
                 Remove Background
               </button>
-              <span className="tooltip-text">
-                Dynamically extracts the foreground subject in images while
-                removing the background on the fly.
-              </span>
+              {publicID && (
+                <span className="tooltip-text">
+                  Dynamically extracts the foreground subject in images while
+                  removing the background on the fly.
+                </span>
+              )}
             </div>
             <div className="tooltip-container">
               <button
@@ -344,10 +373,12 @@ const Dashboard = () => {
               >
                 Remove object from image
               </button>
-              <span className="tooltip-text">
-                Effortlessly eliminates unwanted objects, text, or user-defined
-                regions from images.
-              </span>
+              {publicID && (
+                <span className="tooltip-text">
+                  Effortlessly eliminates unwanted objects, text, or
+                  user-defined regions from images.
+                </span>
+              )}
             </div>
             <div className="tooltip-container">
               <button
@@ -356,10 +387,12 @@ const Dashboard = () => {
               >
                 Replace object in image
               </button>
-              <span className="tooltip-text">
-                Replace objects within images with alternative objects or
-                images, while maintaining a natural look.
-              </span>
+              {publicID && (
+                <span className="tooltip-text">
+                  Replace objects within images with alternative objects or
+                  images, while maintaining a natural look.
+                </span>
+              )}
             </div>
             <div className="tooltip-container">
               <button
@@ -368,13 +401,16 @@ const Dashboard = () => {
               >
                 Upscale image
               </button>
-              <span className="tooltip-text">
-                Enhance the quality of images when upscaling them, making them
-                clearer and sharper (maximum possible image size: 625 x 400
-                pixels).
-              </span>
+              {publicID && (
+                <span className="tooltip-text">
+                  Enhance the quality of images when upscaling them, making them
+                  clearer and sharper (maximum possible image size: 625 x 400
+                  pixels).
+                </span>
+              )}
             </div>
           </div>
+
           {showModal && (
             <div className="modal-overlay">
               <div className="modal-content">
@@ -408,7 +444,7 @@ const Dashboard = () => {
                       />
                     </div>
                   )}
-                  <button onClick={() => handleClick("applyChanges")}>
+                  <button className="apply-changes-modal-button" onClick={() => handleClick("applyChanges")}>
                     Apply Changes
                   </button>
                 </div>
